@@ -3,32 +3,15 @@ namespace Snake
 {
     public class Snake
     {
-        private Queue<Pixel> _body;
-        public Direction CurrentDirection;
-        public Pixel _head;
+        public Queue<Pixel> Body;
+        public Direction Direction;
+        public Pixel Head;
 
-        public Snake(Pixel head, int count)
+        public Snake(Queue<Pixel> body, Direction direction, Pixel head)
         {
-            _body = new Queue<Pixel>();
-            _body.Enqueue(head);
-
-            for (int i = 1; i < count; i++)
-            {
-                _body.Enqueue(new Pixel(head.X - i, head.Y));
-            }
-
-            CurrentDirection = Direction.Right;
-            _head = head;
-        }
-
-        public Queue<Pixel> GetBody()
-        {
-            return _body;
-        }
-
-        public Pixel GetHead()
-        {
-            return _body.Peek();
+            Body = body;
+            Direction = direction;
+            Head = head;
         }
     }
 }

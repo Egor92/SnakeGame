@@ -14,11 +14,16 @@ namespace Snake_Game
         static void Main(string[] args)
         {
             Console.CursorVisible = false;
-            int width = 45;
-            int height = 15;
-            GameData gameData = new GameData(width, height);
-            GameRenderer renderer = new GameRenderer();
-            Game game = new Game(gameData, renderer);
+           
+            var gameData = GameDataBuilder.Create()
+            .SetPlayingFieldSize(width: 45, height: 15)
+            .CreateWallAroundPlayingField(width: 45, height: 15)
+            .AddSnake(10, 10, Direction.Right)
+            .AddFood()
+            .Build();
+
+            // Создать Game и запустить
+            var game = new Game(gameData);
             game.Start();
             Console.ReadLine();
         }
