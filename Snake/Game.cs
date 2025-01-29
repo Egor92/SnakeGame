@@ -103,13 +103,13 @@ namespace Snake
         private bool CheckCollisions()
         {
             var snakeBody = _gameData.Snake.Body.ToArray();
-            var head = snakeBody.Last(); 
+            var head = snakeBody.Last();
 
             for (int i = 0; i < snakeBody.Length - 1; i++)
             {
                 if (snakeBody[i].X == head.X && snakeBody[i].Y == head.Y)
                 {
-                    return true; 
+                    return true;
                 }
             }
 
@@ -132,7 +132,7 @@ namespace Snake
 
         private void GrowSnake()
         {
-            var tail = _gameData.Snake.Body.First();
+            var tail = _gameData.Snake.Body.Last();
             _gameData.Snake.Body.Enqueue(new Pixel(tail.X, tail.Y));
         }
 
