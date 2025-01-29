@@ -40,7 +40,7 @@ namespace Snake
                     GrowSnake();
                     GenerateFood();
                 }
-                Thread.Sleep(00);
+                Thread.Sleep(400);
             }
 
             Console.Clear();
@@ -79,7 +79,7 @@ namespace Snake
 
             var tail = snakeBody.First();
 
-            //_gameRenderer.Draw(' ', tail.X, tail.Y);  
+            //_gameRenderer.Draw(' ', tail.X, tail.Y);
 
             int newX = head.X;
             int newY = head.Y;

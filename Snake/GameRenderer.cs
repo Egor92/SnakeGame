@@ -5,6 +5,7 @@
         public Game game;
         public void RenderGame(GameData gameData)
         {
+            Console.Clear();
             
             for (int i = 0; i < gameData.Walls.Count; i++)
             {
@@ -25,7 +26,7 @@
                 Draw('O', gameData.Food.X, gameData.Food.Y);
             }
            
-         }
+         }//двумерн массив чаров. задавать чары в этом массиве 
         public void Draw(char symbol, int x, int y)
         {
             Console.SetCursorPosition(x, y);
