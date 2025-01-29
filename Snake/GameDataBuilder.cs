@@ -56,13 +56,12 @@ namespace Snake
             return this;
         }
 
-        public GameDataBuilder AddSnake(int x, int y, Direction direction)
+        public GameDataBuilder AddSnake(int x, int y, Direction direction, int countBody)
         {
-            //создание змейки //параметр длина змейки, (x,y) заменить, дать информ названия, 
+            //создание змейки 
             _head = new Pixel(x, y);
             _body = new Queue<Pixel>();
-            int count = 3;
-            for (int i = count; i > 1; i--)
+            for (int i = countBody; i >= 1; i--)
             {
                 _body.Enqueue(new Pixel(x - i, y));
             }

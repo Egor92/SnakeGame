@@ -22,6 +22,7 @@ namespace Snake
             while (!_gameOver)
             {
                 _gameRenderer.RenderGame(_gameData);
+
                 if (Console.KeyAvailable)
                 {
                     ConsoleKey key = Console.ReadKey(true).Key;
@@ -33,14 +34,16 @@ namespace Snake
                 if (CheckCollisions())
                 {
                     _gameOver = true;
-                    return;
+                    break; 
                 }
+
                 if (CheckFoodCollision())
                 {
                     GrowSnake();
                     GenerateFood();
                 }
-                Thread.Sleep(400);
+
+                Thread.Sleep(200); 
             }
 
             Console.Clear();
@@ -70,16 +73,12 @@ namespace Snake
                     break;
             }
         }
-        
+
 
         private void Move()
         {
             var snakeBody = _gameData.Snake.Body;
             var head = snakeBody.Last();
-
-            var tail = snakeBody.First();
-
-            //_gameRenderer.Draw(' ', tail.X, tail.Y);
 
             int newX = head.X;
             int newY = head.Y;
@@ -93,31 +92,36 @@ namespace Snake
             }
 
             var newHead = new Pixel(newX, newY);
-            snakeBody.Enqueue(newHead);  
+            snakeBody.Enqueue(newHead);
 
-            snakeBody.Dequeue();  
+            if (!CheckFoodCollision())
+            {
+                snakeBody.Dequeue();
+            }
         }
 
         private bool CheckCollisions()
         {
             var snakeBody = _gameData.Snake.Body.ToArray();
-            var head = snakeBody.Last();
+            var head = snakeBody.Last(); 
 
-            if (head.X <= 0 || head.X >= _gameData.BoardWidth - 1 || head.Y <= 0 || head.Y >= _gameData.BoardHeight - 1)
+            for (int i = 0; i < snakeBody.Length - 1; i++)
             {
-                return true; 
-            }
-
-            for (int i = 0; i < snakeBody.Length; i++)
-            {
-                var pixel = snakeBody[i];
-                if (pixel != head && pixel.X == head.X && pixel.Y == head.Y)
+                if (snakeBody[i].X == head.X && snakeBody[i].Y == head.Y)
                 {
                     return true; 
                 }
             }
 
-            return false;
+            for (int i = 0; i < _gameData.Walls.Count; i++)
+            {
+                if (_gameData.Walls[i].X == head.X && _gameData.Walls[i].Y == head.Y)
+                {
+                    return true; 
+                }
+            }
+
+            return false; 
         }
 
         private bool CheckFoodCollision()
