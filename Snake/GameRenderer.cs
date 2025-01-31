@@ -24,10 +24,19 @@ public class GameRenderer
             Draw('O', gameData.Food.X, gameData.Food.Y);
         }
 
-    }  // двумерн массив чаров. задавать чары в этом массиве
+    }// двумерн массив чаров. задавать чары в этом массиве
     public void Draw(char symbol, int x, int y)
     {
         Console.SetCursorPosition(x, y);
         Console.Write(symbol);
+    }
+    public void Game(bool game)
+    {
+        if (game == true)
+        {
+            Console.Clear();
+            Console.SetCursorPosition(10, 10);
+            Console.WriteLine("Game Over!");
+        }
     }
 }

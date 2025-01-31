@@ -38,10 +38,7 @@ public class Game
 
             Thread.Sleep(200);
         }
-
-        Console.Clear();
-        Console.SetCursorPosition(10, 10);
-        Console.WriteLine("Game Over!");
+        _gameRenderer.Game(_gameData.IsGameOver);
     }
 
     private void ChangeDirection(ConsoleKey key)
@@ -70,7 +67,7 @@ public class Game
     private void Move()
     {
         var snakeBody = _gameData.Snake.Body;
-        var head = snakeBody.Last();
+        var head = _gameData.Snake.Head;
 
         int newX = head.X;
         int newY = head.Y;
@@ -95,7 +92,7 @@ public class Game
         snakeBody.Enqueue(newHead);
 
         snakeBody.Dequeue();
-        
+        _gameData.Snake.Head = newHead;
     }
 
     private bool CheckCollisions()
@@ -103,17 +100,17 @@ public class Game
         var snakeBody = _gameData.Snake.Body.ToArray();
         var head = snakeBody.Last();
 
-        for (int i = 0; i < snakeBody.Length - 1; i++)
+        foreach (var snakePixel in snakeBody[0..^1])
         {
-            if (snakeBody[i].X == head.X && snakeBody[i].Y == head.Y)
+            if (snakePixel.X == head.X && snakePixel.Y == head.Y)
             {
                 return true;
             }
         }
 
-        for (int i = 0; i < _gameData.Walls.Count; i++)
+        foreach (var wallPixel in _gameData.Walls)
         {
-            if (_gameData.Walls[i].X == head.X && _gameData.Walls[i].Y == head.Y)
+            if (wallPixel.X == head.X && wallPixel.Y == head.Y)
             {
                 return true;
             }
@@ -124,13 +121,13 @@ public class Game
 
     private bool CheckFoodCollision()
     {
-        var head = _gameData.Snake.Body.Last();
+        var head = _gameData.Snake.Head;
         return head.X == _gameData.Food.X && head.Y == _gameData.Food.Y;
     }
 
     private void GrowSnake()
     {
-        var tail = _gameData.Snake.Body.Last();
+        var tail = _gameData.Snake.Body.First();
         _gameData.Snake.Body.Enqueue(new Pixel(tail.X, tail.Y));
     }
 
