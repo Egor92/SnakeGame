@@ -10,7 +10,6 @@ public class GameDataBuilder
     private Pixel _head;
     private Pixel _food;
     private Snake _snake;
-    private bool _isGameOver = false;
     private GameDataBuilder() { }
     public static GameDataBuilder Create()
     {
@@ -92,7 +91,7 @@ public class GameDataBuilder
             Walls = _walls,
             Snake = _snake,
             Food = _food,
-            IsGameOver = _isGameOver
+            IsGameOver = false
         };
     }
 }

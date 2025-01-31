@@ -94,10 +94,8 @@ public class Game
         var newHead = new Pixel(newX, newY);
         snakeBody.Enqueue(newHead);
 
-        if (!CheckFoodCollision())
-        {
-            snakeBody.Dequeue();
-        }
+        snakeBody.Dequeue();
+        
     }
 
     private bool CheckCollisions()
