@@ -2,7 +2,7 @@
 
 public class GameDataBuilder
 {
-    private int _widht;
+    private int _width;
     private int _height;
     private List<Pixel> _walls = new();
     private Queue<Pixel> _body;
@@ -25,7 +25,7 @@ public class GameDataBuilder
                 "Ширина и высота должны быть положительными.");
         }
 
-        _widht = width;
+        _width = width;
         _height = height;
         return this;
     }
@@ -70,7 +70,7 @@ public class GameDataBuilder
 
         while (true)
         {
-            int x = random.Next(1, _widht - 1);
+            int x = random.Next(1, _width - 1);
             int y = random.Next(1, _height - 1);
 
             Pixel food = new Pixel(x, y);
@@ -87,7 +87,7 @@ public class GameDataBuilder
     {
         return new GameData()
         {
-            BoardWidth = _widht,
+            BoardWidth = _width,
             BoardHeight = _height,
             Walls = _walls,
             Snake = _snake,
