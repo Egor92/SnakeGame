@@ -47,8 +47,7 @@ public class GameDataBuilder
         return this;
     }
 
-    public GameDataBuilder AddSnake(int x, int y, Direction direction,
-                                    int countBody)
+    public GameDataBuilder AddSnake(int x, int y, Direction direction, int countBody)
     {
         // создание змейки
         _head = new Pixel(x, y);
@@ -63,6 +62,7 @@ public class GameDataBuilder
         _snake = new Snake(_body, _direction, _head);
         return this;
     }
+
     public GameDataBuilder AddFood()
     {
         Random random = new Random();

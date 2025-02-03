@@ -1,4 +1,5 @@
 ﻿namespace Snake;
+
 public class Game
 {
     private GameData _gameData;
@@ -38,7 +39,8 @@ public class Game
 
             Thread.Sleep(200);
         }
-        _gameRenderer.Game(_gameData.IsGameOver);
+
+        _gameRenderer.RenderGame(_gameData);
     }
 
     private void ChangeDirection(ConsoleKey key)
@@ -90,7 +92,6 @@ public class Game
 
         var newHead = new Pixel(newX, newY);
         snakeBody.Enqueue(newHead);
-
         snakeBody.Dequeue();
         _gameData.Snake.Head = newHead;
     }
@@ -127,8 +128,8 @@ public class Game
 
     private void GrowSnake()
     {
-        var tail = _gameData.Snake.Body.First();
-        _gameData.Snake.Body.Enqueue(new Pixel(tail.X, tail.Y));
+        var newElement = _gameData.Snake.Body.Last();
+        _gameData.Snake.Body.Enqueue(new Pixel(newElement.X, newElement.Y));
     }
 
     private void GenerateFood()
