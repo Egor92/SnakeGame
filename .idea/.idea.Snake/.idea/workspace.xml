@@ -7,11 +7,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="874d47bd-07a9-4283-ab37-2fe8f85ce08e" name="Changes" comment="" />
+    <list default="true" id="874d47bd-07a9-4283-ab37-2fe8f85ce08e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Snake/Direction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Snake/Direction.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Snake/GameData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Snake/GameData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Snake/GameDataBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Snake/GameDataBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Snake/GameRenderer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Snake/GameRenderer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Snake/Snake.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Snake/Snake.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DpaMonitoringSettings">
+    <option name="firstShow" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="SWEA" />
@@ -24,18 +36,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.language&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Project.Snake.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "task/11",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="Snake" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -68,6 +82,7 @@
       <workItem from="1737634229620" duration="384000" />
       <workItem from="1737635079684" duration="832000" />
       <workItem from="1737638627443" duration="24000" />
+      <workItem from="1738659117213" duration="303000" />
     </task>
     <servers />
   </component>

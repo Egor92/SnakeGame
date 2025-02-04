@@ -1,4 +1,5 @@
 ﻿namespace Snake;
+
 public class GameRenderer
 {
     public void RenderGame(GameData gameData)

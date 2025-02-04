@@ -10,11 +10,16 @@ public class GameDataBuilder
     private Pixel _head;
     private Pixel _food;
     private Snake _snake;
-    private GameDataBuilder() { }
+
+    private GameDataBuilder()
+    {
+    }
+
     public static GameDataBuilder Create()
     {
         return new GameDataBuilder();
     }
+
     public GameDataBuilder SetPlayingFieldSize(int width, int height)
     {
         // проверка длины и ширины на не отрицательность
@@ -39,11 +44,13 @@ public class GameDataBuilder
             _walls.Add(new Pixel(i, 0));
             _walls.Add(new Pixel(i, height - 1));
         }
+
         for (int i = 0; i < height; i++)
         {
             _walls.Add(new Pixel(0, i));
             _walls.Add(new Pixel(width - 1, i));
         }
+
         return this;
     }
 
@@ -56,6 +63,7 @@ public class GameDataBuilder
         {
             _body.Enqueue(new Pixel(x - i, y));
         }
+
         _body.Enqueue(_head);
 
         _direction = direction;
@@ -80,8 +88,10 @@ public class GameDataBuilder
                 break;
             }
         }
+
         return this;
     }
+
     public GameData Build()
     {
         return new GameData()

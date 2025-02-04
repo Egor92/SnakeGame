@@ -1,4 +1,5 @@
 ﻿namespace Snake;
+
 public class GameData
 {
     public int BoardWidth { get; set; }

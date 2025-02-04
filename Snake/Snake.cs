@@ -1,4 +1,5 @@
 ﻿namespace Snake;
+
 public class Snake
 {
     public Queue<Pixel> Body { get; set; }
