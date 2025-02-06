@@ -4,11 +4,13 @@ public class Game
 {
     private GameData _gameData;
     private GameRenderer _gameRenderer;
+    private readonly GameLogic _gameLogic;
 
-    public Game(GameData gameData)
+    public Game(GameData gameData, GameLogic gameLogic)
     {
         _gameData = gameData;
         _gameRenderer = new GameRenderer();
+        _gameLogic = gameLogic;
     }
 
     public void Start()
@@ -22,8 +24,10 @@ public class Game
                 ConsoleKey key = Console.ReadKey(true).Key;
                 ChangeDirection(key);
             }
-
-            Move();
+            
+            
+            _gameLogic.DoStep();
+            //Move();
 
             if (CheckCollisions())
             {
@@ -66,6 +70,7 @@ public class Game
         }
     }
 
+    /*
     private void Move()
     {
         var snakeBody = _gameData.Snake.Body;
@@ -89,12 +94,13 @@ public class Game
                 newX++;
                 break;
         }
+        */
 
-        var newHead = new Pixel(newX, newY);
-        snakeBody.Enqueue(newHead);
-        snakeBody.Dequeue();
-        _gameData.Snake.Head = newHead;
-    }
+    //     var newHead = new Pixel(newX, newY);
+    //     snakeBody.Enqueue(newHead);
+    //     snakeBody.Dequeue();
+    //     _gameData.Snake.Head = newHead;
+    // }
 
     private bool CheckCollisions()
     {

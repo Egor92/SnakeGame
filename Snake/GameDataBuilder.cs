@@ -59,11 +59,35 @@ public class GameDataBuilder
         // создание змейки
         _head = new Pixel(x, y);
         _body = new Queue<Pixel>();
-        for (int i = countBody; i >= 1; i--)
+        if (direction == Direction.Right)
         {
-            _body.Enqueue(new Pixel(x - i, y));
+            for (int i = countBody - 1; i >= 1; i--)
+            {
+                _body.Enqueue(new Pixel(x - i, y));
+            }
         }
-
+        else if (direction == Direction.Left)
+        {
+            for (int i = countBody - 1; i >= 1; i--)
+            {
+                _body.Enqueue(new Pixel(x + i, y));
+            }
+        }
+        else if (direction == Direction.Up)
+        {
+            for (int i = countBody - 1; i >= 1; i--)
+            {
+                _body.Enqueue(new Pixel(x, y + i));
+            }
+        }
+        else if (direction == Direction.Down)
+        {
+            for (int i = countBody - 1; i >= 1; i--)
+            {
+                _body.Enqueue(new Pixel(x, y - i));
+            }
+        }
+        
         _body.Enqueue(_head);
 
         _direction = direction;

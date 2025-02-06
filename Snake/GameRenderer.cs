@@ -20,14 +20,12 @@ public class GameRenderer
             n++;
         }
 
-        if (gameData.Food != null)
-        {
-            Draw('O', gameData.Food.X, gameData.Food.Y);
-        }
+        Draw('O', gameData.Food.X, gameData.Food.Y);
 
         if (gameData.IsGameOver == true)
         {
-            Console.SetCursorPosition(16, 16);
+            //Console.Clear();
+            Console.SetCursorPosition(10, 10);
             Console.WriteLine("Game Over!");
         }
     }
