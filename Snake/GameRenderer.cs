@@ -27,8 +27,7 @@ public class GameRenderer
 
         if (gameData.IsGameOver == true)
         {
-            Console.Clear();
-            Console.SetCursorPosition(10, 10);
+            Console.SetCursorPosition(16, 16);
             Console.WriteLine("Game Over!");
         }
     }
