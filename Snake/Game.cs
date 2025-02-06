@@ -50,9 +50,9 @@ public class Game
                 break;
             }
 
-            if (CheckFoodCollision())
+            if (_gameLogic.CheckFoodCollision())
             {
-                GrowSnake();
+                _gameLogic.GrowSnake();
                 GenerateFood();
             }
 
@@ -140,18 +140,40 @@ public class Game
     //
     //     return false;
     // }
-
-    private bool CheckFoodCollision()
-    {
-        var head = _gameData.Snake.Head;
-        return head.X == _gameData.Food.X && head.Y == _gameData.Food.Y;
-    }
-
-    private void GrowSnake()
-    {
-        var newElement = _gameData.Snake.Body.Last();
-        _gameData.Snake.Body.Enqueue(new Pixel(newElement.X, newElement.Y));
-    }
+    // public bool CheckCollisions()
+    // {
+    //     var snakeBody = _gameData.Snake.Body.ToArray();
+    //     var head = snakeBody.Last();
+    //
+    //     foreach (var snakePixel in snakeBody[0..^1])
+    //     {
+    //         if (snakePixel.X == head.X && snakePixel.Y == head.Y)
+    //         {
+    //             return true;
+    //         }
+    //     }
+    //
+    //     foreach (var wallPixel in _gameData.Walls)
+    //     {
+    //         if (wallPixel.X == head.X && wallPixel.Y == head.Y)
+    //         {
+    //             return true;
+    //         }
+    //     }
+    //
+    //     return false;
+    // }
+    // private bool CheckFoodCollision()
+    // {
+    //     var head = _gameData.Snake.Head;
+    //     return head.X == _gameData.Food.X && head.Y == _gameData.Food.Y;
+    // }
+    //
+    // private void GrowSnake()
+    // {
+    //     var newElement = _gameData.Snake.Body.Last();
+    //     _gameData.Snake.Body.Enqueue(new Pixel(newElement.X, newElement.Y));
+    // }
 
     private void GenerateFood()
     {

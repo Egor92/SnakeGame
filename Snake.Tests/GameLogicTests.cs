@@ -149,4 +149,21 @@ public class GameLogicTests
         // Assert
         Assert.That(_gameData.IsGameOver, Is.True);
     }
+    
+    [Test]
+    public void DoStep_FoodInFront_SnakeAteFoodAndSnakeGrows()
+    {
+        // Arrange  
+        _gameData.Snake = SnakeFactory.Create(5, 5, Direction.Right, 3);
+        _gameData.Food = new Pixel(6, 5);
+        
+        // Act
+        _gameLogic.DoStep();
+        if (_gameLogic.CheckFoodCollision())
+        {
+            _gameLogic.GrowSnake();
+        }
+        // Assert
+        Assert.That(_gameData.Snake.Body.Count, Is.EqualTo(4));
+    }
 }

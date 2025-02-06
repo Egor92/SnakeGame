@@ -61,6 +61,17 @@ public class GameLogic
 
         return false;
     }
+    public bool CheckFoodCollision()
+    {
+        var head = _gameData.Snake.Head;
+        return head.X == _gameData.Food.X && head.Y == _gameData.Food.Y;
+    }
+
+    public void GrowSnake()
+    {
+        var newElement = _gameData.Snake.Body.Last();
+        _gameData.Snake.Body.Enqueue(new Pixel(newElement.X, newElement.Y));
+    }
     public void ChangeDirection(Direction direction)
     {
         if (_gameData.Snake.Direction != Direction.Down &&  direction == Direction.Up)
