@@ -22,14 +22,29 @@ public class Game
             while (Console.KeyAvailable)
             {
                 ConsoleKey key = Console.ReadKey(true).Key;
-                ChangeDirection(key);
+                if (key == ConsoleKey.UpArrow)
+                {
+                    _gameLogic.ChangeDirection(Direction.Up);
+                }
+                else if (key == ConsoleKey.DownArrow)
+                {
+                    _gameLogic.ChangeDirection(Direction.Down);
+                }
+                else if (key == ConsoleKey.LeftArrow)
+                {
+                    _gameLogic.ChangeDirection(Direction.Left);
+                }
+                else
+                {
+                    _gameLogic.ChangeDirection(Direction.Right);
+                }
             }
-            
-            
+
+
             _gameLogic.DoStep();
             //Move();
 
-            if (CheckCollisions())
+            if (_gameLogic.CheckCollisions())
             {
                 _gameData.IsGameOver = true;
                 break;
@@ -47,28 +62,28 @@ public class Game
         _gameRenderer.RenderGame(_gameData);
     }
 
-    private void ChangeDirection(ConsoleKey key)
-    {
-        switch (key)
-        {
-            case ConsoleKey.UpArrow:
-                if (_gameData.Snake.Direction != Direction.Down)
-                    _gameData.Snake.Direction = Direction.Up;
-                break;
-            case ConsoleKey.DownArrow:
-                if (_gameData.Snake.Direction != Direction.Up)
-                    _gameData.Snake.Direction = Direction.Down;
-                break;
-            case ConsoleKey.LeftArrow:
-                if (_gameData.Snake.Direction != Direction.Right)
-                    _gameData.Snake.Direction = Direction.Left;
-                break;
-            case ConsoleKey.RightArrow:
-                if (_gameData.Snake.Direction != Direction.Left)
-                    _gameData.Snake.Direction = Direction.Right;
-                break;
-        }
-    }
+    // private void ChangeDirection(ConsoleKey key)
+    // {
+    //     switch (key)
+    //     {
+    //         case ConsoleKey.UpArrow:
+    //             if (_gameData.Snake.Direction != Direction.Down)
+    //                 _gameData.Snake.Direction = Direction.Up;
+    //             break;
+    //         case ConsoleKey.DownArrow:
+    //             if (_gameData.Snake.Direction != Direction.Up)
+    //                 _gameData.Snake.Direction = Direction.Down;
+    //             break;
+    //         case ConsoleKey.LeftArrow:
+    //             if (_gameData.Snake.Direction != Direction.Right)
+    //                 _gameData.Snake.Direction = Direction.Left;
+    //             break;
+    //         case ConsoleKey.RightArrow:
+    //             if (_gameData.Snake.Direction != Direction.Left)
+    //                 _gameData.Snake.Direction = Direction.Right;
+    //             break;
+    //     }
+    // }
 
     /*
     private void Move()
@@ -102,29 +117,29 @@ public class Game
     //     _gameData.Snake.Head = newHead;
     // }
 
-    private bool CheckCollisions()
-    {
-        var snakeBody = _gameData.Snake.Body.ToArray();
-        var head = snakeBody.Last();
-
-        foreach (var snakePixel in snakeBody[0..^1])
-        {
-            if (snakePixel.X == head.X && snakePixel.Y == head.Y)
-            {
-                return true;
-            }
-        }
-
-        foreach (var wallPixel in _gameData.Walls)
-        {
-            if (wallPixel.X == head.X && wallPixel.Y == head.Y)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    // private bool CheckCollisions()
+    // {
+    //     var snakeBody = _gameData.Snake.Body.ToArray();
+    //     var head = snakeBody.Last();
+    //
+    //     foreach (var snakePixel in snakeBody[0..^1])
+    //     {
+    //         if (snakePixel.X == head.X && snakePixel.Y == head.Y)
+    //         {
+    //             return true;
+    //         }
+    //     }
+    //
+    //     foreach (var wallPixel in _gameData.Walls)
+    //     {
+    //         if (wallPixel.X == head.X && wallPixel.Y == head.Y)
+    //         {
+    //             return true;
+    //         }
+    //     }
+    //
+    //     return false;
+    // }
 
     private bool CheckFoodCollision()
     {

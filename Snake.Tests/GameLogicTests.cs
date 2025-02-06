@@ -78,4 +78,75 @@ public class GameLogicTests
         Assert.That(snakeBody[1], Is.EqualTo(new Pixel(5, 5)));
         Assert.That(snakeBody[2], Is.EqualTo(new Pixel(5, 6)));
     }
+
+    [TestCase(Direction.Right, Direction.Left, Direction.Right)]
+    [TestCase(Direction.Left, Direction.Right, Direction.Left)]
+    [TestCase(Direction.Down, Direction.Up, Direction.Down)]
+    [TestCase(Direction.Up, Direction.Down, Direction.Up)]
+    public void ChangeDirection_NewDirectionIsOpposite_DirectionIsNotChanged(Direction initialDirection,
+        Direction newDirection, Direction expectedDirection)
+    {
+        // Arrange  
+        _gameData.Snake = SnakeFactory.Create(5, 5, initialDirection, 3);
+
+        // Act
+        _gameLogic.ChangeDirection(newDirection);
+
+        // Assert
+        Assert.That(_gameData.Snake.Direction, Is.EqualTo(expectedDirection));
+    }
+
+    [TestCase(Direction.Right, Direction.Up, Direction.Up)]
+    [TestCase(Direction.Right, Direction.Down, Direction.Down)]
+    [TestCase(Direction.Left, Direction.Up, Direction.Up)]
+    [TestCase(Direction.Left, Direction.Down, Direction.Down)]
+    [TestCase(Direction.Up, Direction.Left, Direction.Left)]
+    [TestCase(Direction.Up, Direction.Right, Direction.Right)]
+    [TestCase(Direction.Down, Direction.Left, Direction.Left)]
+    [TestCase(Direction.Down, Direction.Right, Direction.Right)]
+    public void ChangeDirection_NewDirectionIsDifferent_DirectionIsChanged(Direction initialDirection,
+        Direction newDirection, Direction expectedDirection)
+    {
+        // Arrange  
+        _gameData.Snake = SnakeFactory.Create(5, 5, initialDirection, 3);
+
+        // Act
+        _gameLogic.ChangeDirection(newDirection);
+
+        // Assert
+        Assert.That(_gameData.Snake.Direction, Is.EqualTo(expectedDirection));
+    }
+
+    [TestCase(Direction.Right, Direction.Right, Direction.Right)]
+    [TestCase(Direction.Left, Direction.Left, Direction.Left)]
+    [TestCase(Direction.Up, Direction.Up, Direction.Up)]
+    [TestCase(Direction.Down, Direction.Down, Direction.Down)]
+    public void ChangeDirection_NewDirectionIsSame_DirectionIsNotChanged(Direction initialDirection,
+        Direction newDirection, Direction expectedDirection)
+    {
+        // Arrange  
+        _gameData.Snake = SnakeFactory.Create(5, 5, initialDirection, 3);
+
+        // Act
+        _gameLogic.ChangeDirection(newDirection);
+
+        // Assert
+        Assert.That(_gameData.Snake.Direction, Is.EqualTo(expectedDirection));
+    }
+    
+    [Test]
+    public void DoStep_WallInFront_GameOver()
+    {
+        // Arrange  
+        _gameData.Snake = SnakeFactory.Create(1, 2, Direction.Left, 3);
+
+        // Act
+        _gameLogic.DoStep();
+        if (_gameLogic.CheckCollisions())
+        {
+            _gameData.IsGameOver = true;
+        }
+        // Assert
+        Assert.That(_gameData.IsGameOver, Is.True);
+    }
 }

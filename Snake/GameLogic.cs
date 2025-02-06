@@ -38,4 +38,43 @@ public class GameLogic
         snakeBody.Dequeue();
         _gameData.Snake.Head = newHead;
     }
+    public bool CheckCollisions()
+    {
+        var snakeBody = _gameData.Snake.Body.ToArray();
+        var head = snakeBody.Last();
+
+        foreach (var snakePixel in snakeBody[0..^1])
+        {
+            if (snakePixel.X == head.X && snakePixel.Y == head.Y)
+            {
+                return true;
+            }
+        }
+
+        foreach (var wallPixel in _gameData.Walls)
+        {
+            if (wallPixel.X == head.X && wallPixel.Y == head.Y)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    public void ChangeDirection(Direction direction)
+    {
+        if (_gameData.Snake.Direction != Direction.Down &&  direction == Direction.Up)
+            _gameData.Snake.Direction = Direction.Up;
+
+
+        if (_gameData.Snake.Direction != Direction.Up &&  direction == Direction.Down)
+            _gameData.Snake.Direction = Direction.Down;
+
+        if (_gameData.Snake.Direction != Direction.Right &&  direction == Direction.Left)
+            _gameData.Snake.Direction = Direction.Left;
+
+
+        if (_gameData.Snake.Direction != Direction.Left &&  direction == Direction.Right)
+            _gameData.Snake.Direction = Direction.Right;
+    }
 }
