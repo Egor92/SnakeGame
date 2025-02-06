@@ -17,7 +17,7 @@ public class Game
         {
             _gameRenderer.RenderGame(_gameData);
 
-            if (Console.KeyAvailable)
+            while (Console.KeyAvailable)
             {
                 ConsoleKey key = Console.ReadKey(true).Key;
                 ChangeDirection(key);
