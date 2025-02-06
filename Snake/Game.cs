@@ -4,6 +4,7 @@ public class Game
 {
     private GameData _gameData;
     private GameRenderer _gameRenderer;
+
     public Game(GameData gameData)
     {
         _gameData = gameData;
@@ -19,7 +20,7 @@ public class Game
             while (Console.KeyAvailable)
             {
                 ConsoleKey key = Console.ReadKey(true).Key;
-                ChangeDirection(key);                
+                ChangeDirection(key);
             }
 
             Move();
