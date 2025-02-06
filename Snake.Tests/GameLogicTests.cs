@@ -166,4 +166,25 @@ public class GameLogicTests
         // Assert
         Assert.That(_gameData.Snake.Body.Count, Is.EqualTo(4));
     }
+    
+    [Test]
+    public void DoStep_SnakeBodyInFront_SnakeAteBodyAndGameOver()
+    {
+        // Arrange  
+        _gameData.Snake = SnakeFactory.Create(5, 5, Direction.Right, 6);
+        
+        // Act
+        _gameLogic.ChangeDirection(Direction.Up);
+        _gameLogic.DoStep();
+        _gameLogic.ChangeDirection(Direction.Left);
+        _gameLogic.DoStep();
+        _gameLogic.ChangeDirection(Direction.Down);
+        _gameLogic.DoStep();
+        if (_gameLogic.CheckCollisions())
+        {
+            _gameData.IsGameOver = true;
+        }
+        // Assert
+        Assert.That(_gameData.IsGameOver, Is.True);
+    }
 }
