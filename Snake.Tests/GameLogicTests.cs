@@ -133,57 +133,55 @@ public class GameLogicTests
         // Assert
         Assert.That(_gameData.Snake.Direction, Is.EqualTo(expectedDirection));
     }
-    
+
     [Test]
-    public void DoStep_WallInFront_GameOver()
+    public void DoStep_WallIsAhead_GameOver()
     {
         // Arrange  
         _gameData.Snake = SnakeFactory.Create(1, 2, Direction.Left, 3);
+        _gameData.Walls = new List<Pixel>(new[] { new Pixel(0, 2) });
 
         // Act
         _gameLogic.DoStep();
-        if (_gameLogic.CheckCollisions())
-        {
-            _gameData.IsGameOver = true;
-        }
+
         // Assert
         Assert.That(_gameData.IsGameOver, Is.True);
     }
-    
+
     [Test]
     public void DoStep_FoodInFront_SnakeAteFoodAndSnakeGrows()
     {
         // Arrange  
         _gameData.Snake = SnakeFactory.Create(5, 5, Direction.Right, 3);
         _gameData.Food = new Pixel(6, 5);
-        
+
         // Act
         _gameLogic.DoStep();
-        if (_gameLogic.CheckFoodCollision())
-        {
-            _gameLogic.GrowSnake();
-        }
+        _gameLogic.CheckFoodCollision();
+
         // Assert
         Assert.That(_gameData.Snake.Body.Count, Is.EqualTo(4));
     }
-    
+
     [Test]
     public void DoStep_SnakeBodyInFront_SnakeAteBodyAndGameOver()
     {
         // Arrange  
-        _gameData.Snake = SnakeFactory.Create(5, 5, Direction.Right, 6);
+        _gameData.Snake = SnakeFactory.Create(5, 5, Direction.Down, 7);
+        _gameData.Snake.Body = new Queue<Pixel>(new[]
+        {
+            new Pixel(6, 6),
+            new Pixel(5, 6),
+            new Pixel(4, 6),
+            new Pixel(3, 6),
+            new Pixel(3, 5),
+            new Pixel(4, 5),
+            _gameData.Snake.Head
+        });
         
         // Act
-        _gameLogic.ChangeDirection(Direction.Up);
         _gameLogic.DoStep();
-        _gameLogic.ChangeDirection(Direction.Left);
-        _gameLogic.DoStep();
-        _gameLogic.ChangeDirection(Direction.Down);
-        _gameLogic.DoStep();
-        if (_gameLogic.CheckCollisions())
-        {
-            _gameData.IsGameOver = true;
-        }
+
         // Assert
         Assert.That(_gameData.IsGameOver, Is.True);
     }

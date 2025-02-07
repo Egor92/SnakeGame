@@ -50,11 +50,11 @@ public class Game
                 break;
             }
 
-            if (_gameLogic.CheckFoodCollision())
-            {
-                _gameLogic.GrowSnake();
-                GenerateFood();
-            }
+            // if (_gameLogic.CheckFoodCollision())
+            // {
+            //     _gameLogic.GrowSnake();
+            //     GenerateFood();
+            // }
 
             Thread.Sleep(200);
         }

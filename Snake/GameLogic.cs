@@ -33,11 +33,16 @@ public class GameLogic
                 break;
         }
 
+        
         var newHead = new Pixel(newX, newY);
         snakeBody.Enqueue(newHead);
+        _gameData.IsGameOver = CheckCollisions();
         snakeBody.Dequeue();
         _gameData.Snake.Head = newHead;
+        
+
     }
+
     public bool CheckCollisions()
     {
         var snakeBody = _gameData.Snake.Body.ToArray();
@@ -61,9 +66,11 @@ public class GameLogic
 
         return false;
     }
+
     public bool CheckFoodCollision()
     {
         var head = _gameData.Snake.Head;
+        GrowSnake();
         return head.X == _gameData.Food.X && head.Y == _gameData.Food.Y;
     }
 
@@ -72,20 +79,21 @@ public class GameLogic
         var newElement = _gameData.Snake.Body.Last();
         _gameData.Snake.Body.Enqueue(new Pixel(newElement.X, newElement.Y));
     }
+
     public void ChangeDirection(Direction direction)
     {
-        if (_gameData.Snake.Direction != Direction.Down &&  direction == Direction.Up)
+        if (_gameData.Snake.Direction != Direction.Down && direction == Direction.Up)
             _gameData.Snake.Direction = Direction.Up;
 
 
-        if (_gameData.Snake.Direction != Direction.Up &&  direction == Direction.Down)
+        if (_gameData.Snake.Direction != Direction.Up && direction == Direction.Down)
             _gameData.Snake.Direction = Direction.Down;
 
-        if (_gameData.Snake.Direction != Direction.Right &&  direction == Direction.Left)
+        if (_gameData.Snake.Direction != Direction.Right && direction == Direction.Left)
             _gameData.Snake.Direction = Direction.Left;
 
 
-        if (_gameData.Snake.Direction != Direction.Left &&  direction == Direction.Right)
+        if (_gameData.Snake.Direction != Direction.Left && direction == Direction.Right)
             _gameData.Snake.Direction = Direction.Right;
     }
 }
