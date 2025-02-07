@@ -44,24 +44,15 @@ public class SnakeBuilder
         }
         else if (direction == Direction.Left)
         {
-            for (int i = _length - 1; i >= 1; i--)
-            {
-                _body.Enqueue(new Pixel(_body.Last().X + 1, _body.Last().Y));
-            }
+            _body.Enqueue(new Pixel(_body.Last().X + 1, _body.Last().Y));
         }
         else if (direction == Direction.Up)
         {
-            for (int i = _length - 1; i >= 1; i--)
-            {
-                _body.Enqueue(new Pixel(_body.Last().X, _body.Last().Y + 1));
-            }
+            _body.Enqueue(new Pixel(_body.Last().X, _body.Last().Y + 1));
         }
         else if (direction == Direction.Down)
         {
-            for (int i = _length - 1; i >= 1; i--)
-            {
-                _body.Enqueue(new Pixel(_body.Last().X, _body.Last().Y - 1));
-            }
+            _body.Enqueue(new Pixel(_body.Last().X, _body.Last().Y - 1));
         }
 
         return this;
