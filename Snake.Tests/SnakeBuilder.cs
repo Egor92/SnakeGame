@@ -5,46 +5,53 @@ namespace Snake.Tests;
 public class SnakeBuilder
 {
     private readonly Queue<Pixel> _body = new();
-    private readonly Direction _direction;
-    private readonly Pixel _head;
+    private Direction _direction;
+    private Pixel _head;
 
-
-    public SnakeBuilder(int x, int y, Direction direction, int length)
+    private SnakeBuilder()
     {
-        _head = new Pixel(x, y);
-        _direction = direction;
-        Grow(_direction, length);
     }
 
-    private SnakeBuilder Grow(Direction direction, int length)
+    public SnakeBuilder CreateSnakeBuilder(int x, int y, Direction direction)
     {
-        Pixel tail = _head;
-        if (direction == Direction.Right)
+        var builder = new SnakeBuilder()
+        {
+            _head = new Pixel(x, y),
+            _direction = direction,
+        };
+      
+        return builder;
+    }
+
+    public SnakeBuilder Grow(int length)
+    {
+        Pixel lastPixel = _head;
+        if (_direction == Direction.Right)
         {
             for (int i = 1; i < length; i++)
             {
-                _body.Enqueue(new Pixel(tail.X - 1, tail.Y));
+                _body.Enqueue(new Pixel(lastPixel.X - 1, lastPixel.Y));
             }
         }
-        else if (direction == Direction.Left)
+        else if (_direction == Direction.Left)
         {
             for (int i = 1; i < length; i++)
             {
-                _body.Enqueue(new Pixel(tail.X + 1, tail.Y));
+                _body.Enqueue(new Pixel(lastPixel.X + 1, lastPixel.Y));
             }
         }
-        else if (direction == Direction.Up)
+        else if (_direction == Direction.Up)
         {
             for (int i = 1; i < length; i++)
             {
-                _body.Enqueue(new Pixel(tail.X, tail.Y + 1));
+                _body.Enqueue(new Pixel(lastPixel.X, lastPixel.Y + 1));
             }
         }
-        else if (direction == Direction.Down)
+        else if (_direction == Direction.Down)
         {
             for (int i = 1; i < length; i++)
             {
-                _body.Enqueue(new Pixel(tail.X, tail.Y - 1));
+                _body.Enqueue(new Pixel(lastPixel.X, lastPixel.Y - 1));
             }
         }
 
@@ -54,6 +61,11 @@ public class SnakeBuilder
 
     public Snake Build()
     {
-        return new Snake(_body, _direction, _head);
+        return new Snake(_body, _direction, _head)
+        {
+            Body = _body,
+            Direction = _direction,
+            Head = _head
+        };
     }
 }
