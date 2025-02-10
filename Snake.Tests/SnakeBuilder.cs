@@ -20,7 +20,6 @@ public class SnakeBuilder
 
     public SnakeBuilder Grow(Direction direction, int length)
     {
-        
         Pixel _tail = _head;
         if (direction == Direction.Right)
         {
@@ -50,6 +49,7 @@ public class SnakeBuilder
                 _body.Enqueue(new Pixel(_tail.X, _tail.Y - 1));
             }
         }
+
         _body.Enqueue(_head);
         return this;
     }

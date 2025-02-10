@@ -38,7 +38,7 @@ public class GameLogic
         _gameData.IsGameOver = CheckCollisions();
         snakeBody.Dequeue();
         _gameData.Snake.Head = newHead;
-        
+
         if (_gameData.Food != null && CheckFoodCollision())
         {
             GrowSnake();

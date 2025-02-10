@@ -4,7 +4,7 @@ public class GameLogicTests
 {
     private GameData _gameData;
     private GameLogic _gameLogic;
- 
+
     [SetUp]
     public void Setup()
     {
@@ -180,7 +180,7 @@ public class GameLogicTests
             new Pixel(4, 5),
             _gameData.Snake.Head
         });
-        
+
         // Act
         _gameLogic.DoStep();
 
