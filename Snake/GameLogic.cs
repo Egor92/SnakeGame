@@ -33,14 +33,17 @@ public class GameLogic
                 break;
         }
 
-        
         var newHead = new Pixel(newX, newY);
         snakeBody.Enqueue(newHead);
         _gameData.IsGameOver = CheckCollisions();
         snakeBody.Dequeue();
         _gameData.Snake.Head = newHead;
         
-
+        if (_gameData.Food != null && CheckFoodCollision())
+        {
+            GrowSnake();
+            GenerateFood();
+        }
     }
 
     public bool CheckCollisions()
@@ -70,14 +73,38 @@ public class GameLogic
     public bool CheckFoodCollision()
     {
         var head = _gameData.Snake.Head;
-        GrowSnake();
-        return head.X == _gameData.Food.X && head.Y == _gameData.Food.Y;
+        if (head.X == _gameData.Food.X && head.Y == _gameData.Food.Y)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public void GrowSnake()
     {
         var newElement = _gameData.Snake.Body.Last();
         _gameData.Snake.Body.Enqueue(new Pixel(newElement.X, newElement.Y));
+    }
+
+    public void GenerateFood()
+    {
+        Random random = new Random();
+
+        while (true)
+        {
+            int x = random.Next(1, _gameData.BoardWidth - 1);
+            int y = random.Next(1, _gameData.BoardHeight - 1);
+
+            Pixel newFood = new Pixel(x, y);
+
+            if (!_gameData.Walls.Contains(newFood) &&
+                !_gameData.Snake.Body.Contains(newFood))
+            {
+                _gameData.Food = newFood;
+                break;
+            }
+        }
     }
 
     public void ChangeDirection(Direction direction)

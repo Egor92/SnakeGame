@@ -175,23 +175,5 @@ public class Game
     //     _gameData.Snake.Body.Enqueue(new Pixel(newElement.X, newElement.Y));
     // }
 
-    private void GenerateFood()
-    {
-        Random random = new Random();
-
-        while (true)
-        {
-            int x = random.Next(1, _gameData.BoardWidth - 1);
-            int y = random.Next(1, _gameData.BoardHeight - 1);
-
-            Pixel newFood = new Pixel(x, y);
-
-            if (!_gameData.Walls.Contains(newFood) &&
-                !_gameData.Snake.Body.Contains(newFood))
-            {
-                _gameData.Food = newFood;
-                break;
-            }
-        }
-    }
+    
 }

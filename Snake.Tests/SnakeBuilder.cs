@@ -10,51 +10,47 @@ public class SnakeBuilder
     private Snake _snake;
     private int _length;
 
-    private SnakeBuilder()
+    public SnakeBuilder(int x, int y, Direction direction, int length)
     {
+        _head = new Pixel(x, y);
+        _direction = direction;
+        _length = length;
+        Grow(_direction, length);
     }
 
-    public static SnakeBuilder CreateSnake(int x, int y, Direction direction, int snakeLength)
+    public SnakeBuilder Grow(Direction direction, int length)
     {
-        var builder = new SnakeBuilder
-        {
-            _head = new Pixel(x, y),
-            _direction = direction,
-            _length = snakeLength
-        };
-
-        builder.AddBody();
-        return builder;
-    }
-
-    private void AddBody()
-    {
-        _body.Enqueue(_head);
-        for (int i = 1; i < _length; i++)
-        {
-            Grow(_direction);
-        }
-    }
-
-    public SnakeBuilder Grow(Direction direction)
-    {
+        
+        Pixel _tail = _head;
         if (direction == Direction.Right)
         {
-            _body.Enqueue(new Pixel(_body.Last().X - 1, _body.Last().Y));
+            for (int i = 1; i < length; i++)
+            {
+                _body.Enqueue(new Pixel(_tail.X - 1, _tail.Y));
+            }
         }
         else if (direction == Direction.Left)
         {
-            _body.Enqueue(new Pixel(_body.Last().X + 1, _body.Last().Y));
+            for (int i = 1; i < length; i++)
+            {
+                _body.Enqueue(new Pixel(_tail.X + 1, _tail.Y));
+            }
         }
         else if (direction == Direction.Up)
         {
-            _body.Enqueue(new Pixel(_body.Last().X, _body.Last().Y + 1));
+            for (int i = 1; i < length; i++)
+            {
+                _body.Enqueue(new Pixel(_tail.X, _tail.Y + 1));
+            }
         }
         else if (direction == Direction.Down)
         {
-            _body.Enqueue(new Pixel(_body.Last().X, _body.Last().Y - 1));
+            for (int i = 1; i < length; i++)
+            {
+                _body.Enqueue(new Pixel(_tail.X, _tail.Y - 1));
+            }
         }
-
+        _body.Enqueue(_head);
         return this;
     }
 
