@@ -1,23 +1,16 @@
 ﻿namespace Snake;
 
-public class GameLogic
+public class GameLogic(GameData gameData)
 {
-    private readonly GameData _gameData;
-
-    public GameLogic(GameData gameData)
-    {
-        _gameData = gameData;
-    }
-
     public void DoStep()
     {
-        var snakeBody = _gameData.Snake.Body;
-        var head = _gameData.Snake.Head;
+        var snakeBody = gameData.Snake.Body;
+        var head = gameData.Snake.Head;
 
         int newX = head.X;
         int newY = head.Y;
 
-        switch (_gameData.Snake.Direction)
+        switch (gameData.Snake.Direction)
         {
             case Direction.Up:
                 newY--;
@@ -35,11 +28,11 @@ public class GameLogic
 
         var newHead = new Pixel(newX, newY);
         snakeBody.Enqueue(newHead);
-        _gameData.IsGameOver = CheckCollisions();
+        gameData.IsGameOver = CheckCollisions();
         snakeBody.Dequeue();
-        _gameData.Snake.Head = newHead;
+        gameData.Snake.Head = newHead;
 
-        if (_gameData.Food != null && CheckFoodCollision())
+        if (gameData.Food != null && CheckFoodCollision())
         {
             GrowSnake();
             GenerateFood();
@@ -48,7 +41,7 @@ public class GameLogic
 
     public bool CheckCollisions()
     {
-        var snakeBody = _gameData.Snake.Body.ToArray();
+        var snakeBody = gameData.Snake.Body.ToArray();
         var head = snakeBody.Last();
 
         foreach (var snakePixel in snakeBody[0..^1])
@@ -59,7 +52,7 @@ public class GameLogic
             }
         }
 
-        foreach (var wallPixel in _gameData.Walls)
+        foreach (var wallPixel in gameData.Walls)
         {
             if (wallPixel.X == head.X && wallPixel.Y == head.Y)
             {
@@ -70,10 +63,10 @@ public class GameLogic
         return false;
     }
 
-    public bool CheckFoodCollision()
+    private bool CheckFoodCollision()
     {
-        var head = _gameData.Snake.Head;
-        if (head.X == _gameData.Food.X && head.Y == _gameData.Food.Y)
+        var head = gameData.Snake.Head;
+        if (head.X == gameData.Food.X && head.Y == gameData.Food.Y)
         {
             return true;
         }
@@ -81,27 +74,27 @@ public class GameLogic
         return false;
     }
 
-    public void GrowSnake()
+    private void GrowSnake()
     {
-        var newElement = _gameData.Snake.Body.Last();
-        _gameData.Snake.Body.Enqueue(new Pixel(newElement.X, newElement.Y));
+        var newElement = gameData.Snake.Body.Last();
+        gameData.Snake.Body.Enqueue(new Pixel(newElement.X, newElement.Y));
     }
 
-    public void GenerateFood()
+    private void GenerateFood()
     {
         Random random = new Random();
 
         while (true)
         {
-            int x = random.Next(1, _gameData.BoardWidth - 1);
-            int y = random.Next(1, _gameData.BoardHeight - 1);
+            int x = random.Next(1, gameData.BoardWidth - 1);
+            int y = random.Next(1, gameData.BoardHeight - 1);
 
             Pixel newFood = new Pixel(x, y);
 
-            if (!_gameData.Walls.Contains(newFood) &&
-                !_gameData.Snake.Body.Contains(newFood))
+            if (!gameData.Walls.Contains(newFood) &&
+                !gameData.Snake.Body.Contains(newFood))
             {
-                _gameData.Food = newFood;
+                gameData.Food = newFood;
                 break;
             }
         }
@@ -109,18 +102,18 @@ public class GameLogic
 
     public void ChangeDirection(Direction direction)
     {
-        if (_gameData.Snake.Direction != Direction.Down && direction == Direction.Up)
-            _gameData.Snake.Direction = Direction.Up;
+        if (gameData.Snake.Direction != Direction.Down && direction == Direction.Up)
+            gameData.Snake.Direction = Direction.Up;
 
 
-        if (_gameData.Snake.Direction != Direction.Up && direction == Direction.Down)
-            _gameData.Snake.Direction = Direction.Down;
+        if (gameData.Snake.Direction != Direction.Up && direction == Direction.Down)
+            gameData.Snake.Direction = Direction.Down;
 
-        if (_gameData.Snake.Direction != Direction.Right && direction == Direction.Left)
-            _gameData.Snake.Direction = Direction.Left;
+        if (gameData.Snake.Direction != Direction.Right && direction == Direction.Left)
+            gameData.Snake.Direction = Direction.Left;
 
 
-        if (_gameData.Snake.Direction != Direction.Left && direction == Direction.Right)
-            _gameData.Snake.Direction = Direction.Right;
+        if (gameData.Snake.Direction != Direction.Left && direction == Direction.Right)
+            gameData.Snake.Direction = Direction.Right;
     }
 }

@@ -1,56 +1,47 @@
 ﻿namespace Snake;
 
-public class Game
+public class Game(GameData gameData, GameLogic gameLogic)
 {
-    private GameData _gameData;
-    private GameRenderer _gameRenderer;
-    private readonly GameLogic _gameLogic;
-
-    public Game(GameData gameData, GameLogic gameLogic)
-    {
-        _gameData = gameData;
-        _gameRenderer = new GameRenderer();
-        _gameLogic = gameLogic;
-    }
+    private readonly GameRenderer _gameRenderer = new();
 
     public void Start()
     {
-        while (!_gameData.IsGameOver)
+        while (!gameData.IsGameOver)
         {
-            _gameRenderer.RenderGame(_gameData);
+            _gameRenderer.RenderGame(gameData);
 
             while (Console.KeyAvailable)
             {
                 ConsoleKey key = Console.ReadKey(true).Key;
                 if (key == ConsoleKey.UpArrow)
                 {
-                    _gameLogic.ChangeDirection(Direction.Up);
+                    gameLogic.ChangeDirection(Direction.Up);
                 }
                 else if (key == ConsoleKey.DownArrow)
                 {
-                    _gameLogic.ChangeDirection(Direction.Down);
+                    gameLogic.ChangeDirection(Direction.Down);
                 }
                 else if (key == ConsoleKey.LeftArrow)
                 {
-                    _gameLogic.ChangeDirection(Direction.Left);
+                    gameLogic.ChangeDirection(Direction.Left);
                 }
                 else
                 {
-                    _gameLogic.ChangeDirection(Direction.Right);
+                    gameLogic.ChangeDirection(Direction.Right);
                 }
             }
 
-            _gameLogic.DoStep();
+            gameLogic.DoStep();
 
-            if (_gameLogic.CheckCollisions())
+            if (gameLogic.CheckCollisions())
             {
-                _gameData.IsGameOver = true;
+                gameData.IsGameOver = true;
                 break;
             }
 
             Thread.Sleep(200);
         }
 
-        _gameRenderer.RenderGame(_gameData);
+        _gameRenderer.RenderGame(gameData);
     }
 }

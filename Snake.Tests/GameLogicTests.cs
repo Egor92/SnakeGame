@@ -139,7 +139,7 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = new SnakeBuilder(1, 2, Direction.Left, 3).Build();
-        _gameData.Walls = new List<Pixel>(new[] { new Pixel(0, 2) });
+        _gameData.Walls = new List<Pixel>([new Pixel(0, 2)]);
 
         // Act
         _gameLogic.DoStep();
@@ -170,8 +170,7 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = new SnakeBuilder(5, 5, Direction.Down, 7).Build();
-        _gameData.Snake.Body = new Queue<Pixel>(new[]
-        {
+        _gameData.Snake.Body = new Queue<Pixel>([
             new Pixel(6, 6),
             new Pixel(5, 6),
             new Pixel(4, 6),
@@ -179,7 +178,7 @@ public class GameLogicTests
             new Pixel(3, 5),
             new Pixel(4, 5),
             _gameData.Snake.Head
-        });
+        ]);
 
         // Act
         _gameLogic.DoStep();
