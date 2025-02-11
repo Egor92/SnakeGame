@@ -66,10 +66,7 @@ public class GameLogic(GameData gameData)
     private bool CheckFoodCollision()
     {
         var head = gameData.Snake.Head;
-        if (head.X == gameData.Food.X && head.Y == gameData.Food.Y)
-        {
-            return true;
-        }
+        return head.X == gameData.Food.X && head.Y == gameData.Food.Y;
 
         return false;
     }

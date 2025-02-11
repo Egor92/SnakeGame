@@ -185,7 +185,7 @@ public class GameLogicTests
     }
 
     [Test]
-    public void DoStep_SnakeBodyInFront_SnakeAteBodyAndGameOver()
+    public void DoStep_SnakeBodyInFront_GameOver()
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Down)
