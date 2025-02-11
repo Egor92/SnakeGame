@@ -4,7 +4,6 @@ public class GameLogicTests
 {
     private GameData _gameData;
     private GameLogic _gameLogic;
-    private SnakeBuilder _snakeBuilder;
 
     [SetUp]
     public void Setup()
@@ -20,8 +19,8 @@ public class GameLogicTests
     public void DoStep_SnakeDirectionIsRight_SnakeMovedToRight()
     {
         // Arrange  
-        _gameData.Snake = _snakeBuilder.CreateSnakeBuilder(5, 5, Direction.Right)
-            .Grow(3)
+        _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
+            .Grow(2)
             .Build();
 
         // Act
@@ -38,8 +37,8 @@ public class GameLogicTests
     public void DoStep_SnakeDirectionIsLeft_SnakeMovedToLeft()
     {
         // Arrange  
-        _gameData.Snake = _snakeBuilder.CreateSnakeBuilder(5, 5, Direction.Left)
-            .Grow(3)
+        _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Left)
+            .Grow(2)
             .Build();
 
         // Act
@@ -56,8 +55,8 @@ public class GameLogicTests
     public void DoStep_SnakeDirectionIsUp_SnakeMovedToUp()
     {
         // Arrange  
-        _gameData.Snake = _snakeBuilder.CreateSnakeBuilder(5, 5, Direction.Up)
-            .Grow(3)
+        _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Up)
+            .Grow(2)
             .Build();
 
         // Act
@@ -74,8 +73,8 @@ public class GameLogicTests
     public void DoStep_SnakeDirectionIsDown_SnakeMovedToDown()
     {
         // Arrange  
-        _gameData.Snake = _snakeBuilder.CreateSnakeBuilder(5, 5, Direction.Down)
-            .Grow(3)
+        _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Down)
+            .Grow(2)
             .Build();
 
         // Act
@@ -96,8 +95,8 @@ public class GameLogicTests
         Direction newDirection, Direction expectedDirection)
     {
         // Arrange  
-        _gameData.Snake = _snakeBuilder.CreateSnakeBuilder(5, 5, initialDirection)
-            .Grow(3)
+        _gameData.Snake = SnakeBuilder.Create(5, 5, initialDirection)
+            .Grow(2)
             .Build();
 
         // Act
@@ -119,8 +118,8 @@ public class GameLogicTests
         Direction newDirection, Direction expectedDirection)
     {
         // Arrange  
-        _gameData.Snake = _snakeBuilder.CreateSnakeBuilder(5, 5, initialDirection)
-            .Grow(3)
+        _gameData.Snake = SnakeBuilder.Create(5, 5, initialDirection)
+            .Grow(2)
             .Build();
 
         // Act
@@ -138,8 +137,8 @@ public class GameLogicTests
         Direction newDirection, Direction expectedDirection)
     {
         // Arrange  
-        _gameData.Snake = _snakeBuilder.CreateSnakeBuilder(5, 5, initialDirection)
-            .Grow(3)
+        _gameData.Snake = SnakeBuilder.Create(5, 5, initialDirection)
+            .Grow(2)
             .Build();
 
         // Act
@@ -153,8 +152,8 @@ public class GameLogicTests
     public void DoStep_WallIsAhead_GameOver()
     {
         // Arrange  
-        _gameData.Snake = _snakeBuilder.CreateSnakeBuilder(1, 2, Direction.Left)
-            .Grow(3)
+        _gameData.Snake = SnakeBuilder.Create(1, 2, Direction.Left)
+            .Grow(2)
             .Build();
         _gameData.Walls = new List<Pixel>([new Pixel(0, 2)]);
 
@@ -171,8 +170,8 @@ public class GameLogicTests
         // Arrange  
         var initialSnakeLength = 3;
 
-        _gameData.Snake = _snakeBuilder.CreateSnakeBuilder(5, 5, Direction.Right)
-            .Grow(initialSnakeLength)
+        _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
+            .Grow(initialSnakeLength - 1)
             .Build();
         _gameData.Food = new Pixel(6, 5);
 
@@ -189,18 +188,11 @@ public class GameLogicTests
     public void DoStep_SnakeBodyInFront_SnakeAteBodyAndGameOver()
     {
         // Arrange  
-        _gameData.Snake = _snakeBuilder.CreateSnakeBuilder(5, 5, Direction.Down)
-            .Grow(7)
+        _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Down)
+            .Grow(Direction.Right, 1)
+            .Grow(Direction.Down, 1)
+            .Grow(Direction.Left, 2)
             .Build();
-        _gameData.Snake.Body = new Queue<Pixel>([
-            new Pixel(6, 6),
-            new Pixel(5, 6),
-            new Pixel(4, 6),
-            new Pixel(3, 6),
-            new Pixel(3, 5),
-            new Pixel(4, 5),
-            _gameData.Snake.Head
-        ]);
 
         // Act
         _gameLogic.DoStep();
