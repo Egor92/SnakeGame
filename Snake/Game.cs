@@ -1,154 +1,47 @@
 ﻿namespace Snake;
 
-public class Game
+public class Game(GameData gameData, GameLogic gameLogic)
 {
-    private GameData _gameData;
-    private GameRenderer _gameRenderer;
-
-    public Game(GameData gameData)
-    {
-        _gameData = gameData;
-        _gameRenderer = new GameRenderer();
-    }
+    private readonly GameRenderer _gameRenderer = new();
 
     public void Start()
     {
-        while (!_gameData.IsGameOver)
+        while (!gameData.IsGameOver)
         {
-            _gameRenderer.RenderGame(_gameData);
+            _gameRenderer.RenderGame(gameData);
 
             while (Console.KeyAvailable)
             {
                 ConsoleKey key = Console.ReadKey(true).Key;
-                ChangeDirection(key);
+                if (key == ConsoleKey.UpArrow)
+                {
+                    gameLogic.ChangeDirection(Direction.Up);
+                }
+                else if (key == ConsoleKey.DownArrow)
+                {
+                    gameLogic.ChangeDirection(Direction.Down);
+                }
+                else if (key == ConsoleKey.LeftArrow)
+                {
+                    gameLogic.ChangeDirection(Direction.Left);
+                }
+                else
+                {
+                    gameLogic.ChangeDirection(Direction.Right);
+                }
             }
 
-            Move();
+            gameLogic.DoStep();
 
-            if (CheckCollisions())
+            if (gameLogic.CheckCollisions())
             {
-                _gameData.IsGameOver = true;
+                gameData.IsGameOver = true;
                 break;
-            }
-
-            if (CheckFoodCollision())
-            {
-                GrowSnake();
-                GenerateFood();
             }
 
             Thread.Sleep(200);
         }
 
-        _gameRenderer.RenderGame(_gameData);
-    }
-
-    private void ChangeDirection(ConsoleKey key)
-    {
-        switch (key)
-        {
-            case ConsoleKey.UpArrow:
-                if (_gameData.Snake.Direction != Direction.Down)
-                    _gameData.Snake.Direction = Direction.Up;
-                break;
-            case ConsoleKey.DownArrow:
-                if (_gameData.Snake.Direction != Direction.Up)
-                    _gameData.Snake.Direction = Direction.Down;
-                break;
-            case ConsoleKey.LeftArrow:
-                if (_gameData.Snake.Direction != Direction.Right)
-                    _gameData.Snake.Direction = Direction.Left;
-                break;
-            case ConsoleKey.RightArrow:
-                if (_gameData.Snake.Direction != Direction.Left)
-                    _gameData.Snake.Direction = Direction.Right;
-                break;
-        }
-    }
-
-    private void Move()
-    {
-        var snakeBody = _gameData.Snake.Body;
-        var head = _gameData.Snake.Head;
-
-        int newX = head.X;
-        int newY = head.Y;
-
-        switch (_gameData.Snake.Direction)
-        {
-            case Direction.Up:
-                newY--;
-                break;
-            case Direction.Down:
-                newY++;
-                break;
-            case Direction.Left:
-                newX--;
-                break;
-            case Direction.Right:
-                newX++;
-                break;
-        }
-
-        var newHead = new Pixel(newX, newY);
-        snakeBody.Enqueue(newHead);
-        snakeBody.Dequeue();
-        _gameData.Snake.Head = newHead;
-    }
-
-    private bool CheckCollisions()
-    {
-        var snakeBody = _gameData.Snake.Body.ToArray();
-        var head = snakeBody.Last();
-
-        foreach (var snakePixel in snakeBody[0..^1])
-        {
-            if (snakePixel.X == head.X && snakePixel.Y == head.Y)
-            {
-                return true;
-            }
-        }
-
-        foreach (var wallPixel in _gameData.Walls)
-        {
-            if (wallPixel.X == head.X && wallPixel.Y == head.Y)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private bool CheckFoodCollision()
-    {
-        var head = _gameData.Snake.Head;
-        return head.X == _gameData.Food.X && head.Y == _gameData.Food.Y;
-    }
-
-    private void GrowSnake()
-    {
-        var newElement = _gameData.Snake.Body.Last();
-        _gameData.Snake.Body.Enqueue(new Pixel(newElement.X, newElement.Y));
-    }
-
-    private void GenerateFood()
-    {
-        Random random = new Random();
-
-        while (true)
-        {
-            int x = random.Next(1, _gameData.BoardWidth - 1);
-            int y = random.Next(1, _gameData.BoardHeight - 1);
-
-            Pixel newFood = new Pixel(x, y);
-
-            if (!_gameData.Walls.Contains(newFood) &&
-                !_gameData.Snake.Body.Contains(newFood))
-            {
-                _gameData.Food = newFood;
-                break;
-            }
-        }
+        _gameRenderer.RenderGame(gameData);
     }
 }
