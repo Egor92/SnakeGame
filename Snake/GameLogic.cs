@@ -67,8 +67,6 @@ public class GameLogic(GameData gameData)
     {
         var head = gameData.Snake.Head;
         return head.X == gameData.Food.X && head.Y == gameData.Food.Y;
-
-        return false;
     }
 
     private void GrowSnake()

@@ -24,17 +24,15 @@ public class SnakeBuilder
 
     private SnakeBuilder GetTailDirection(Direction snakeDirection)
     {
-        if (snakeDirection == Direction.Down)
-            _tailDirection = Direction.Up;
-
-        if (snakeDirection == Direction.Left)
-            _tailDirection = Direction.Right;
-
-        if (snakeDirection == Direction.Right)
-            _tailDirection = Direction.Left;
-
-        if (snakeDirection == Direction.Up)
-            _tailDirection = Direction.Down;
+        _tailDirection = snakeDirection switch
+        {
+            Direction.Down => Direction.Up,
+            Direction.Left => Direction.Right,
+            Direction.Right => Direction.Left,
+            Direction.Up => Direction.Down,
+            _ => throw new ArgumentOutOfRangeException(nameof(snakeDirection), snakeDirection,
+                $"Unexpected direction: {snakeDirection}")
+        };
 
         return this;
     }
@@ -49,33 +47,18 @@ public class SnakeBuilder
     public SnakeBuilder Grow(Direction direction, int length)
     {
         Pixel lastPixel = _head;
-        if (direction == Direction.Right)
+        for (int i = 0; i < length; i++)
         {
-            for (int i = 0; i < length; i++)
+            Pixel bodyPixel = direction switch
             {
-                _body.Enqueue(new Pixel(lastPixel.X + 1, lastPixel.Y));
-            }
-        }
-        else if (direction == Direction.Left)
-        {
-            for (int i = 0; i < length; i++)
-            {
-                _body.Enqueue(new Pixel(lastPixel.X - 1, lastPixel.Y));
-            }
-        }
-        else if (direction == Direction.Up)
-        {
-            for (int i = 0; i < length; i++)
-            {
-                _body.Enqueue(new Pixel(lastPixel.X, lastPixel.Y - 1));
-            }
-        }
-        else if (direction == Direction.Down)
-        {
-            for (int i = 0; i < length; i++)
-            {
-                _body.Enqueue(new Pixel(lastPixel.X, lastPixel.Y + 1));
-            }
+                Direction.Up => new Pixel(lastPixel.X, lastPixel.Y - 1),
+                Direction.Down => new Pixel(lastPixel.X, lastPixel.Y + 1),
+                Direction.Left => new Pixel(lastPixel.X - 1, lastPixel.Y),
+                Direction.Right => new Pixel(lastPixel.X + 1, lastPixel.Y),
+                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction,
+                    $"Unexpected direction: {direction}")
+            };
+            _body.Enqueue(bodyPixel);
         }
 
         _body.Enqueue(_head);
