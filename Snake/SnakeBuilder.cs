@@ -8,8 +8,7 @@ public class SnakeBuilder
     private Direction _headDirection;
     private Pixel _head;
     private Direction _tailDirection;
-    private Pixel _lastPixel;
-    private Direction _directionLastPixel;
+    private Pixel _tail;
 
     private SnakeBuilder()
     {
@@ -20,9 +19,9 @@ public class SnakeBuilder
         return new SnakeBuilder()
         {
             _head = new Pixel(x, y),
-            _lastPixel = new Pixel(x, y),
+            _tail = new Pixel(x, y),
             _headDirection = snakeDirection,
-            _directionLastPixel = snakeDirection
+            _tailDirection = snakeDirection
         };
     }
 
@@ -41,13 +40,9 @@ public class SnakeBuilder
 
     public SnakeBuilder Grow(int length)
     {
-        if (_directionLastPixel == _headDirection)
+        if (_tailDirection == _headDirection)
         {
             _tailDirection = GetOppositeDirection(_headDirection);
-        }
-        else
-        {
-            _tailDirection = _directionLastPixel;
         }
 
         Grow(_tailDirection, length);
@@ -60,18 +55,18 @@ public class SnakeBuilder
         {
             Pixel bodyPixel = direction switch
             {
-                Direction.Up => new Pixel(_lastPixel.X, _lastPixel.Y - 1),
-                Direction.Down => new Pixel(_lastPixel.X, _lastPixel.Y + 1),
-                Direction.Left => new Pixel(_lastPixel.X - 1, _lastPixel.Y),
-                Direction.Right => new Pixel(_lastPixel.X + 1, _lastPixel.Y),
+                Direction.Up => new Pixel(_tail.X, _tail.Y - 1),
+                Direction.Down => new Pixel(_tail.X, _tail.Y + 1),
+                Direction.Left => new Pixel(_tail.X - 1, _tail.Y),
+                Direction.Right => new Pixel(_tail.X + 1, _tail.Y),
                 _ => throw new ArgumentOutOfRangeException(nameof(direction), direction,
                     $"Unexpected direction: {direction}")
             };
             _body.Add(bodyPixel);
-            _lastPixel = bodyPixel;
+            _tail = bodyPixel;
         }
 
-        _directionLastPixel = direction;
+        _tailDirection = direction;
         return this;
     }
 
