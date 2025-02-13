@@ -82,6 +82,7 @@ public class GameLogicTests
 
         // Assert
         var snakeBody = _gameData.Snake.Body.ToArray();
+
         Assert.That(snakeBody[0], Is.EqualTo(new Pixel(5, 4)));
         Assert.That(snakeBody[1], Is.EqualTo(new Pixel(5, 5)));
         Assert.That(snakeBody[2], Is.EqualTo(new Pixel(5, 6)));
