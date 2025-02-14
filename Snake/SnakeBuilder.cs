@@ -21,30 +21,12 @@ public class SnakeBuilder
             _head = new Pixel(x, y),
             _tail = new Pixel(x, y),
             _headDirection = snakeDirection,
-            _tailDirection = snakeDirection
-        };
-    }
-
-    private Direction GetOppositeDirection(Direction direction)
-    {
-        return direction switch
-        {
-            Direction.Down => Direction.Up,
-            Direction.Left => Direction.Right,
-            Direction.Right => Direction.Left,
-            Direction.Up => Direction.Down,
-            _ => throw new ArgumentOutOfRangeException(nameof(direction), direction,
-                $"Unexpected direction: {direction}")
+            _tailDirection = snakeDirection.GetOpposite(),
         };
     }
 
     public SnakeBuilder Grow(int length)
     {
-        if (_tailDirection == _headDirection)
-        {
-            _tailDirection = GetOppositeDirection(_headDirection);
-        }
-
         Grow(_tailDirection, length);
         return this;
     }
