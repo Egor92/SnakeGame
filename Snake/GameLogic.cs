@@ -30,7 +30,7 @@ public class GameLogic(GameData gameData)
         snakeBody.Dequeue();
         snakeBody.Enqueue(newHead);
         gameData.IsGameOver = CheckCollisions();
-        
+
         gameData.Snake.Head = newHead;
 
         if (gameData.Food != null && CheckFoodCollision())
@@ -45,29 +45,15 @@ public class GameLogic(GameData gameData)
         var snakeBody = gameData.Snake.Body.ToArray();
         var head = snakeBody.Last();
 
-        foreach (var snakePixel in snakeBody[0..^1])
-        {
-            if (snakePixel.X == head.X && snakePixel.Y == head.Y)
-            {
-                return true;
-            }
-        }
+        bool isSnakeBumpedIntoItself = snakeBody[0..^1].Contains(head);
+        bool isSnakeBumpedIntoWalls = gameData.Walls.Contains(head);
 
-        foreach (var wallPixel in gameData.Walls)
-        {
-            if (wallPixel.X == head.X && wallPixel.Y == head.Y)
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return isSnakeBumpedIntoItself || isSnakeBumpedIntoWalls;
     }
 
     private bool CheckFoodCollision()
     {
-        var head = gameData.Snake.Head;
-        return head.X == gameData.Food.X && head.Y == gameData.Food.Y;
+        return gameData.Snake.Head == gameData.Food;
     }
 
     private void GrowSnake()
