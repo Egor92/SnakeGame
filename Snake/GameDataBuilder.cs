@@ -54,40 +54,27 @@ public class GameDataBuilder
         return this;
     }
 
-    public GameDataBuilder AddSnake(int x, int y, Direction direction, int countBody)
+    public GameDataBuilder AddSnake(int x, int y, Direction direction, int snakeLength)
     {
         // создание змейки
         _head = new Pixel(x, y);
         _body = new Queue<Pixel>();
-        if (direction == Direction.Right)
+
+        for (int i = snakeLength - 1; i >= 1; i--)
         {
-            for (int i = countBody - 1; i >= 1; i--)
+            Pixel bodyPixel = direction switch
             {
-                _body.Enqueue(new Pixel(x - i, y));
-            }
+                Direction.Right => new Pixel(x - i, y),
+                Direction.Left => new Pixel(x + i, y),
+                Direction.Up => new Pixel(x, y + i),
+                Direction.Down => new Pixel(x, y - i),
+                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction,
+                    $"Unexpected direction: {direction}")
+            };
+
+            _body.Enqueue(bodyPixel);
         }
-        else if (direction == Direction.Left)
-        {
-            for (int i = countBody - 1; i >= 1; i--)
-            {
-                _body.Enqueue(new Pixel(x + i, y));
-            }
-        }
-        else if (direction == Direction.Up)
-        {
-            for (int i = countBody - 1; i >= 1; i--)
-            {
-                _body.Enqueue(new Pixel(x, y + i));
-            }
-        }
-        else if (direction == Direction.Down)
-        {
-            for (int i = countBody - 1; i >= 1; i--)
-            {
-                _body.Enqueue(new Pixel(x, y - i));
-            }
-        }
-        
+
         _body.Enqueue(_head);
 
         _direction = direction;

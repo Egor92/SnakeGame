@@ -27,9 +27,10 @@ public class GameLogic(GameData gameData)
         }
 
         var newHead = new Pixel(newX, newY);
+        snakeBody.Dequeue();
         snakeBody.Enqueue(newHead);
         gameData.IsGameOver = CheckCollisions();
-        snakeBody.Dequeue();
+        
         gameData.Snake.Head = newHead;
 
         if (gameData.Food != null && CheckFoodCollision())
@@ -67,8 +68,6 @@ public class GameLogic(GameData gameData)
     {
         var head = gameData.Snake.Head;
         return head.X == gameData.Food.X && head.Y == gameData.Food.Y;
-
-        return false;
     }
 
     private void GrowSnake()

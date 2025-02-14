@@ -82,6 +82,7 @@ public class GameLogicTests
 
         // Assert
         var snakeBody = _gameData.Snake.Body.ToArray();
+
         Assert.That(snakeBody[0], Is.EqualTo(new Pixel(5, 4)));
         Assert.That(snakeBody[1], Is.EqualTo(new Pixel(5, 5)));
         Assert.That(snakeBody[2], Is.EqualTo(new Pixel(5, 6)));
@@ -155,7 +156,10 @@ public class GameLogicTests
         _gameData.Snake = SnakeBuilder.Create(1, 2, Direction.Left)
             .Grow(2)
             .Build();
-        _gameData.Walls = new List<Pixel>([new Pixel(0, 2)]);
+        _gameData.Walls = new List<Pixel>()
+        {
+            new Pixel(0, 2)
+        };
 
         // Act
         _gameLogic.DoStep();
@@ -185,7 +189,7 @@ public class GameLogicTests
     }
 
     [Test]
-    public void DoStep_SnakeBodyInFront_GameOver()
+    public void DoStep_SnakeBodyIsAhead_GameOver()
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Down)
