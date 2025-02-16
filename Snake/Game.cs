@@ -33,7 +33,7 @@ public class Game(GameData gameData, GameLogic gameLogic)
 
             gameLogic.DoStep();
 
-            if (gameData.IsGameOver == true)
+            if (gameData.IsGameOver)
             {
                 break;
             }

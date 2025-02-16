@@ -2,6 +2,8 @@
 
 public class GameLogic(GameData gameData)
 {
+    private Pixel _newPixel;
+
     public void DoStep()
     {
         var snakeBody = gameData.Snake.Body;
@@ -29,11 +31,12 @@ public class GameLogic(GameData gameData)
         snakeBody.Dequeue();
         snakeBody.Enqueue(newHead);
         gameData.Snake.Head = newHead;
+
         if (gameData.Food != null && CheckFoodCollision())
         {
             GenerateFood();
             GrowSnake();
-            gameData.Snake.Head = gameData.Snake.Body.Last();
+            gameData.Snake.Head = _newPixel;
         }
 
         gameData.IsGameOver = CheckCollisions();
@@ -55,24 +58,21 @@ public class GameLogic(GameData gameData)
         return gameData.Snake.Head == gameData.Food;
     }
 
+
     private void GrowSnake()
     {
-        var newElement = gameData.Snake.Body.Last();
-        switch (gameData.Snake.Direction)
+        var element = gameData.Snake.Body.Last();
+        _newPixel = gameData.Snake.Direction switch
         {
-            case Direction.Up:
-                gameData.Snake.Body.Enqueue(new Pixel(newElement.X, newElement.Y - 1));
-                break;
-            case Direction.Down:
-                gameData.Snake.Body.Enqueue(new Pixel(newElement.X, newElement.Y + 1));
-                break;
-            case Direction.Left:
-                gameData.Snake.Body.Enqueue(new Pixel(newElement.X - 1, newElement.Y));
-                break;
-            default:
-                gameData.Snake.Body.Enqueue(new Pixel(newElement.X + 1, newElement.Y));
-                break;
-        }
+            Direction.Up => new Pixel(element.X, element.Y - 1),
+            Direction.Down => new Pixel(element.X, element.Y + 1),
+            Direction.Left => new Pixel(element.X - 1, element.Y),
+            Direction.Right => new Pixel(element.X + 1, element.Y),
+            _ => throw new ArgumentOutOfRangeException(nameof(gameData.Snake.Direction), gameData.Snake.Direction,
+                $"Unexpected direction: {gameData.Snake.Direction}")
+        };
+
+        gameData.Snake.Body.Enqueue(_newPixel);
     }
 
     private void GenerateFood()
