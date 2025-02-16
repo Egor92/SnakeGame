@@ -204,4 +204,24 @@ public class GameLogicTests
         // Assert
         Assert.That(_gameData.IsGameOver, Is.True);
     }
+
+    [Test]
+    public void DoStep_FoodIsAhead_SnakeGrowsOnePixelAndGameIsNotOver()
+    {
+        // Arrange  
+        var initialSnakeLength = 3;
+        _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
+            .Grow(initialSnakeLength - 1)
+            .Build();
+        _gameData.Food = new Pixel(6, 5);
+
+        // Act
+        _gameLogic.DoStep();
+
+        // Assert
+        var finalSnakeLength = _gameData.Snake.Body.Count;
+        var snakeLengthDifference = finalSnakeLength - initialSnakeLength;
+        Assert.That(snakeLengthDifference, Is.EqualTo(1));
+        Assert.That(_gameData.IsGameOver, Is.False);
+    }
 }

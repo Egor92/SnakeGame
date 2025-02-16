@@ -33,9 +33,8 @@ public class Game(GameData gameData, GameLogic gameLogic)
 
             gameLogic.DoStep();
 
-            if (gameLogic.CheckCollisions())
+            if (gameData.IsGameOver == true)
             {
-                gameData.IsGameOver = true;
                 break;
             }
 

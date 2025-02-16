@@ -29,15 +29,15 @@ public class GameLogic(GameData gameData)
         var newHead = new Pixel(newX, newY);
         snakeBody.Dequeue();
         snakeBody.Enqueue(newHead);
-        gameData.IsGameOver = CheckCollisions();
 
         gameData.Snake.Head = newHead;
-
         if (gameData.Food != null && CheckFoodCollision())
         {
-            GrowSnake();
             GenerateFood();
+            GrowSnake();
         }
+
+        gameData.IsGameOver = CheckCollisions();
     }
 
     public bool CheckCollisions()
