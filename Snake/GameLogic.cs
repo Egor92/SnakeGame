@@ -6,7 +6,6 @@ public class GameLogic(GameData gameData)
     {
         var snakeBody = gameData.Snake.Body;
         var head = gameData.Snake.Head;
-
         int newX = head.X;
         int newY = head.Y;
 
@@ -29,12 +28,12 @@ public class GameLogic(GameData gameData)
         var newHead = new Pixel(newX, newY);
         snakeBody.Dequeue();
         snakeBody.Enqueue(newHead);
-
         gameData.Snake.Head = newHead;
         if (gameData.Food != null && CheckFoodCollision())
         {
             GenerateFood();
             GrowSnake();
+            gameData.Snake.Head = gameData.Snake.Body.Last();
         }
 
         gameData.IsGameOver = CheckCollisions();
@@ -59,7 +58,21 @@ public class GameLogic(GameData gameData)
     private void GrowSnake()
     {
         var newElement = gameData.Snake.Body.Last();
-        gameData.Snake.Body.Enqueue(new Pixel(newElement.X, newElement.Y));
+        switch (gameData.Snake.Direction)
+        {
+            case Direction.Up:
+                gameData.Snake.Body.Enqueue(new Pixel(newElement.X, newElement.Y - 1));
+                break;
+            case Direction.Down:
+                gameData.Snake.Body.Enqueue(new Pixel(newElement.X, newElement.Y + 1));
+                break;
+            case Direction.Left:
+                gameData.Snake.Body.Enqueue(new Pixel(newElement.X - 1, newElement.Y));
+                break;
+            default:
+                gameData.Snake.Body.Enqueue(new Pixel(newElement.X + 1, newElement.Y));
+                break;
+        }
     }
 
     private void GenerateFood()
