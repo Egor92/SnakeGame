@@ -22,9 +22,10 @@ public class GameRenderer
 
         Draw('O', gameData.Food.X, gameData.Food.Y);
 
-        if (gameData.IsGameOver == true)
+        if (gameData.IsGameOver)
         {
-            Console.SetCursorPosition(10, 10);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.SetCursorPosition(gameData.BoardWidth / 2 - 4, gameData.BoardHeight + 1);
             Console.WriteLine("Game Over!");
         }
     }

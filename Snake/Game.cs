@@ -13,21 +13,20 @@ public class Game(GameData gameData, GameLogic gameLogic)
             while (Console.KeyAvailable)
             {
                 ConsoleKey key = Console.ReadKey(true).Key;
-                if (key == ConsoleKey.UpArrow)
+                switch (key)
                 {
-                    gameLogic.ChangeDirection(Direction.Up);
-                }
-                else if (key == ConsoleKey.DownArrow)
-                {
-                    gameLogic.ChangeDirection(Direction.Down);
-                }
-                else if (key == ConsoleKey.LeftArrow)
-                {
-                    gameLogic.ChangeDirection(Direction.Left);
-                }
-                else
-                {
-                    gameLogic.ChangeDirection(Direction.Right);
+                    case ConsoleKey.UpArrow:
+                        gameLogic.ChangeDirection(Direction.Up);
+                        break;
+                    case ConsoleKey.DownArrow:
+                        gameLogic.ChangeDirection(Direction.Down);
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        gameLogic.ChangeDirection(Direction.Left);
+                        break;
+                    default:
+                        gameLogic.ChangeDirection(Direction.Right);
+                        break;
                 }
             }
 
@@ -38,7 +37,7 @@ public class Game(GameData gameData, GameLogic gameLogic)
                 break;
             }
 
-            Thread.Sleep(200);
+            Thread.Sleep(150);
         }
 
         _gameRenderer.RenderGame(gameData);
