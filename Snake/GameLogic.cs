@@ -6,7 +6,6 @@ public class GameLogic(GameData gameData)
     {
         var snakeBody = gameData.Snake.Body;
         var head = gameData.Snake.Head;
-
         int newX = head.X;
         int newY = head.Y;
 
@@ -29,18 +28,18 @@ public class GameLogic(GameData gameData)
         var newHead = new Pixel(newX, newY);
         snakeBody.Dequeue();
         snakeBody.Enqueue(newHead);
-        gameData.IsGameOver = CheckCollisions();
-
         gameData.Snake.Head = newHead;
-
         if (gameData.Food != null && CheckFoodCollision())
         {
-            GrowSnake();
             GenerateFood();
+            GrowSnake(out newHead);
+            gameData.Snake.Head = newHead;
         }
+
+        gameData.IsGameOver = CheckCollisions();
     }
 
-    public bool CheckCollisions()
+    private bool CheckCollisions()
     {
         var snakeBody = gameData.Snake.Body.ToArray();
         var head = snakeBody.Last();
@@ -56,10 +55,21 @@ public class GameLogic(GameData gameData)
         return gameData.Snake.Head == gameData.Food;
     }
 
-    private void GrowSnake()
+    private void GrowSnake(out Pixel newHead)
     {
-        var newElement = gameData.Snake.Body.Last();
-        gameData.Snake.Body.Enqueue(new Pixel(newElement.X, newElement.Y));
+        var element = gameData.Snake.Body.Last();
+        var newPixel = gameData.Snake.Direction switch
+        {
+            Direction.Up => new Pixel(element.X, element.Y - 1),
+            Direction.Down => new Pixel(element.X, element.Y + 1),
+            Direction.Left => new Pixel(element.X - 1, element.Y),
+            Direction.Right => new Pixel(element.X + 1, element.Y),
+            _ => throw new ArgumentOutOfRangeException(nameof(gameData.Snake.Direction), gameData.Snake.Direction,
+                $"Unexpected direction: {gameData.Snake.Direction}")
+        };
+
+        gameData.Snake.Body.Enqueue(newPixel);
+        newHead = newPixel;
     }
 
     private void GenerateFood()

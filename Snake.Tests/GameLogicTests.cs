@@ -204,4 +204,20 @@ public class GameLogicTests
         // Assert
         Assert.That(_gameData.IsGameOver, Is.True);
     }
+
+    [Test]
+    public void DoStep_FoodIsAhead_GameIsNotOver()
+    {
+        // Arrange  
+        _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
+            .Grow(2)
+            .Build();
+        _gameData.Food = new Pixel(6, 5);
+
+        // Act
+        _gameLogic.DoStep();
+
+        // Assert
+        Assert.That(_gameData.IsGameOver, Is.False);
+    }
 }
