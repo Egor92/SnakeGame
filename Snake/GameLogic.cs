@@ -58,7 +58,7 @@ public class GameLogic(GameData gameData)
     private void GrowSnake(out Pixel newHead)
     {
         var element = gameData.Snake.Body.Last();
-        var _newPixel = gameData.Snake.Direction switch
+        var newPixel = gameData.Snake.Direction switch
         {
             Direction.Up => new Pixel(element.X, element.Y - 1),
             Direction.Down => new Pixel(element.X, element.Y + 1),
@@ -68,8 +68,8 @@ public class GameLogic(GameData gameData)
                 $"Unexpected direction: {gameData.Snake.Direction}")
         };
 
-        gameData.Snake.Body.Enqueue(_newPixel);
-        newHead = _newPixel;
+        gameData.Snake.Body.Enqueue(newPixel);
+        newHead = newPixel;
     }
 
     private void GenerateFood()
