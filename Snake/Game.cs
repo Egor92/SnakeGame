@@ -13,22 +13,15 @@ public class Game(GameData gameData, GameLogic gameLogic)
             while (Console.KeyAvailable)
             {
                 ConsoleKey key = Console.ReadKey(true).Key;
-                if (key == ConsoleKey.UpArrow)
+                Direction newDirection = key switch
                 {
-                    gameLogic.ChangeDirection(Direction.Up);
-                }
-                else if (key == ConsoleKey.DownArrow)
-                {
-                    gameLogic.ChangeDirection(Direction.Down);
-                }
-                else if (key == ConsoleKey.LeftArrow)
-                {
-                    gameLogic.ChangeDirection(Direction.Left);
-                }
-                else
-                {
-                    gameLogic.ChangeDirection(Direction.Right);
-                }
+                    ConsoleKey.UpArrow => Direction.Up,
+                    ConsoleKey.DownArrow => Direction.Down,
+                    ConsoleKey.LeftArrow => Direction.Left,
+                    ConsoleKey.RightArrow => Direction.Right,
+                    _ => throw new ArgumentOutOfRangeException(nameof(key), key, $"Unexpected key: {key}")
+                };
+                gameLogic.ChangeDirection(newDirection);
             }
 
             gameLogic.DoStep();
@@ -38,7 +31,7 @@ public class Game(GameData gameData, GameLogic gameLogic)
                 break;
             }
 
-            Thread.Sleep(200);
+            Thread.Sleep(150);
         }
 
         _gameRenderer.RenderGame(gameData);
