@@ -13,21 +13,15 @@ public class Game(GameData gameData, GameLogic gameLogic)
             while (Console.KeyAvailable)
             {
                 ConsoleKey key = Console.ReadKey(true).Key;
-                switch (key)
+                Direction newDirection = key switch
                 {
-                    case ConsoleKey.UpArrow:
-                        gameLogic.ChangeDirection(Direction.Up);
-                        break;
-                    case ConsoleKey.DownArrow:
-                        gameLogic.ChangeDirection(Direction.Down);
-                        break;
-                    case ConsoleKey.LeftArrow:
-                        gameLogic.ChangeDirection(Direction.Left);
-                        break;
-                    default:
-                        gameLogic.ChangeDirection(Direction.Right);
-                        break;
-                }
+                    ConsoleKey.UpArrow => Direction.Up,
+                    ConsoleKey.DownArrow => Direction.Down,
+                    ConsoleKey.LeftArrow => Direction.Left,
+                    ConsoleKey.RightArrow => Direction.Right,
+                    _ => throw new ArgumentOutOfRangeException(nameof(key), key, $"Unexpected key: {key}")
+                };
+                gameLogic.ChangeDirection(newDirection);
             }
 
             gameLogic.DoStep();
