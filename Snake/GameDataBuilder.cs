@@ -107,7 +107,7 @@ public class GameDataBuilder
     {
         return new GameData()
         {
-            BoardWidth = _width,
+            _width = _width,
             BoardHeight = _height,
             Walls = _walls,
             Snake = _snake,

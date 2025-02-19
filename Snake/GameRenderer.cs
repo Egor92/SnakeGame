@@ -3,55 +3,65 @@
 public class GameRenderer
 {
     private char[,] _previousBuffer;
+    private readonly GameData _gameData;
+    private readonly int _width;
+    private readonly int _height;
 
-    public void RenderGame(GameData gameData)
+    public GameRenderer(GameData gameData)
     {
-        _previousBuffer = new char[gameData.BoardWidth, gameData.BoardHeight];
-        char[,] currentState = new char[gameData.BoardWidth, gameData.BoardHeight];
-        ClearBuffer(currentState, gameData.BoardWidth, gameData.BoardHeight);
+        _gameData = gameData;
+        _width = _gameData._width;
+        _height = _gameData.BoardHeight;
+        _previousBuffer = new char[_width, _height];
+    }
 
-        foreach (var wall in gameData.Walls)
+    public void RenderGame()
+    {
+        char[,] currentState = new char[_width, _height];
+        ClearBuffer(currentState);
+
+        foreach (var wall in _gameData.Walls)
         {
             currentState[wall.X, wall.Y] = '#';
         }
 
         int n = 0;
-        while (n < gameData.Snake.Body.Count)
+        while (n < _gameData.Snake.Body.Count)
         {
-            var pixel = gameData.Snake.Body.ElementAt(n);
+            var pixel = _gameData.Snake.Body.ElementAt(n);
             currentState[pixel.X, pixel.Y] = '*';
             n++;
         }
 
-        currentState[gameData.Food.X, gameData.Food.Y] = '0';
+        currentState[_gameData.Food.X, _gameData.Food.Y] = '0';
 
-        for (int i = 0; i < gameData.BoardWidth; i++)
+        for (int i = 0; i < _width; i++)
         {
-            for (int j = 0; j < gameData.BoardHeight; j++)
+            for (int j = 0; j < _height; j++)
             {
                 if (currentState[i, j] != _previousBuffer[i, j])
                 {
                     Console.SetCursorPosition(i, j);
-
                     Console.WriteLine(currentState[i, j]);
                 }
             }
         }
 
         _previousBuffer = currentState;
-        if (gameData.IsGameOver)
+        
+        if (_gameData.IsGameOver)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.SetCursorPosition(gameData.BoardWidth / 2 - 4, gameData.BoardHeight + 1);
+            Console.SetCursorPosition(_gameData._width / 2 - 4, _gameData.BoardHeight + 1);
             Console.WriteLine("Game Over!");
         }
     }
 
-    private void ClearBuffer(char[,] buffer, int width, int height)
+    private void ClearBuffer(char[,] buffer)
     {
-        for (int i = 0; i < width; i++)
+        for (int i = 0; i < _width; i++)
         {
-            for (int j = 0; j < height; j++)
+            for (int j = 0; j < _height; j++)
             {
                 buffer[i, j] = ' ';
             }

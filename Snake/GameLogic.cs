@@ -78,7 +78,7 @@ public class GameLogic(GameData gameData)
 
         while (true)
         {
-            int x = random.Next(1, gameData.BoardWidth - 1);
+            int x = random.Next(1, gameData._width - 1);
             int y = random.Next(1, gameData.BoardHeight - 1);
 
             Pixel newFood = new Pixel(x, y);
