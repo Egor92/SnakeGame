@@ -2,7 +2,7 @@
 
 public class GameData
 {
-    public int _width { get; set; }
+    public int BoardWidth { get; set; }
     public int BoardHeight { get; set; }
     public Pixel Food { get; set; }
     public List<Pixel> Walls { get; set; }

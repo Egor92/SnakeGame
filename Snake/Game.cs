@@ -2,15 +2,15 @@
 
 public class Game(GameData gameData, GameLogic gameLogic)
 {
-    private readonly GameRenderer _gameRenderer = new( gameData);
+    private readonly GameRenderer _gameRenderer = new();
 
     public void Start()
     {
-        Console.SetWindowSize(gameData._width + 6, gameData.BoardHeight+ 6);
+        Console.SetWindowSize(gameData.BoardWidth + 6, gameData.BoardHeight+ 6);
         
         while (!gameData.IsGameOver)
         {
-            _gameRenderer.RenderGame();
+            _gameRenderer.RenderGame(gameData);
 
             while (Console.KeyAvailable)
             {
@@ -36,6 +36,6 @@ public class Game(GameData gameData, GameLogic gameLogic)
             Thread.Sleep(200);
         }
 
-        _gameRenderer.RenderGame();
+        _gameRenderer.RenderGame(gameData);
     }
 }
