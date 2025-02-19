@@ -2,7 +2,7 @@
 
 public class GameRenderer
 {
-    private char[,] _pastState;
+    private char[,] _previousBuffer;
     private readonly int _width;
     private readonly int _height;
 
@@ -10,8 +10,8 @@ public class GameRenderer
     {
         _width = width;
         _height = height;
-        _pastState = new char[_width, _height];
-        ClearBuffer(_pastState);
+        _previousBuffer = new char[_width, _height];
+        ClearBuffer(_previousBuffer);
     }
 
     private void ClearBuffer(char[,] buffer)
@@ -49,7 +49,7 @@ public class GameRenderer
         {
             for (int j = 0; j < _height; j++)
             {
-                if (currentState[i, j] != _pastState[i, j])
+                if (currentState[i, j] != _previousBuffer[i, j])
                 {
                     Console.SetCursorPosition(i, j);
 
@@ -58,7 +58,7 @@ public class GameRenderer
             }
         }
 
-        _pastState = currentState;
+        _previousBuffer = currentState;
         if (gameData.IsGameOver)
         {
             Console.ForegroundColor = ConsoleColor.Red;
