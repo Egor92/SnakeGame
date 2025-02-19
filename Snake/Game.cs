@@ -2,7 +2,7 @@
 
 public class Game(GameData gameData, GameLogic gameLogic)
 {
-    private readonly GameRenderer _gameRenderer = new(gameData.BoardWidth, gameData.BoardHeight);
+    private readonly GameRenderer _gameRenderer = new();
 
     public void Start()
     {

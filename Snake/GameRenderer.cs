@@ -3,32 +3,12 @@
 public class GameRenderer
 {
     private char[,] _previousBuffer;
-    private readonly int _width;
-    private readonly int _height;
-
-    public GameRenderer(int width, int height)
-    {
-        _width = width;
-        _height = height;
-        _previousBuffer = new char[_width, _height];
-        ClearBuffer(_previousBuffer);
-    }
-
-    private void ClearBuffer(char[,] buffer)
-    {
-        for (int i = 0; i < _width; i++)
-        {
-            for (int j = 0; j < _height; j++)
-            {
-                buffer[i, j] = ' ';
-            }
-        }
-    }
 
     public void RenderGame(GameData gameData)
     {
-        char[,] currentState = new char[_width, _height];
-        ClearBuffer(currentState);
+        _previousBuffer = new char[gameData.BoardWidth, gameData.BoardHeight];
+        char[,] currentState = new char[gameData.BoardWidth, gameData.BoardHeight];
+        ClearBuffer(currentState, gameData.BoardWidth, gameData.BoardHeight);
 
         foreach (var wall in gameData.Walls)
         {
@@ -45,9 +25,9 @@ public class GameRenderer
 
         currentState[gameData.Food.X, gameData.Food.Y] = '0';
 
-        for (int i = 0; i < _width; i++)
+        for (int i = 0; i < gameData.BoardWidth; i++)
         {
-            for (int j = 0; j < _height; j++)
+            for (int j = 0; j < gameData.BoardHeight; j++)
             {
                 if (currentState[i, j] != _previousBuffer[i, j])
                 {
@@ -64,6 +44,17 @@ public class GameRenderer
             Console.ForegroundColor = ConsoleColor.Red;
             Console.SetCursorPosition(gameData.BoardWidth / 2 - 4, gameData.BoardHeight + 1);
             Console.WriteLine("Game Over!");
+        }
+    }
+
+    private void ClearBuffer(char[,] buffer, int width, int height)
+    {
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                buffer[i, j] = ' ';
+            }
         }
     }
 }
