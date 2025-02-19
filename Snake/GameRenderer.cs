@@ -24,23 +24,14 @@ public class GameRenderer
             var pixel = gameData.Snake.Body.ElementAt(n);
             if (n == gameData.Snake.Body.Count - 1)
             {
-                if (gameData.Snake.Direction == Direction.Up)
+                currentState[pixel.X, pixel.Y] = gameData.Snake.Direction switch
                 {
-                    currentState[pixel.X, pixel.Y] = (char)708;
-                }
-                else if (gameData.Snake.Direction == Direction.Down)
-                {
-                    currentState[pixel.X, pixel.Y] = (char)709;
-                }
-                else if (gameData.Snake.Direction == Direction.Left)
-                {
-                    currentState[pixel.X, pixel.Y] = (char)706;
-                }
-                else if (gameData.Snake.Direction == Direction.Right)
-                {
-                    currentState[pixel.X, pixel.Y] = (char)707;
-                }
-               
+                    Direction.Up => (char)708,
+                    Direction.Down => (char)709,
+                    Direction.Left => (char)706,
+                    Direction.Right => (char)707,
+                    _ => currentState[pixel.X, pixel.Y]
+                };
             }
             else
             {
