@@ -2,26 +2,43 @@
 
 public class GameRenderer
 {
+    private char[,] _previousBuffer;
+
+
     public void RenderGame(GameData gameData)
     {
-        Console.Clear();
+        _previousBuffer = new char[gameData.BoardWidth, gameData.BoardHeight];
+        char[,] currentState = new char[gameData.BoardWidth, gameData.BoardHeight];
+        ClearBuffer(currentState, gameData.BoardWidth, gameData.BoardHeight);
 
-        for (int i = 0; i < gameData.Walls.Count; i++)
+        foreach (var wall in gameData.Walls)
         {
-            Pixel wall = gameData.Walls[i];
-            Draw('#', wall.X, wall.Y);
+            currentState[wall.X, wall.Y] = '#';
         }
 
         int n = 0;
         while (n < gameData.Snake.Body.Count)
         {
             var pixel = gameData.Snake.Body.ElementAt(n);
-            Draw('*', pixel.X, pixel.Y);
+            currentState[pixel.X, pixel.Y] = '*';
             n++;
         }
 
-        Draw('O', gameData.Food.X, gameData.Food.Y);
+        currentState[gameData.Food.X, gameData.Food.Y] = '0';
 
+        for (int i = 0; i < gameData.BoardWidth; i++)
+        {
+            for (int j = 0; j < gameData.BoardHeight; j++)
+            {
+                if (_previousBuffer == null || currentState[i, j] != _previousBuffer[i, j])
+                {
+                    Console.SetCursorPosition(i, j);
+                    Console.WriteLine(currentState[i, j]);
+                }
+            }
+        }
+
+        _previousBuffer = currentState;
         if (gameData.IsGameOver)
         {
             Console.ForegroundColor = ConsoleColor.Red;
@@ -30,9 +47,14 @@ public class GameRenderer
         }
     }
 
-    public void Draw(char symbol, int x, int y)
+    private void ClearBuffer(char[,] buffer, int width, int height)
     {
-        Console.SetCursorPosition(x, y);
-        Console.Write(symbol);
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                buffer[i, j] = ' ';
+            }
+        }
     }
 }

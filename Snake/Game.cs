@@ -6,6 +6,8 @@ public class Game(GameData gameData, GameLogic gameLogic)
 
     public void Start()
     {
+        Console.SetWindowSize(gameData.BoardWidth + 6, gameData.BoardHeight+ 6);
+        
         while (!gameData.IsGameOver)
         {
             _gameRenderer.RenderGame(gameData);
@@ -31,7 +33,7 @@ public class Game(GameData gameData, GameLogic gameLogic)
                 break;
             }
 
-            Thread.Sleep(150);
+            Thread.Sleep(200);
         }
 
         _gameRenderer.RenderGame(gameData);
