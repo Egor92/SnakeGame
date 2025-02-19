@@ -15,13 +15,32 @@ public class GameRenderer
         foreach (var wall in gameData.Walls)
         {
             currentState[wall.X, wall.Y] = '#';
-            
         }
 
         int n = 0;
         while (n < gameData.Snake.Body.Count)
         {
             var pixel = gameData.Snake.Body.ElementAt(n);
+            Pixel nextPixel;
+            Pixel prevPixel;
+            if (n < gameData.Snake.Body.Count - 1)
+            {
+                nextPixel = gameData.Snake.Body.ElementAt(n + 1);
+            }
+            else
+            {
+                nextPixel = null;
+            }
+
+            if (n > 0)
+            {
+                prevPixel = gameData.Snake.Body.ElementAt(n - 1);
+            }
+            else
+            {
+                prevPixel = null;
+            }
+
             if (n == gameData.Snake.Body.Count - 1)
             {
                 currentState[pixel.X, pixel.Y] = gameData.Snake.Direction switch
@@ -33,18 +52,51 @@ public class GameRenderer
                     _ => currentState[pixel.X, pixel.Y]
                 };
             }
-            else
+            else if (nextPixel != null && prevPixel != null)
             {
-                currentState[pixel.X, pixel.Y] = '*';
-                
+                if ((prevPixel.X < pixel.X && nextPixel.Y > pixel.Y))
+                {
+                    currentState[pixel.X, pixel.Y] = '┐';
+                }
+                else if ((prevPixel.X > pixel.X && nextPixel.Y > pixel.Y))
+                {
+                    currentState[pixel.X, pixel.Y] = '┌';
+                }
+                else if ((prevPixel.X < pixel.X && nextPixel.Y < pixel.Y))
+                {
+                    currentState[pixel.X, pixel.Y] = '┘';
+                }
+                else if ((prevPixel.X > pixel.X && nextPixel.Y < pixel.Y))
+                {
+                    currentState[pixel.X, pixel.Y] = '└';
+                }
+                else if (prevPixel.X == nextPixel.X)
+                {
+                    currentState[pixel.X, pixel.Y] = '│';
+                }
+                else if (prevPixel.Y == nextPixel.Y)
+                {
+                    currentState[pixel.X, pixel.Y] = '─';
+                }
             }
-          
+            // else if (nextPixel != null && prevPixel == null &&
+            //          (gameData.Snake.Direction == Direction.Right || gameData.Snake.Direction == Direction.Left))
+            // {
+            //     currentState[pixel.X, pixel.Y] = '│';
+            // }
+            // else if (nextPixel != null && prevPixel == null && (gameData.Snake.Direction == Direction.Up ||
+            //                                                     gameData.Snake.Direction == Direction.Down))
+            // {
+            //     currentState[pixel.X, pixel.Y] = '─';
+            // }
             n++;
         }
 
-        currentState[gameData.Food.X, gameData.Food.Y] = 'ó';
 
-        for (int i = 0; i < gameData.BoardWidth; i++)
+        currentState[gameData.Food.X, gameData.Food.Y] = 'ó';
+        for (int i = 0;
+             i < gameData.BoardWidth;
+             i++)
         {
             for (int j = 0; j < gameData.BoardHeight; j++)
             {
