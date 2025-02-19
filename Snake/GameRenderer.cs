@@ -7,6 +7,7 @@ public class GameRenderer
 
     public void RenderGame(GameData gameData)
     {
+        Console.OutputEncoding = System.Text.Encoding.Unicode;
         _previousBuffer = new char[gameData.BoardWidth, gameData.BoardHeight];
         char[,] currentState = new char[gameData.BoardWidth, gameData.BoardHeight];
         ClearBuffer(currentState, gameData.BoardWidth, gameData.BoardHeight);
@@ -14,17 +15,43 @@ public class GameRenderer
         foreach (var wall in gameData.Walls)
         {
             currentState[wall.X, wall.Y] = '#';
+            
         }
 
         int n = 0;
         while (n < gameData.Snake.Body.Count)
         {
             var pixel = gameData.Snake.Body.ElementAt(n);
-            currentState[pixel.X, pixel.Y] = '*';
+            if (n == gameData.Snake.Body.Count - 1)
+            {
+                if (gameData.Snake.Direction == Direction.Up)
+                {
+                    currentState[pixel.X, pixel.Y] = (char)708;
+                }
+                else if (gameData.Snake.Direction == Direction.Down)
+                {
+                    currentState[pixel.X, pixel.Y] = (char)709;
+                }
+                else if (gameData.Snake.Direction == Direction.Left)
+                {
+                    currentState[pixel.X, pixel.Y] = (char)706;
+                }
+                else if (gameData.Snake.Direction == Direction.Right)
+                {
+                    currentState[pixel.X, pixel.Y] = (char)707;
+                }
+               
+            }
+            else
+            {
+                currentState[pixel.X, pixel.Y] = '*';
+                
+            }
+          
             n++;
         }
 
-        currentState[gameData.Food.X, gameData.Food.Y] = '0';
+        currentState[gameData.Food.X, gameData.Food.Y] = 'ó';
 
         for (int i = 0; i < gameData.BoardWidth; i++)
         {
