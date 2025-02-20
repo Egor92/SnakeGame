@@ -10,9 +10,9 @@ public class GameRenderer
         _previousBuffer = new char[gameData.BoardWidth, gameData.BoardHeight];
         char[,] currentBuffer = new char[gameData.BoardWidth, gameData.BoardHeight];
         ClearBuffer(currentBuffer, gameData.BoardWidth, gameData.BoardHeight);
-        DefineElementsWalls(gameData, currentBuffer);
-        DefineElementsSnake(gameData, currentBuffer);
-        DefineElementFood(gameData, currentBuffer);
+        WriteWallsToBuffer(gameData, currentBuffer);
+        WriteSnakeToBuffer(gameData, currentBuffer);
+        WriteFoodToBuffer(gameData, currentBuffer);
         DrawElements(gameData, currentBuffer);
         _previousBuffer = currentBuffer;
         if (gameData.IsGameOver)
@@ -21,115 +21,126 @@ public class GameRenderer
         }
     }
 
-    private void DefineElementsWalls(GameData gameData, char[,] currentState)
+    private void WriteWallsToBuffer(GameData gameData, char[,] currentBuffer)
     {
         foreach (var wall in gameData.Walls)
         {
-            currentState[wall.X, wall.Y] = SnakeSymbols._wall;
+            currentBuffer[wall.X, wall.Y] = GameRenderSymbols.Wall;
         }
     }
 
-    private void DefineElementsSnake(GameData gameData, char[,] currentState)
+    private void WriteSnakeToBuffer(GameData gameData, char[,] currentBuffer)
     {
-        int n = 0;
+        int i = 0;
         var body = gameData.Snake.Body.Count;
         var bodyArray = gameData.Snake.Body.ToArray();
-        while (n < body)
+        foreach (var pixel in bodyArray)
         {
-            var pixel = bodyArray[n];
-            var nextPixel = n < body - 1 ? bodyArray[n + 1] : null;
-            var prevPixel = n > 0 ? bodyArray[n - 1] : null;
+            var nextPixel = i < body - 1 ? bodyArray[i + 1] : null;
+            var prevPixel = i > 0 ? bodyArray[i - 1] : null;
 
-            if (n == body - 1)
+            if (i == body - 1)
             {
-                currentState[pixel.X, pixel.Y] = gameData.Snake.Direction switch
+                currentBuffer[pixel.X, pixel.Y] = gameData.Snake.Direction switch
                 {
-                    Direction.Up => SnakeSymbols._headLooksUp,
-                    Direction.Down => SnakeSymbols._headLooksDown,
-                    Direction.Left => SnakeSymbols._headLooksLeft,
-                    Direction.Right => SnakeSymbols._headLooksRight,
+                    Direction.Up => GameRenderSymbols.HeadLooksUp,
+                    Direction.Down => GameRenderSymbols.HeadLooksDown,
+                    Direction.Left => GameRenderSymbols.HeadLooksLeft,
+                    Direction.Right => GameRenderSymbols.HeadLooksRight,
                     _ => throw new InvalidOperationException("Invalid snake direction")
                 };
             }
             else if (nextPixel != null && prevPixel != null)
             {
-                DefineElementsSnakeBody(currentState, pixel, nextPixel, prevPixel);
+                currentBuffer[pixel.X, pixel.Y] = GetSnakeBodyToBuffer(pixel, nextPixel, prevPixel);
             }
-            else if (n == 0)
+            else if (i == 0)
             {
                 if (nextPixel != null)
                 {
-                    DefineElementsSnakeTail(currentState, pixel, nextPixel);
+                    currentBuffer[pixel.X, pixel.Y] = GetSnakeTailToBuffer(pixel, nextPixel);
                 }
             }
 
-            n++;
+            i++;
         }
     }
 
-    private void DefineElementsSnakeBody(char[,] currentState, Pixel pixel, Pixel nextPixel, Pixel prevPixel)
+    private char GetSnakeBodyToBuffer(Pixel pixel, Pixel nextPixel, Pixel prevPixel)
     {
         if ((prevPixel.X < pixel.X && nextPixel.Y > pixel.Y) || (nextPixel.X < pixel.X && prevPixel.Y > pixel.Y))
         {
-            currentState[pixel.X, pixel.Y] = SnakeSymbols._turnDownOrLeft;
+            return GameRenderSymbols.TurnDownOrLeft;
         }
-        else if ((prevPixel.X > pixel.X && nextPixel.Y > pixel.Y) || (prevPixel.Y > pixel.Y && nextPixel.X > pixel.X))
+
+        if ((prevPixel.X > pixel.X && nextPixel.Y > pixel.Y) || (prevPixel.Y > pixel.Y && nextPixel.X > pixel.X))
         {
-            currentState[pixel.X, pixel.Y] = SnakeSymbols._turnDownOrRight;
+            return GameRenderSymbols.TurnDownOrRight;
         }
-        else if ((prevPixel.X < pixel.X && nextPixel.Y < pixel.Y) || (prevPixel.Y < pixel.Y && nextPixel.X < pixel.X))
+
+        if ((prevPixel.X < pixel.X && nextPixel.Y < pixel.Y) || (prevPixel.Y < pixel.Y && nextPixel.X < pixel.X))
         {
-            currentState[pixel.X, pixel.Y] = SnakeSymbols._turnUpOrLeft;
+            return GameRenderSymbols.TurnUpOrLeft;
         }
-        else if ((prevPixel.X > pixel.X && nextPixel.Y < pixel.Y) || (nextPixel.X > pixel.X && prevPixel.Y < pixel.Y))
+
+        if ((prevPixel.X > pixel.X && nextPixel.Y < pixel.Y) || (nextPixel.X > pixel.X && prevPixel.Y < pixel.Y))
         {
-            currentState[pixel.X, pixel.Y] = SnakeSymbols._turnUpOrRight;
+            return GameRenderSymbols.TurnUpOrRight;
         }
-        else if (prevPixel.X == nextPixel.X)
+
+        if (prevPixel.X == nextPixel.X)
         {
-            currentState[pixel.X, pixel.Y] = SnakeSymbols._verticalBody;
+            return GameRenderSymbols.VerticalBody;
         }
-        else if (prevPixel.Y == nextPixel.Y)
+
+        if (prevPixel.Y == nextPixel.Y)
         {
-            currentState[pixel.X, pixel.Y] = SnakeSymbols._horizontalBody;
+            return GameRenderSymbols.HorizontalBody;
         }
+
+        throw new InvalidOperationException("Invalid snake body segment");
     }
 
-    private void DefineElementsSnakeTail(char[,] currentState, Pixel pixel, Pixel nextPixel)
+    private char GetSnakeTailToBuffer(Pixel pixel, Pixel nextPixel)
     {
         if (nextPixel.Y > pixel.Y)
         {
-            currentState[pixel.X, pixel.Y] = SnakeSymbols._tailLooksUp;
+            return GameRenderSymbols.TailLooksUp;
         }
-        else if (nextPixel.Y < pixel.Y)
+
+        if (nextPixel.Y < pixel.Y)
         {
-            currentState[pixel.X, pixel.Y] = SnakeSymbols._tailLooksDown;
+            return GameRenderSymbols.TailLooksDown;
         }
-        else if (nextPixel.X > pixel.X)
+
+        if (nextPixel.X > pixel.X)
         {
-            currentState[pixel.X, pixel.Y] = SnakeSymbols._tailLooksLeft;
+            return GameRenderSymbols.TailLooksLeft;
         }
-        else if (nextPixel.X < pixel.X)
+
+        if (nextPixel.X < pixel.X)
         {
-            currentState[pixel.X, pixel.Y] = SnakeSymbols._tailLooksRight;
+            return GameRenderSymbols.TailLooksRight;
         }
+
+        throw new InvalidOperationException("Invalid snake tail segment");
     }
 
-    private void DefineElementFood(GameData gameData, char[,] currentState)
+    private void WriteFoodToBuffer(GameData gameData, char[,] currentBuffer)
     {
-        currentState[gameData.Food.X, gameData.Food.Y] = SnakeSymbols._food;
+        currentBuffer[gameData.Food.X, gameData.Food.Y] = GameRenderSymbols.Food;
     }
 
-    private void DrawElements(GameData gameData, char[,] currentState)
+    private void DrawElements(GameData gameData, char[,] currentBuffer)
     {
         for (int i = 0; i < gameData.BoardWidth; i++)
         {
             for (int j = 0; j < gameData.BoardHeight; j++)
             {
-                if (_previousBuffer == null || currentState[i, j] != _previousBuffer[i, j])
+                if (_previousBuffer == null || currentBuffer[i, j] != _previousBuffer[i, j])
                 {
                     Console.SetCursorPosition(i, j);
-                    Console.Write(currentState[i, j]);
+                    Console.Write(currentBuffer[i, j]);
                 }
             }
         }
