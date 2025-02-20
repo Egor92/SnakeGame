@@ -2,128 +2,144 @@
 
 public class GameRenderer
 {
-    private char[,] _previousBuffer;
+    private char[,]? _previousBuffer;
 
     public void RenderGame(GameData gameData)
     {
         Console.OutputEncoding = System.Text.Encoding.Unicode;
         _previousBuffer = new char[gameData.BoardWidth, gameData.BoardHeight];
-        char[,] currentState = new char[gameData.BoardWidth, gameData.BoardHeight];
-        ClearBuffer(currentState, gameData.BoardWidth, gameData.BoardHeight);
+        char[,] currentBuffer = new char[gameData.BoardWidth, gameData.BoardHeight];
+        ClearBuffer(currentBuffer, gameData.BoardWidth, gameData.BoardHeight);
+        DefineElementsWalls(gameData, currentBuffer);
+        DefineElementsSnake(gameData, currentBuffer);
+        DefineElementFood(gameData, currentBuffer);
+        DrawElements(gameData, currentBuffer);
+        _previousBuffer = currentBuffer;
+        if (gameData.IsGameOver)
+        {
+            DrawGameOver(gameData);
+        }
+    }
 
+    private void DefineElementsWalls(GameData gameData, char[,] currentState)
+    {
         foreach (var wall in gameData.Walls)
         {
-            currentState[wall.X, wall.Y] = '#';
+            currentState[wall.X, wall.Y] = SnakeSymbols._wall;
         }
+    }
 
+    private void DefineElementsSnake(GameData gameData, char[,] currentState)
+    {
         int n = 0;
-        while (n < gameData.Snake.Body.Count)
+        var body = gameData.Snake.Body.Count;
+        var bodyArray = gameData.Snake.Body.ToArray();
+        while (n < body)
         {
-            var pixel = gameData.Snake.Body.ElementAt(n);
-            Pixel nextPixel;
-            Pixel prevPixel;
-            if (n < gameData.Snake.Body.Count - 1)
-            {
-                nextPixel = gameData.Snake.Body.ElementAt(n + 1);
-            }
-            else
-            {
-                nextPixel = null;
-            }
+            var pixel = bodyArray[n];
+            var nextPixel = n < body - 1 ? bodyArray[n + 1] : null;
+            var prevPixel = n > 0 ? bodyArray[n - 1] : null;
 
-            if (n > 0)
-            {
-                prevPixel = gameData.Snake.Body.ElementAt(n - 1);
-            }
-            else
-            {
-                prevPixel = null;
-            }
-
-            if (n == gameData.Snake.Body.Count - 1)
+            if (n == body - 1)
             {
                 currentState[pixel.X, pixel.Y] = gameData.Snake.Direction switch
                 {
-                    Direction.Up => (char)708,
-                    Direction.Down => (char)709,
-                    Direction.Left => (char)706,
-                    Direction.Right => (char)707,
-                    _ => currentState[pixel.X, pixel.Y]
+                    Direction.Up => SnakeSymbols._headLooksUp,
+                    Direction.Down => SnakeSymbols._headLooksDown,
+                    Direction.Left => SnakeSymbols._headLooksLeft,
+                    Direction.Right => SnakeSymbols._headLooksRight,
+                    _ => throw new InvalidOperationException("Invalid snake direction")
                 };
             }
             else if (nextPixel != null && prevPixel != null)
             {
-                if ((prevPixel.X < pixel.X && nextPixel.Y > pixel.Y))
-                {
-                    currentState[pixel.X, pixel.Y] = '┐';
-                }
-                else if ((prevPixel.X > pixel.X && nextPixel.Y > pixel.Y))
-                {
-                    currentState[pixel.X, pixel.Y] = '┌';
-                }
-                else if ((prevPixel.X < pixel.X && nextPixel.Y < pixel.Y))
-                {
-                    currentState[pixel.X, pixel.Y] = '┘';
-                }
-                else if ((prevPixel.X > pixel.X && nextPixel.Y < pixel.Y))
-                {
-                    currentState[pixel.X, pixel.Y] = '└';
-                }
-                else if (prevPixel.X == nextPixel.X)
-                {
-                    currentState[pixel.X, pixel.Y] = '│';
-                }
-                else if (prevPixel.Y == nextPixel.Y)
-                {
-                    currentState[pixel.X, pixel.Y] = '-';
-                }
+                DefineElementsSnakeBody(currentState, pixel, nextPixel, prevPixel);
             }
             else if (n == 0)
             {
-                if (nextPixel != null && nextPixel.Y > pixel.Y)
+                if (nextPixel != null)
                 {
-                    currentState[pixel.X, pixel.Y] = '\u2191';
-                }
-                else if (nextPixel != null && nextPixel.Y < pixel.Y)
-                {
-                    currentState[pixel.X, pixel.Y] = '\u2193';
-                }
-                else if (nextPixel != null && nextPixel.X > pixel.X)
-                {
-                    currentState[pixel.X, pixel.Y] = '\u2190';
-                }
-                else if (nextPixel != null && nextPixel.X < pixel.X)
-                {
-                    currentState[pixel.X, pixel.Y] = '\u2192';
+                    DefineElementsSnakeTail(currentState, pixel, nextPixel);
                 }
             }
 
             n++;
         }
+    }
 
+    private void DefineElementsSnakeBody(char[,] currentState, Pixel pixel, Pixel nextPixel, Pixel prevPixel)
+    {
+        if ((prevPixel.X < pixel.X && nextPixel.Y > pixel.Y) || (nextPixel.X < pixel.X && prevPixel.Y > pixel.Y))
+        {
+            currentState[pixel.X, pixel.Y] = SnakeSymbols._turnDownOrLeft;
+        }
+        else if ((prevPixel.X > pixel.X && nextPixel.Y > pixel.Y) || (prevPixel.Y > pixel.Y && nextPixel.X > pixel.X))
+        {
+            currentState[pixel.X, pixel.Y] = SnakeSymbols._turnDownOrRight;
+        }
+        else if ((prevPixel.X < pixel.X && nextPixel.Y < pixel.Y) || (prevPixel.Y < pixel.Y && nextPixel.X < pixel.X))
+        {
+            currentState[pixel.X, pixel.Y] = SnakeSymbols._turnUpOrLeft;
+        }
+        else if ((prevPixel.X > pixel.X && nextPixel.Y < pixel.Y) || (nextPixel.X > pixel.X && prevPixel.Y < pixel.Y))
+        {
+            currentState[pixel.X, pixel.Y] = SnakeSymbols._turnUpOrRight;
+        }
+        else if (prevPixel.X == nextPixel.X)
+        {
+            currentState[pixel.X, pixel.Y] = SnakeSymbols._verticalBody;
+        }
+        else if (prevPixel.Y == nextPixel.Y)
+        {
+            currentState[pixel.X, pixel.Y] = SnakeSymbols._horizontalBody;
+        }
+    }
 
-        currentState[gameData.Food.X, gameData.Food.Y] = 'ó';
-        for (int i = 0;
-             i < gameData.BoardWidth;
-             i++)
+    private void DefineElementsSnakeTail(char[,] currentState, Pixel pixel, Pixel nextPixel)
+    {
+        if (nextPixel.Y > pixel.Y)
+        {
+            currentState[pixel.X, pixel.Y] = SnakeSymbols._tailLooksUp;
+        }
+        else if (nextPixel.Y < pixel.Y)
+        {
+            currentState[pixel.X, pixel.Y] = SnakeSymbols._tailLooksDown;
+        }
+        else if (nextPixel.X > pixel.X)
+        {
+            currentState[pixel.X, pixel.Y] = SnakeSymbols._tailLooksLeft;
+        }
+        else if (nextPixel.X < pixel.X)
+        {
+            currentState[pixel.X, pixel.Y] = SnakeSymbols._tailLooksRight;
+        }
+    }
+
+    private void DefineElementFood(GameData gameData, char[,] currentState)
+    {
+        currentState[gameData.Food.X, gameData.Food.Y] = SnakeSymbols._food;
+    }
+
+    private void DrawElements(GameData gameData, char[,] currentState)
+    {
+        for (int i = 0; i < gameData.BoardWidth; i++)
         {
             for (int j = 0; j < gameData.BoardHeight; j++)
             {
                 if (_previousBuffer == null || currentState[i, j] != _previousBuffer[i, j])
                 {
                     Console.SetCursorPosition(i, j);
-                    Console.WriteLine(currentState[i, j]);
+                    Console.Write(currentState[i, j]);
                 }
             }
         }
+    }
 
-        _previousBuffer = currentState;
-        if (gameData.IsGameOver)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.SetCursorPosition(gameData.BoardWidth / 2 - 4, gameData.BoardHeight + 1);
-            Console.WriteLine("Game Over!");
-        }
+    private void DrawGameOver(GameData gameData)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.SetCursorPosition(gameData.BoardWidth / 2 - 4, gameData.BoardHeight + 1);
+        Console.WriteLine("Game Over!");
     }
 
     private void ClearBuffer(char[,] buffer, int width, int height)
