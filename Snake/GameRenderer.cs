@@ -4,7 +4,6 @@ public class GameRenderer
 {
     private char[,] _previousBuffer;
 
-
     public void RenderGame(GameData gameData)
     {
         Console.OutputEncoding = System.Text.Encoding.Unicode;
@@ -76,19 +75,29 @@ public class GameRenderer
                 }
                 else if (prevPixel.Y == nextPixel.Y)
                 {
-                    currentState[pixel.X, pixel.Y] = '─';
+                    currentState[pixel.X, pixel.Y] = '-';
                 }
             }
-            // else if (nextPixel != null && prevPixel == null &&
-            //          (gameData.Snake.Direction == Direction.Right || gameData.Snake.Direction == Direction.Left))
-            // {
-            //     currentState[pixel.X, pixel.Y] = '│';
-            // }
-            // else if (nextPixel != null && prevPixel == null && (gameData.Snake.Direction == Direction.Up ||
-            //                                                     gameData.Snake.Direction == Direction.Down))
-            // {
-            //     currentState[pixel.X, pixel.Y] = '─';
-            // }
+            else if (n == 0)
+            {
+                if (nextPixel != null && nextPixel.Y > pixel.Y)
+                {
+                    currentState[pixel.X, pixel.Y] = '\u2191';
+                }
+                else if (nextPixel != null && nextPixel.Y < pixel.Y)
+                {
+                    currentState[pixel.X, pixel.Y] = '\u2193';
+                }
+                else if (nextPixel != null && nextPixel.X > pixel.X)
+                {
+                    currentState[pixel.X, pixel.Y] = '\u2190';
+                }
+                else if (nextPixel != null && nextPixel.X < pixel.X)
+                {
+                    currentState[pixel.X, pixel.Y] = '\u2192';
+                }
+            }
+
             n++;
         }
 
