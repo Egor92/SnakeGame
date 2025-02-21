@@ -16,11 +16,11 @@ public class GameRenderer
         _previousBuffer = currentBuffer;
         if (gameData.IsGameOver)
         {
-            DrawGameOver(gameData);
+            DrawGameOver(gameData.BoardWidth, gameData.BoardHeight);
         }
     }
 
-    private void WriteWallsToBuffer(List<Pixel> walls, char[,] currentBuffer)
+    private static void WriteWallsToBuffer(List<Pixel> walls, char[,] currentBuffer)
     {
         foreach (var wall in walls)
         {
@@ -28,7 +28,7 @@ public class GameRenderer
         }
     }
 
-    private void WriteSnakeToBuffer(Snake snake, char[,] currentBuffer)
+    private static void WriteSnakeToBuffer(Snake snake, char[,] currentBuffer)
     {
         int i = 0;
         var bodyLength = snake.Body.Count;
@@ -125,12 +125,12 @@ public class GameRenderer
         throw new InvalidOperationException("Invalid snake tail segment");
     }
 
-    private void WriteFoodToBuffer(Pixel food, char[,] currentBuffer)
+    private static void WriteFoodToBuffer(Pixel food, char[,] currentBuffer)
     {
         currentBuffer[food.X, food.Y] = GameRenderSymbols.Food;
     }
 
-    private void DrawElements(GameData gameData, char[,] currentBuffer)
+    private  void DrawElements(GameData gameData, char[,] currentBuffer)
     {
         for (int i = 0; i < gameData.BoardWidth; i++)
         {
@@ -145,14 +145,14 @@ public class GameRenderer
         }
     }
 
-    private void DrawGameOver(GameData gameData)
+    private static void DrawGameOver(int width, int height)
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.SetCursorPosition(gameData.BoardWidth / 2 - 4, gameData.BoardHeight + 1);
+        Console.SetCursorPosition(width / 2 - 4, height + 1);
         Console.WriteLine("Game Over!");
     }
 
-    private void ClearBuffer(char[,] buffer, int width, int height)
+    private static void ClearBuffer(char[,] buffer, int width, int height)
     {
         for (int i = 0; i < width; i++)
         {
