@@ -7,7 +7,7 @@ public class Program
     static void Main(string[] args)
     {
         Console.CursorVisible = false;
-
+        Console.OutputEncoding = System.Text.Encoding.Unicode;
         var gameData = GameDataBuilder.Create()
             .SetPlayingFieldSize(width: 45, height: 15)
             .CreateWallAroundPlayingField(width: 45, height: 15)
