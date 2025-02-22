@@ -130,7 +130,7 @@ public class GameRenderer
         currentBuffer[food.X, food.Y] = GameRenderSymbols.Food;
     }
 
-    private  void DrawElements(GameData gameData, char[,] currentBuffer)
+    private void DrawElements(GameData gameData, char[,] currentBuffer)
     {
         for (int i = 0; i < gameData.BoardWidth; i++)
         {
