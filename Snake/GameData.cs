@@ -8,6 +8,6 @@ public class GameData
     public List<Pixel> Walls { get; set; }
     public Snake Snake { get; set; }
     public bool IsGameOver { get; set; }
-    public int CountSteps { get; set; }
-    public int CountPoints { get; set; }
+    public int StepCount { get; set; }
+    public int PointCount { get; set; }
 }

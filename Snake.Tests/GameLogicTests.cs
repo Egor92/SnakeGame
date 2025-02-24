@@ -221,61 +221,25 @@ public class GameLogicTests
         Assert.That(_gameData.IsGameOver, Is.False);
     }
 
-    [Test]
-    public void DoStep_SnakeDirectionIsRight_CountStepsChangedByOne()
+    [TestCase(1)]
+    [TestCase(2)]
+    [TestCase(3)]
+    public void DoStep_SnakeDirectionIsRight_CountStepsChangedByDifferenceBetweenInitialAndFiniteStepCount(
+        int difference)
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
             .Grow(2)
             .Build();
-        var initialNumberOfSteps = 0;
+        var initialStepCount = _gameData.StepCount;
 
         // Act
         _gameLogic.DoStep();
 
         // Assert
-        var finiteNumberOfSteps = _gameData.CountSteps;
-        var stepDifference = finiteNumberOfSteps - initialNumberOfSteps;
-        Assert.That(stepDifference, Is.EqualTo(1));
-    }
-
-    [Test]
-    public void DoTwoStep_SnakeDirectionIsRight_CountStepsChangedByTwo()
-    {
-        // Arrange  
-        _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
-            .Grow(2)
-            .Build();
-        var initialNumberOfSteps = 0;
-
-        // Act
-        _gameLogic.DoStep();
-        _gameLogic.DoStep();
-
-        // Assert
-        var finiteNumberOfSteps = _gameData.CountSteps;
-        var stepDifference = finiteNumberOfSteps - initialNumberOfSteps;
-        Assert.That(stepDifference, Is.EqualTo(2));
-    }
-
-    [Test]
-    public void DoThreeStep_SnakeDirectionIsRight_CountStepsChangedByThree()
-    {
-        // Arrange  
-        _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
-            .Grow(2)
-            .Build();
-        var initialNumberOfSteps = 0;
-
-        // Act
-        _gameLogic.DoStep();
-        _gameLogic.DoStep();
-        _gameLogic.DoStep();
-
-        // Assert
-        var finiteNumberOfSteps = _gameData.CountSteps;
-        var stepDifference = finiteNumberOfSteps - initialNumberOfSteps;
-        Assert.That(stepDifference, Is.EqualTo(3));
+        var finiteNumberOfSteps = _gameData.StepCount;
+        var stepDifference = finiteNumberOfSteps - initialStepCount;
+        Assert.That(stepDifference, Is.EqualTo(difference));
     }
 
     [Test]
@@ -291,7 +255,7 @@ public class GameLogicTests
         _gameLogic.DoStep();
 
         // Assert
-        var finiteNumberOfPoints = _gameData.CountPoints;
+        var finiteNumberOfPoints = _gameData.PointCount;
         var pointsDifference = finiteNumberOfPoints - initialNumberOfPoints;
         Assert.That(pointsDifference, Is.EqualTo(100));
     }

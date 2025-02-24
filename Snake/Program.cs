@@ -11,9 +11,10 @@ public class Program
         var gameData = GameDataBuilder.Create()
             .SetPlayingFieldSize(width: 45, height: 15)
             .CreateWallAroundPlayingField(width: 45, height: 15)
-            .AddSnake(10, 10, Direction.Right, 3)
+            .AddSnake(x: 10, y: 10, Direction.Right, 3)
             .AddFood()
-            .AddInformAboutGame(0, 0)
+            .SetPointCount(0)
+            .SetStepCount(0)
             .Build();
         var gameLogic = new GameLogic(gameData);
         // Создать Game и запустить
