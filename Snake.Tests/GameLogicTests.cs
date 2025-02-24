@@ -220,4 +220,40 @@ public class GameLogicTests
         // Assert
         Assert.That(_gameData.IsGameOver, Is.False);
     }
+
+    [Test]
+    public void DoStep_SnakeDirectionIsRight_CountStepsChangedByOne()
+    {
+        // Arrange  
+        _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
+            .Grow(2)
+            .Build();
+        var initialNumberOfSteps = 0;
+
+        // Act
+        _gameLogic.DoStep();
+
+        // Assert
+        var finiteNumberOfSteps = _gameData.CountSteps;
+        var stepDifference = finiteNumberOfSteps - initialNumberOfSteps;
+        Assert.That(stepDifference, Is.EqualTo(1));
+    }
+
+    [Test]
+    public void DoStep_FoodIsAhead_CountPointsChangedToOneHundred()
+    {
+        // Arrange  
+        _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
+            .Grow(2)
+            .Build();
+        _gameData.Food = new Pixel(6, 5);
+        var initialNumberOfPoints = 0;
+        // Act
+        _gameLogic.DoStep();
+
+        // Assert
+        var finiteNumberOfPoints = _gameData.CountPoints;
+        var pointsDifference = finiteNumberOfPoints - initialNumberOfPoints;
+        Assert.That(pointsDifference, Is.EqualTo(100));
+    }
 }

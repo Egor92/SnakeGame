@@ -36,10 +36,10 @@ public class GameLogic(GameData gameData)
             GenerateFood();
             GrowSnake(out newHead);
             gameData.Snake.Head = newHead;
-            gameData.CountPoint += 100;
+            gameData.CountPoints += 100;
         }
 
-        gameData.CountStep += 1;
+        gameData.CountSteps += 1;
         gameData.IsGameOver = CheckCollisions();
     }
 

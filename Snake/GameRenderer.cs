@@ -146,8 +146,8 @@ public class GameRenderer
 
         Console.SetCursorPosition(0, gameData.BoardHeight + 1);
         Console.WriteLine("Игра 'Змейка");
-        Console.WriteLine($"Количество ходов: {gameData.CountStep}");
-        Console.WriteLine($"Количество очков: {gameData.CountPoint}");
+        Console.WriteLine($"Количество ходов: {gameData.CountSteps}");
+        Console.WriteLine($"Количество очков: {gameData.CountPoints}");
     }
 
     private static void DrawGameOver(GameData gameData)
