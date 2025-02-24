@@ -10,6 +10,8 @@ public class GameDataBuilder
     private Pixel _head;
     private Pixel _food;
     private Snake _snake;
+    private int _countPoint;
+    private int _countStep;
 
     private GameDataBuilder()
     {
@@ -103,6 +105,13 @@ public class GameDataBuilder
         return this;
     }
 
+    public GameDataBuilder AddInformAboutGame(int countPoint, int countStep)
+    {
+        _countPoint = countPoint;
+        _countStep = countStep;
+        return this;
+    }
+
     public GameData Build()
     {
         return new GameData()
@@ -112,7 +121,9 @@ public class GameDataBuilder
             Walls = _walls,
             Snake = _snake,
             Food = _food,
-            IsGameOver = false
+            IsGameOver = false,
+            CountPoint = _countPoint,
+            CountStep = _countStep
         };
     }
 }
