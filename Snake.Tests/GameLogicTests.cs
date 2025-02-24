@@ -234,7 +234,11 @@ public class GameLogicTests
         var initialStepCount = _gameData.StepCount;
 
         // Act
-        _gameLogic.DoStep();
+        for (int i = 0; i < difference; i++)
+        {
+            _gameLogic.DoStep();
+        }
+
 
         // Assert
         var finiteNumberOfSteps = _gameData.StepCount;
