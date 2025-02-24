@@ -224,7 +224,7 @@ public class GameLogicTests
     [TestCase(1)]
     [TestCase(2)]
     [TestCase(3)]
-    public void DoStep_SnakeDirectionIsRight_CountStepsChangedByDifferenceBetweenInitialAndFiniteStepCount(
+    public void DoStep_CallSeveralTimes_CountStepsChangedByDifferenceBetweenInitialAndFiniteStepCount(
         int difference)
     {
         // Arrange  
@@ -238,8 +238,6 @@ public class GameLogicTests
         {
             _gameLogic.DoStep();
         }
-
-
         // Assert
         var finiteNumberOfSteps = _gameData.StepCount;
         var stepDifference = finiteNumberOfSteps - initialStepCount;
