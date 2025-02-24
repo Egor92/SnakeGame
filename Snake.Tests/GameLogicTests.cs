@@ -240,6 +240,45 @@ public class GameLogicTests
     }
 
     [Test]
+    public void DoTwoStep_SnakeDirectionIsRight_CountStepsChangedByTwo()
+    {
+        // Arrange  
+        _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
+            .Grow(2)
+            .Build();
+        var initialNumberOfSteps = 0;
+
+        // Act
+        _gameLogic.DoStep();
+        _gameLogic.DoStep();
+
+        // Assert
+        var finiteNumberOfSteps = _gameData.CountSteps;
+        var stepDifference = finiteNumberOfSteps - initialNumberOfSteps;
+        Assert.That(stepDifference, Is.EqualTo(2));
+    }
+
+    [Test]
+    public void DoThreeStep_SnakeDirectionIsRight_CountStepsChangedByThree()
+    {
+        // Arrange  
+        _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
+            .Grow(2)
+            .Build();
+        var initialNumberOfSteps = 0;
+
+        // Act
+        _gameLogic.DoStep();
+        _gameLogic.DoStep();
+        _gameLogic.DoStep();
+
+        // Assert
+        var finiteNumberOfSteps = _gameData.CountSteps;
+        var stepDifference = finiteNumberOfSteps - initialNumberOfSteps;
+        Assert.That(stepDifference, Is.EqualTo(3));
+    }
+
+    [Test]
     public void DoStep_FoodIsAhead_CountPointsChangedToOneHundred()
     {
         // Arrange  
