@@ -222,19 +222,18 @@ public class GameLogicTests
     }
 
     [TestCase(1, 0, 1)]
-    [TestCase(2, 0, 2)]
-    [TestCase(3, 0, 3)]
-    public void DoStep_CallSeveralTimes_CountStepsIncreasedByCountOfCallsDoStep(
-        int countCallsDoStep, int initialCount, int expectedStepCount)
+    [TestCase(2, 3, 2)]
+    [TestCase(3, 6, 3)]
+    public void DoStep_CallSeveralTimes_StepsCountIncreasedByDoStepInvocations(
+        int doStepCalls, int initialStepCount, int expectedStepCount)
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
             .Grow(2)
             .Build();
-        var initialStepCount = initialCount;
 
         // Act
-        for (int i = 0; i < countCallsDoStep; i++)
+        for (int i = 0; i < doStepCalls; i++)
         {
             _gameLogic.DoStep();
         }
