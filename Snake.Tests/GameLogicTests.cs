@@ -231,7 +231,8 @@ public class GameLogicTests
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
             .Grow(2)
             .Build();
-
+        _gameData.StepCount = initialStepCount;
+        
         // Act
         for (int i = 0; i < doStepCalls; i++)
         {
