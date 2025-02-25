@@ -220,4 +220,46 @@ public class GameLogicTests
         // Assert
         Assert.That(_gameData.IsGameOver, Is.False);
     }
+
+    [TestCase(1, 0, 1)]
+    [TestCase(2, 3, 5)]
+    [TestCase(3, 6, 9)]
+    public void DoStep_CallSeveralTimes_StepCountIncreasedByDoStepInvocations(
+        int doStepInvocationCount, int initialStepCount, int expectedStepCount)
+    {
+        // Arrange  
+        _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
+            .Grow(2)
+            .Build();
+        _gameData.StepCount = initialStepCount;
+
+        // Act
+        for (int i = 0; i < doStepInvocationCount; i++)
+        {
+            _gameLogic.DoStep();
+        }
+
+        // Assert
+        var finiteStepCount = _gameData.StepCount;
+        Assert.That(finiteStepCount, Is.EqualTo(expectedStepCount));
+    }
+
+    [Test]
+    public void DoStep_FoodIsAhead_CountPointsChangedToOneHundred()
+    {
+        // Arrange  
+        _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
+            .Grow(2)
+            .Build();
+        _gameData.Food = new Pixel(6, 5);
+        var initialNumberOfPoints = 0;
+
+        // Act
+        _gameLogic.DoStep();
+
+        // Assert
+        var finiteNumberOfPoints = _gameData.PointCount;
+        var pointsDifference = finiteNumberOfPoints - initialNumberOfPoints;
+        Assert.That(pointsDifference, Is.EqualTo(100));
+    }
 }

@@ -16,7 +16,7 @@ public class GameRenderer
         _previousBuffer = currentBuffer;
         if (gameData.IsGameOver)
         {
-            DrawGameOver(gameData.BoardWidth, gameData.BoardHeight);
+            DrawGameOver(gameData);
         }
     }
 
@@ -143,14 +143,20 @@ public class GameRenderer
                 }
             }
         }
+
+        Console.SetCursorPosition(0, gameData.BoardHeight + 1);
+        Console.WriteLine("Игра 'Змейка");
+        Console.WriteLine($"Количество ходов: {gameData.StepCount}");
+        Console.WriteLine($"Количество очков: {gameData.PointCount}");
     }
 
-    private static void DrawGameOver(int width, int height)
+    private static void DrawGameOver(GameData gameData)
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.SetCursorPosition(width / 2 - 4, height + 1);
+        Console.SetCursorPosition(gameData.BoardWidth / 2 - 4, gameData.BoardHeight);
         Console.WriteLine("Game Over!");
     }
+
 
     private static void ClearBuffer(char[,] buffer, int width, int height)
     {

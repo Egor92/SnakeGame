@@ -25,17 +25,21 @@ public class GameLogic(GameData gameData)
                 break;
         }
 
+
         var newHead = new Pixel(newX, newY);
         snakeBody.Dequeue();
         snakeBody.Enqueue(newHead);
         gameData.Snake.Head = newHead;
+
         if (gameData.Food != null && CheckFoodCollision())
         {
             GenerateFood();
             GrowSnake(out newHead);
             gameData.Snake.Head = newHead;
+            gameData.PointCount += GameSettings.PointsForFood;
         }
 
+        gameData.StepCount += 1;
         gameData.IsGameOver = CheckCollisions();
     }
 
@@ -100,4 +104,3 @@ public class GameLogic(GameData gameData)
         }
     }
 }
-
