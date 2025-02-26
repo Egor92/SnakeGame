@@ -67,9 +67,7 @@ public class GameLogic(GameData gameData)
             Direction.Down => new Pixel(element.X, element.Y + 1),
             Direction.Left => new Pixel(element.X - 1, element.Y),
             Direction.Right => new Pixel(element.X + 1, element.Y),
-            _ => throw new ArgumentOutOfRangeException(nameof(gameData.Snake.Direction),
-                                                       gameData.Snake.Direction,
-                                                       $"Unexpected direction: {gameData.Snake.Direction}")
+            _ => throw new ArgumentOutOfRangeException(nameof(gameData.Snake.Direction), gameData.Snake.Direction, $"Unexpected direction: {gameData.Snake.Direction}")
         };
 
         gameData.Snake.Body.Enqueue(newPixel);
