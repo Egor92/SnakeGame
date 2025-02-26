@@ -9,9 +9,9 @@ public class GameLogicTests
     public void Setup()
     {
         _gameData = GameDataBuilder.Create()
-            .SetPlayingFieldSize(width: 10, height: 10)
-            .CreateWallAroundPlayingField(width: 10, height: 10)
-            .Build();
+                                   .SetPlayingFieldSize(width: 10, height: 10)
+                                   .CreateWallAroundPlayingField(width: 10, height: 10)
+                                   .Build();
         _gameLogic = new GameLogic(_gameData);
     }
 
@@ -20,8 +20,8 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
 
         // Act
         _gameLogic.DoStep();
@@ -38,8 +38,8 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Left)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
 
         // Act
         _gameLogic.DoStep();
@@ -56,8 +56,8 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Up)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
 
         // Act
         _gameLogic.DoStep();
@@ -74,8 +74,8 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Down)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
 
         // Act
         _gameLogic.DoStep();
@@ -92,13 +92,15 @@ public class GameLogicTests
     [TestCase(Direction.Left, Direction.Right, Direction.Left)]
     [TestCase(Direction.Down, Direction.Up, Direction.Down)]
     [TestCase(Direction.Up, Direction.Down, Direction.Up)]
-    public void ChangeDirection_NewDirectionIsOpposite_DirectionIsNotChanged(Direction initialDirection,
-        Direction newDirection, Direction expectedDirection)
+    public void ChangeDirection_NewDirectionIsOpposite_DirectionIsNotChanged(
+        Direction initialDirection,
+        Direction newDirection,
+        Direction expectedDirection)
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, initialDirection)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
 
         // Act
         _gameLogic.ChangeDirection(newDirection);
@@ -115,13 +117,15 @@ public class GameLogicTests
     [TestCase(Direction.Up, Direction.Right, Direction.Right)]
     [TestCase(Direction.Down, Direction.Left, Direction.Left)]
     [TestCase(Direction.Down, Direction.Right, Direction.Right)]
-    public void ChangeDirection_NewDirectionIsDifferent_DirectionIsChanged(Direction initialDirection,
-        Direction newDirection, Direction expectedDirection)
+    public void ChangeDirection_NewDirectionIsDifferent_DirectionIsChanged(
+        Direction initialDirection,
+        Direction newDirection,
+        Direction expectedDirection)
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, initialDirection)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
 
         // Act
         _gameLogic.ChangeDirection(newDirection);
@@ -134,13 +138,15 @@ public class GameLogicTests
     [TestCase(Direction.Left, Direction.Left, Direction.Left)]
     [TestCase(Direction.Up, Direction.Up, Direction.Up)]
     [TestCase(Direction.Down, Direction.Down, Direction.Down)]
-    public void ChangeDirection_NewDirectionIsSame_DirectionIsNotChanged(Direction initialDirection,
-        Direction newDirection, Direction expectedDirection)
+    public void ChangeDirection_NewDirectionIsSame_DirectionIsNotChanged(
+        Direction initialDirection,
+        Direction newDirection,
+        Direction expectedDirection)
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, initialDirection)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
 
         // Act
         _gameLogic.ChangeDirection(newDirection);
@@ -154,8 +160,8 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(1, 2, Direction.Left)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
         _gameData.Walls = new List<Pixel>()
         {
             new Pixel(0, 2)
@@ -175,8 +181,8 @@ public class GameLogicTests
         var initialSnakeLength = 3;
 
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
-            .Grow(initialSnakeLength - 1)
-            .Build();
+                                      .Grow(initialSnakeLength - 1)
+                                      .Build();
         _gameData.Food = new Pixel(6, 5);
 
         // Act
@@ -193,10 +199,10 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Down)
-            .Grow(Direction.Right, 1)
-            .Grow(Direction.Down, 1)
-            .Grow(Direction.Left, 2)
-            .Build();
+                                      .Grow(Direction.Right, 1)
+                                      .Grow(Direction.Down, 1)
+                                      .Grow(Direction.Left, 2)
+                                      .Build();
 
         // Act
         _gameLogic.DoStep();
@@ -210,8 +216,8 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
         _gameData.Food = new Pixel(6, 5);
 
         // Act
@@ -225,12 +231,14 @@ public class GameLogicTests
     [TestCase(2, 3, 5)]
     [TestCase(3, 6, 9)]
     public void DoStep_CallSeveralTimes_StepCountIncreasedByDoStepInvocations(
-        int doStepInvocationCount, int initialStepCount, int expectedStepCount)
+        int doStepInvocationCount,
+        int initialStepCount,
+        int expectedStepCount)
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
         _gameData.StepCount = initialStepCount;
 
         // Act
@@ -249,8 +257,8 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
         _gameData.Food = new Pixel(6, 5);
         var initialNumberOfPoints = 0;
 
