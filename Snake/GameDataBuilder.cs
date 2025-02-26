@@ -22,14 +22,15 @@ public class GameDataBuilder
         return new GameDataBuilder();
     }
 
-    public GameDataBuilder SetPlayingFieldSize(int width,
+    public GameDataBuilder SetPlayingFieldSize(
+        int width,
         int height)
     {
         // проверка длины и ширины на не отрицательность
         if (width < 0 || height < 0)
         {
             throw new ArgumentException(
-                "Ширина и высота должны быть положительными.");
+                                        "Ширина и высота должны быть положительными.");
         }
 
         _width = width;
@@ -37,7 +38,8 @@ public class GameDataBuilder
         return this;
     }
 
-    public GameDataBuilder CreateWallAroundPlayingField(int width,
+    public GameDataBuilder CreateWallAroundPlayingField(
+        int width,
         int height)
     {
         // Логика для создания стены по краю игрового поля
@@ -58,7 +60,8 @@ public class GameDataBuilder
         return this;
     }
 
-    public GameDataBuilder AddSnake(int x,
+    public GameDataBuilder AddSnake(
+        int x,
         int y,
         Direction direction,
         int snakeLength)
@@ -75,9 +78,7 @@ public class GameDataBuilder
                 Direction.Left => new Pixel(x + i, y),
                 Direction.Up => new Pixel(x, y + i),
                 Direction.Down => new Pixel(x, y - i),
-                _ => throw new ArgumentOutOfRangeException(nameof(direction),
-                    direction,
-                    $"Unexpected direction: {direction}")
+                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, $"Unexpected direction: {direction}")
             };
 
             _body.Enqueue(bodyPixel);

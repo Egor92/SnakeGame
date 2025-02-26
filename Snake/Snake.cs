@@ -8,7 +8,8 @@ public class Snake
 
     public Pixel Head { get; set; }
 
-    public Snake(Queue<Pixel> body,
+    public Snake(
+        Queue<Pixel> body,
         Direction direction,
         Pixel head)
     {

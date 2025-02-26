@@ -20,7 +20,8 @@ public class GameRenderer
         }
     }
 
-    private static void WriteWallsToBuffer(List<Pixel> walls,
+    private static void WriteWallsToBuffer(
+        List<Pixel> walls,
         char[,] currentBuffer)
     {
         foreach (var wall in walls)
@@ -29,7 +30,8 @@ public class GameRenderer
         }
     }
 
-    private static void WriteSnakeToBuffer(Snake snake,
+    private static void WriteSnakeToBuffer(
+        Snake snake,
         char[,] currentBuffer)
     {
         int i = 0;
@@ -67,7 +69,8 @@ public class GameRenderer
         }
     }
 
-    private static char GetSnakeBodySymbol(Pixel pixel,
+    private static char GetSnakeBodySymbol(
+        Pixel pixel,
         Pixel nextPixel,
         Pixel prevPixel)
     {
@@ -104,7 +107,8 @@ public class GameRenderer
         throw new InvalidOperationException("Invalid snake body segment");
     }
 
-    private static char GetSnakeTailSymbol(Pixel pixel,
+    private static char GetSnakeTailSymbol(
+        Pixel pixel,
         Pixel nextPixel)
     {
         if (nextPixel.Y > pixel.Y)
@@ -130,13 +134,15 @@ public class GameRenderer
         throw new InvalidOperationException("Invalid snake tail segment");
     }
 
-    private static void WriteFoodToBuffer(Pixel food,
+    private static void WriteFoodToBuffer(
+        Pixel food,
         char[,] currentBuffer)
     {
         currentBuffer[food.X, food.Y] = GameRenderSymbols.Food;
     }
 
-    private void DrawElements(GameData gameData,
+    private void DrawElements(
+        GameData gameData,
         char[,] currentBuffer)
     {
         for (int i = 0; i < gameData.BoardWidth; i++)
@@ -164,7 +170,8 @@ public class GameRenderer
         Console.WriteLine("Game Over!");
     }
 
-    private static void ClearBuffer(char[,] buffer,
+    private static void ClearBuffer(
+        char[,] buffer,
         int width,
         int height)
     {
