@@ -14,8 +14,7 @@ public class Game(GameData gameData, GameLogic gameLogic)
 
             while (Console.KeyAvailable)
             {
-                ConsoleKey key = Console.ReadKey(true)
-                                        .Key;
+                ConsoleKey key = Console.ReadKey(true).Key;
                 Direction newDirection = key switch
                 {
                     ConsoleKey.UpArrow => Direction.Up,

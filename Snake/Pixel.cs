@@ -24,19 +24,22 @@ public class Pixel
         return HashCode.Combine(X, Y);
     }
 
-    public static bool operator ==(Pixel? left,
+    public static bool operator ==(
+        Pixel? left,
         Pixel? right)
     {
         return Equals(left, right);
     }
 
-    public static bool operator !=(Pixel? left,
+    public static bool operator !=(
+        Pixel? left,
         Pixel? right)
     {
         return !Equals(left, right);
     }
 
-    public Pixel(int x,
+    public Pixel(
+        int x,
         int y)
     {
         X = x;

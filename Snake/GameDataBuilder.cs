@@ -29,8 +29,7 @@ public class GameDataBuilder
         // проверка длины и ширины на не отрицательность
         if (width < 0 || height < 0)
         {
-            throw new ArgumentException(
-                                        "Ширина и высота должны быть положительными.");
+            throw new ArgumentException("Ширина и высота должны быть положительными.");
         }
 
         _width = width;
