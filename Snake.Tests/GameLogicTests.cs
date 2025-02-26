@@ -92,7 +92,8 @@ public class GameLogicTests
     [TestCase(Direction.Left, Direction.Right, Direction.Left)]
     [TestCase(Direction.Down, Direction.Up, Direction.Down)]
     [TestCase(Direction.Up, Direction.Down, Direction.Up)]
-    public void ChangeDirection_NewDirectionIsOpposite_DirectionIsNotChanged(Direction initialDirection,
+    public void ChangeDirection_NewDirectionIsOpposite_DirectionIsNotChanged(
+        Direction initialDirection,
         Direction newDirection,
         Direction expectedDirection)
     {
@@ -116,7 +117,8 @@ public class GameLogicTests
     [TestCase(Direction.Up, Direction.Right, Direction.Right)]
     [TestCase(Direction.Down, Direction.Left, Direction.Left)]
     [TestCase(Direction.Down, Direction.Right, Direction.Right)]
-    public void ChangeDirection_NewDirectionIsDifferent_DirectionIsChanged(Direction initialDirection,
+    public void ChangeDirection_NewDirectionIsDifferent_DirectionIsChanged(
+        Direction initialDirection,
         Direction newDirection,
         Direction expectedDirection)
     {
@@ -136,7 +138,8 @@ public class GameLogicTests
     [TestCase(Direction.Left, Direction.Left, Direction.Left)]
     [TestCase(Direction.Up, Direction.Up, Direction.Up)]
     [TestCase(Direction.Down, Direction.Down, Direction.Down)]
-    public void ChangeDirection_NewDirectionIsSame_DirectionIsNotChanged(Direction initialDirection,
+    public void ChangeDirection_NewDirectionIsSame_DirectionIsNotChanged(
+        Direction initialDirection,
         Direction newDirection,
         Direction expectedDirection)
     {
