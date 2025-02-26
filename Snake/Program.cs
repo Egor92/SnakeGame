@@ -18,6 +18,7 @@ public class Program
                                       .SetStepCount(0)
                                       .Build();
         var gameLogic = new GameLogic(gameData);
+
         // Создать Game и запустить
         var game = new Game(gameData, gameLogic);
         game.Start();
