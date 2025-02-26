@@ -25,7 +25,6 @@ public class GameLogic(GameData gameData)
                 break;
         }
 
-
         var newHead = new Pixel(newX, newY);
         snakeBody.Dequeue();
         snakeBody.Enqueue(newHead);
@@ -48,7 +47,8 @@ public class GameLogic(GameData gameData)
         var snakeBody = gameData.Snake.Body.ToArray();
         var head = snakeBody.Last();
 
-        bool isSnakeBumpedIntoItself = snakeBody[0..^1].Contains(head);
+        bool isSnakeBumpedIntoItself = snakeBody[0..^1]
+            .Contains(head);
         bool isSnakeBumpedIntoWalls = gameData.Walls.Contains(head);
 
         return isSnakeBumpedIntoItself || isSnakeBumpedIntoWalls;

@@ -157,7 +157,6 @@ public class GameRenderer
         Console.WriteLine("Game Over!");
     }
 
-
     private static void ClearBuffer(char[,] buffer, int width, int height)
     {
         for (int i = 0; i < width; i++)

@@ -11,7 +11,7 @@ public class PixelTests
 
         // Act
         bool areEqual = pixel1 == pixel2;
-        
+
         // Assert
         Assert.That(areEqual, Is.True);
     }

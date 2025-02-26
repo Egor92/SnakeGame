@@ -9,9 +9,9 @@ public class GameLogicTests
     public void Setup()
     {
         _gameData = GameDataBuilder.Create()
-            .SetPlayingFieldSize(width: 10, height: 10)
-            .CreateWallAroundPlayingField(width: 10, height: 10)
-            .Build();
+                                   .SetPlayingFieldSize(10, 10)
+                                   .CreateWallAroundPlayingField(10, 10)
+                                   .Build();
         _gameLogic = new GameLogic(_gameData);
     }
 
@@ -20,8 +20,8 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
 
         // Act
         _gameLogic.DoStep();
@@ -38,8 +38,8 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Left)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
 
         // Act
         _gameLogic.DoStep();
@@ -56,8 +56,8 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Up)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
 
         // Act
         _gameLogic.DoStep();
@@ -74,8 +74,8 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Down)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
 
         // Act
         _gameLogic.DoStep();
@@ -97,8 +97,8 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, initialDirection)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
 
         // Act
         _gameLogic.ChangeDirection(newDirection);
@@ -120,8 +120,8 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, initialDirection)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
 
         // Act
         _gameLogic.ChangeDirection(newDirection);
@@ -139,8 +139,8 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, initialDirection)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
 
         // Act
         _gameLogic.ChangeDirection(newDirection);
@@ -154,11 +154,11 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(1, 2, Direction.Left)
-            .Grow(2)
-            .Build();
-        _gameData.Walls = new List<Pixel>()
+                                      .Grow(2)
+                                      .Build();
+        _gameData.Walls = new List<Pixel>
         {
-            new Pixel(0, 2)
+            new(0, 2)
         };
 
         // Act
@@ -175,8 +175,8 @@ public class GameLogicTests
         var initialSnakeLength = 3;
 
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
-            .Grow(initialSnakeLength - 1)
-            .Build();
+                                      .Grow(initialSnakeLength - 1)
+                                      .Build();
         _gameData.Food = new Pixel(6, 5);
 
         // Act
@@ -193,10 +193,10 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Down)
-            .Grow(Direction.Right, 1)
-            .Grow(Direction.Down, 1)
-            .Grow(Direction.Left, 2)
-            .Build();
+                                      .Grow(Direction.Right, 1)
+                                      .Grow(Direction.Down, 1)
+                                      .Grow(Direction.Left, 2)
+                                      .Build();
 
         // Act
         _gameLogic.DoStep();
@@ -210,8 +210,8 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
         _gameData.Food = new Pixel(6, 5);
 
         // Act
@@ -229,15 +229,12 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
         _gameData.StepCount = initialStepCount;
 
         // Act
-        for (int i = 0; i < doStepInvocationCount; i++)
-        {
-            _gameLogic.DoStep();
-        }
+        for (var i = 0; i < doStepInvocationCount; i++) _gameLogic.DoStep();
 
         // Assert
         var finiteStepCount = _gameData.StepCount;
@@ -249,8 +246,8 @@ public class GameLogicTests
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
-            .Grow(2)
-            .Build();
+                                      .Grow(2)
+                                      .Build();
         _gameData.Food = new Pixel(6, 5);
         var initialNumberOfPoints = 0;
 

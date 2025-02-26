@@ -6,15 +6,16 @@ public class Game(GameData gameData, GameLogic gameLogic)
 
     public void Start()
     {
-        Console.SetWindowSize(gameData.BoardWidth + 6, gameData.BoardHeight+ 6);
-        
+        Console.SetWindowSize(gameData.BoardWidth + 6, gameData.BoardHeight + 6);
+
         while (!gameData.IsGameOver)
         {
             _gameRenderer.RenderGame(gameData);
 
             while (Console.KeyAvailable)
             {
-                ConsoleKey key = Console.ReadKey(true).Key;
+                ConsoleKey key = Console.ReadKey(true)
+                                        .Key;
                 Direction newDirection = key switch
                 {
                     ConsoleKey.UpArrow => Direction.Up,
