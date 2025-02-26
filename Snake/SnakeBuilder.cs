@@ -41,8 +41,7 @@ public class SnakeBuilder
                 Direction.Down => new Pixel(_tail.X, _tail.Y + 1),
                 Direction.Left => new Pixel(_tail.X - 1, _tail.Y),
                 Direction.Right => new Pixel(_tail.X + 1, _tail.Y),
-                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction,
-                    $"Unexpected direction: {direction}")
+                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, $"Unexpected direction: {direction}")
             };
             _body.Add(bodyPixel);
             _tail = bodyPixel;

@@ -9,14 +9,15 @@ public class Program
         Console.CursorVisible = false;
         Console.OutputEncoding = System.Text.Encoding.Unicode;
         var gameData = GameDataBuilder.Create()
-            .SetPlayingFieldSize(width: 45, height: 15)
-            .CreateWallAroundPlayingField(width: 45, height: 15)
-            .AddSnake(x: 10, y: 10, Direction.Right, 3)
-            .AddFood()
-            .SetPointCount(0)
-            .SetStepCount(0)
-            .Build();
+                                      .SetPlayingFieldSize(width: 45, height: 15)
+                                      .CreateWallAroundPlayingField(width: 45, height: 15)
+                                      .AddSnake(x: 10, y: 10, Direction.Right, 3)
+                                      .AddFood()
+                                      .SetPointCount(0)
+                                      .SetStepCount(0)
+                                      .Build();
         var gameLogic = new GameLogic(gameData);
+
         // Создать Game и запустить
         var game = new Game(gameData, gameLogic);
         game.Start();

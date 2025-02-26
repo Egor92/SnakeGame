@@ -27,8 +27,7 @@ public class GameDataBuilder
         // проверка длины и ширины на не отрицательность
         if (width < 0 || height < 0)
         {
-            throw new ArgumentException(
-                "Ширина и высота должны быть положительными.");
+            throw new ArgumentException("Ширина и высота должны быть положительными.");
         }
 
         _width = width;
@@ -70,8 +69,7 @@ public class GameDataBuilder
                 Direction.Left => new Pixel(x + i, y),
                 Direction.Up => new Pixel(x, y + i),
                 Direction.Down => new Pixel(x, y - i),
-                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction,
-                    $"Unexpected direction: {direction}")
+                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, $"Unexpected direction: {direction}")
             };
 
             _body.Enqueue(bodyPixel);
