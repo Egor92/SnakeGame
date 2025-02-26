@@ -3,6 +3,7 @@
 public class Pixel
 {
     public int X { get; set; }
+
     public int Y { get; set; }
 
     protected bool Equals(Pixel other)
@@ -23,17 +24,20 @@ public class Pixel
         return HashCode.Combine(X, Y);
     }
 
-    public static bool operator ==(Pixel? left, Pixel? right)
+    public static bool operator ==(Pixel? left,
+        Pixel? right)
     {
         return Equals(left, right);
     }
 
-    public static bool operator !=(Pixel? left, Pixel? right)
+    public static bool operator !=(Pixel? left,
+        Pixel? right)
     {
         return !Equals(left, right);
     }
 
-    public Pixel(int x, int y)
+    public Pixel(int x,
+        int y)
     {
         X = x;
         Y = y;

@@ -14,7 +14,9 @@ public class SnakeBuilder
     {
     }
 
-    public static SnakeBuilder Create(int x, int y, Direction snakeDirection)
+    public static SnakeBuilder Create(int x,
+        int y,
+        Direction snakeDirection)
     {
         return new SnakeBuilder()
         {
@@ -31,7 +33,8 @@ public class SnakeBuilder
         return this;
     }
 
-    public SnakeBuilder Grow(Direction direction, int length)
+    public SnakeBuilder Grow(Direction direction,
+        int length)
     {
         for (int i = 1; i <= length; i++)
         {
@@ -41,7 +44,8 @@ public class SnakeBuilder
                 Direction.Down => new Pixel(_tail.X, _tail.Y + 1),
                 Direction.Left => new Pixel(_tail.X - 1, _tail.Y),
                 Direction.Right => new Pixel(_tail.X + 1, _tail.Y),
-                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction,
+                _ => throw new ArgumentOutOfRangeException(nameof(direction),
+                    direction,
                     $"Unexpected direction: {direction}")
             };
             _body.Add(bodyPixel);

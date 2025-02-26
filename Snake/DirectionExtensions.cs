@@ -10,7 +10,8 @@ public static class DirectionExtensions
             Direction.Left => Direction.Right,
             Direction.Right => Direction.Left,
             Direction.Up => Direction.Down,
-            _ => throw new ArgumentOutOfRangeException(nameof(direction), direction,
+            _ => throw new ArgumentOutOfRangeException(nameof(direction),
+                direction,
                 $"Unexpected direction: {direction}")
         };
     }

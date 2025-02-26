@@ -93,7 +93,8 @@ public class GameLogicTests
     [TestCase(Direction.Down, Direction.Up, Direction.Down)]
     [TestCase(Direction.Up, Direction.Down, Direction.Up)]
     public void ChangeDirection_NewDirectionIsOpposite_DirectionIsNotChanged(Direction initialDirection,
-        Direction newDirection, Direction expectedDirection)
+        Direction newDirection,
+        Direction expectedDirection)
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, initialDirection)
@@ -116,7 +117,8 @@ public class GameLogicTests
     [TestCase(Direction.Down, Direction.Left, Direction.Left)]
     [TestCase(Direction.Down, Direction.Right, Direction.Right)]
     public void ChangeDirection_NewDirectionIsDifferent_DirectionIsChanged(Direction initialDirection,
-        Direction newDirection, Direction expectedDirection)
+        Direction newDirection,
+        Direction expectedDirection)
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, initialDirection)
@@ -135,7 +137,8 @@ public class GameLogicTests
     [TestCase(Direction.Up, Direction.Up, Direction.Up)]
     [TestCase(Direction.Down, Direction.Down, Direction.Down)]
     public void ChangeDirection_NewDirectionIsSame_DirectionIsNotChanged(Direction initialDirection,
-        Direction newDirection, Direction expectedDirection)
+        Direction newDirection,
+        Direction expectedDirection)
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, initialDirection)
@@ -225,7 +228,9 @@ public class GameLogicTests
     [TestCase(2, 3, 5)]
     [TestCase(3, 6, 9)]
     public void DoStep_CallSeveralTimes_StepCountIncreasedByDoStepInvocations(
-        int doStepInvocationCount, int initialStepCount, int expectedStepCount)
+        int doStepInvocationCount,
+        int initialStepCount,
+        int expectedStepCount)
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)

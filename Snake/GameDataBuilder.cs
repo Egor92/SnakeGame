@@ -22,7 +22,8 @@ public class GameDataBuilder
         return new GameDataBuilder();
     }
 
-    public GameDataBuilder SetPlayingFieldSize(int width, int height)
+    public GameDataBuilder SetPlayingFieldSize(int width,
+        int height)
     {
         // проверка длины и ширины на не отрицательность
         if (width < 0 || height < 0)
@@ -36,7 +37,8 @@ public class GameDataBuilder
         return this;
     }
 
-    public GameDataBuilder CreateWallAroundPlayingField(int width, int height)
+    public GameDataBuilder CreateWallAroundPlayingField(int width,
+        int height)
     {
         // Логика для создания стены по краю игрового поля
         _walls = new List<Pixel>();
@@ -56,7 +58,10 @@ public class GameDataBuilder
         return this;
     }
 
-    public GameDataBuilder AddSnake(int x, int y, Direction direction, int snakeLength)
+    public GameDataBuilder AddSnake(int x,
+        int y,
+        Direction direction,
+        int snakeLength)
     {
         // создание змейки
         _head = new Pixel(x, y);
@@ -70,7 +75,8 @@ public class GameDataBuilder
                 Direction.Left => new Pixel(x + i, y),
                 Direction.Up => new Pixel(x, y + i),
                 Direction.Down => new Pixel(x, y - i),
-                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction,
+                _ => throw new ArgumentOutOfRangeException(nameof(direction),
+                    direction,
                     $"Unexpected direction: {direction}")
             };
 

@@ -47,8 +47,7 @@ public class GameLogic(GameData gameData)
         var snakeBody = gameData.Snake.Body.ToArray();
         var head = snakeBody.Last();
 
-        bool isSnakeBumpedIntoItself = snakeBody[0..^1]
-            .Contains(head);
+        bool isSnakeBumpedIntoItself = snakeBody[0..^1].Contains(head);
         bool isSnakeBumpedIntoWalls = gameData.Walls.Contains(head);
 
         return isSnakeBumpedIntoItself || isSnakeBumpedIntoWalls;
@@ -68,7 +67,8 @@ public class GameLogic(GameData gameData)
             Direction.Down => new Pixel(element.X, element.Y + 1),
             Direction.Left => new Pixel(element.X - 1, element.Y),
             Direction.Right => new Pixel(element.X + 1, element.Y),
-            _ => throw new ArgumentOutOfRangeException(nameof(gameData.Snake.Direction), gameData.Snake.Direction,
+            _ => throw new ArgumentOutOfRangeException(nameof(gameData.Snake.Direction),
+                gameData.Snake.Direction,
                 $"Unexpected direction: {gameData.Snake.Direction}")
         };
 

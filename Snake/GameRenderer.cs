@@ -20,7 +20,8 @@ public class GameRenderer
         }
     }
 
-    private static void WriteWallsToBuffer(List<Pixel> walls, char[,] currentBuffer)
+    private static void WriteWallsToBuffer(List<Pixel> walls,
+        char[,] currentBuffer)
     {
         foreach (var wall in walls)
         {
@@ -28,7 +29,8 @@ public class GameRenderer
         }
     }
 
-    private static void WriteSnakeToBuffer(Snake snake, char[,] currentBuffer)
+    private static void WriteSnakeToBuffer(Snake snake,
+        char[,] currentBuffer)
     {
         int i = 0;
         var bodyLength = snake.Body.Count;
@@ -65,7 +67,9 @@ public class GameRenderer
         }
     }
 
-    private static char GetSnakeBodySymbol(Pixel pixel, Pixel nextPixel, Pixel prevPixel)
+    private static char GetSnakeBodySymbol(Pixel pixel,
+        Pixel nextPixel,
+        Pixel prevPixel)
     {
         if ((prevPixel.X < pixel.X && nextPixel.Y > pixel.Y) || (nextPixel.X < pixel.X && prevPixel.Y > pixel.Y))
         {
@@ -100,7 +104,8 @@ public class GameRenderer
         throw new InvalidOperationException("Invalid snake body segment");
     }
 
-    private static char GetSnakeTailSymbol(Pixel pixel, Pixel nextPixel)
+    private static char GetSnakeTailSymbol(Pixel pixel,
+        Pixel nextPixel)
     {
         if (nextPixel.Y > pixel.Y)
         {
@@ -125,12 +130,14 @@ public class GameRenderer
         throw new InvalidOperationException("Invalid snake tail segment");
     }
 
-    private static void WriteFoodToBuffer(Pixel food, char[,] currentBuffer)
+    private static void WriteFoodToBuffer(Pixel food,
+        char[,] currentBuffer)
     {
         currentBuffer[food.X, food.Y] = GameRenderSymbols.Food;
     }
 
-    private void DrawElements(GameData gameData, char[,] currentBuffer)
+    private void DrawElements(GameData gameData,
+        char[,] currentBuffer)
     {
         for (int i = 0; i < gameData.BoardWidth; i++)
         {
@@ -157,7 +164,9 @@ public class GameRenderer
         Console.WriteLine("Game Over!");
     }
 
-    private static void ClearBuffer(char[,] buffer, int width, int height)
+    private static void ClearBuffer(char[,] buffer,
+        int width,
+        int height)
     {
         for (int i = 0; i < width; i++)
         {
