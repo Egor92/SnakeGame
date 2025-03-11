@@ -29,9 +29,9 @@ jobs:
       run: dotnet restore
 
     - name: Calculate versions
-        id: calculate_versions
-        shell: bash
-        run: |
+      id: calculate_versions
+      shell: bash
+      run: |
         ASSEMBLY_VERSION=$(cat version.txt | tr -d '\n' | tr -d '\r')
         echo "Assembly Version: $ASSEMBLY_VERSION"
 
