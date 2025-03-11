@@ -12,18 +12,100 @@ on:
       - '**' # Запускаем для pull request'ов в любую ветку
 jobs:
   build:
+    runs-on: windows-latest
+    
+     steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 
 
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: '8.0.x'
+
     - name: Restore dependencies
+      working-directory: ./code/Snake
       run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+
+    - name: Calculate versions
+        id: calculate_versions
+        shell: bash
+        run: |
+        ASSEMBLY_VERSION=$(cat version.txt | tr -d '\n' | tr -d '\r')
+        echo "Assembly Version: $ASSEMBLY_VERSION"
+
+        BUILD_NUMBER=${{ github.run_number }}
+        ASSEMBLY_FILE_VERSION="$ASSEMBLY_VERSION.$BUILD_NUMBER"
+        ASSEMBLY_INFORMATIONAL_VERSION="$ASSEMBLY_VERSION.$BUILD_NUMBER"
+
+        echo "assembly_version=$ASSEMBLY_VERSION" >> $GITHUB_ENV
+        echo "assembly_file_version=$ASSEMBLY_FILE_VERSION" >> $GITHUB_ENV
+        echo "assembly_informational_version=$ASSEMBLY_INFORMATIONAL_VERSION" >> $GITHUB_ENV
+    
+    - name: Build project
+      working-directory: ./code
+      run: |
+        echo "Building with AssemblyVersion=$assembly_version"
+        dotnet build --configuration Release --no-restore \
+          /p:AssemblyVersion=$assembly_version \
+          /p:AssemblyFileVersion=$assembly_file_version \
+          /p:AssemblyInformationalVersion=$assembly_informational_version
+
+    - name: Run tests
+      working-directory: ./code
+      run: |
+        echo "Running tests..."
+        dotnet test --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
+      continue-on-error: false
+
+    - name: Run tests
+      working-directory: ./code/Snake.Tests 
+      run: |
+        echo "Running tests..."
+        dotnet test --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
+      continue-on-error: false
+      
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: ./code/TestResults/*.trx
+
+    - name: Pack NuGet package
+      working-directory: ./code
+      run: |
+        echo "Packing with AssemblyVersion=$assembly_version"
+        dotnet pack --configuration Release --output ./artifacts \
+          /p:AssemblyVersion=$assembly_version \
+          /p:AssemblyFileVersion=$assembly_file_version \
+          /p:AssemblyInformationalVersion=$assembly_informational_version \
+          /p:PackageVersion=$assembly_version
+
+    - name: Upload NuGet packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: nuget-packages
+        path: ./code/artifacts/*.nupkg
+
+    - name: Publish NuGet package
+      if: github.ref == 'refs/heads/master' 
+      working-directory: ./code
+      run: |
+        dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+
+    - name: Create Git Tag
+      if: github.ref == 'refs/heads/master'
+      run: |
+        TAG_NAME="release-$assembly_version"
+        echo "Creating tag: $TAG_NAME"
+
+        git config --global user.email "actions@github.com"
+        git config --global user.name "Github Actions"
+
+        git tag -a $TAG_NAME -m "Release $TAG_NAME"
+        git push origin $TAG_NAME
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
