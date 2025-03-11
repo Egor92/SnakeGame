@@ -26,7 +26,6 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      working-directory: ./code/Snake
       run: dotnet restore
 
     - name: Calculate versions
@@ -45,7 +44,6 @@ jobs:
         echo "assembly_informational_version=$ASSEMBLY_INFORMATIONAL_VERSION" >> $GITHUB_ENV
     
     - name: Build project
-      working-directory: ./code
       run: |
         echo "Building with AssemblyVersion=$assembly_version"
         dotnet build --configuration Release --no-restore \
@@ -54,14 +52,12 @@ jobs:
           /p:AssemblyInformationalVersion=$assembly_informational_version
 
     - name: Run tests
-      working-directory: ./code
       run: |
         echo "Running tests..."
         dotnet test --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
       continue-on-error: false
 
     - name: Run tests
-      working-directory: ./code/Snake.Tests 
       run: |
         echo "Running tests..."
         dotnet test --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
@@ -72,10 +68,9 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: test-results
-        path: ./code/TestResults/*.trx
+        path: ./TestResults/*.trx
 
     - name: Pack NuGet package
-      working-directory: ./code
       run: |
         echo "Packing with AssemblyVersion=$assembly_version"
         dotnet pack --configuration Release --output ./artifacts \
@@ -88,16 +83,15 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: nuget-packages
-        path: ./code/artifacts/*.nupkg
+        path: ./artifacts/*.nupkg
 
     - name: Publish NuGet package
-      if: github.ref == 'refs/heads/master' 
-      working-directory: ./code
+      if: github.ref == 'refs/heads/main' 
       run: |
         dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
     - name: Create Git Tag
-      if: github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/main'
       run: |
         TAG_NAME="release-$assembly_version"
         echo "Creating tag: $TAG_NAME"
