@@ -5,10 +5,11 @@ name: .NET
 
 on:
   push:
-    branches: [ "dev" ]
+    branches:
+      - '**' # Запускаем для всех веток
   pull_request:
-    branches: [ "dev" ]
-
+    branches:
+      - '**' # Запускаем для pull request'ов в любую ветку
 jobs:
   build:
 
