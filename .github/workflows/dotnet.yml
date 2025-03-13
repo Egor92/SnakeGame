@@ -34,11 +34,11 @@ jobs:
     - name: Run tests
       run: |
         echo "Running tests..."
-        dotnet test --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=TestResults/test_results.trx"
+        dotnet test --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=.testResults/test_results.trx"
       continue-on-error: false
       
     - name: Save Artifact
       uses: actions/upload-artifact@v4
       with:
         name: test_results
-        path: TestResults/*.trx
+        path: .testResults/*.trx
