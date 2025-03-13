@@ -11,7 +11,7 @@ on:
     branches:
       - '**' # Запускаем для pull request'ов в любую ветку
 jobs:
-  build:
+   build:
     runs-on: windows-latest
     
     steps:
