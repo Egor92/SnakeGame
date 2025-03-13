@@ -32,7 +32,7 @@ public class GameLogic(GameData gameData)
 
         if (gameData.Food != null && CheckFoodCollision())
         {
-            GenerateFood();
+            gameData.Food = FoodGenerator.GenerateFood(gameData);
             GrowSnake(out newHead);
             gameData.Snake.Head = newHead;
             gameData.PointCount += GameSettings.PointsForFood;
@@ -73,26 +73,6 @@ public class GameLogic(GameData gameData)
 
         gameData.Snake.Body.Enqueue(newPixel);
         newHead = newPixel;
-    }
-
-    private void GenerateFood()
-    {
-        Random random = new Random();
-
-        while (true)
-        {
-            int x = random.Next(1, gameData.BoardWidth - 1);
-            int y = random.Next(1, gameData.BoardHeight - 1);
-
-            Pixel newFood = new Pixel(x, y);
-
-            if (!gameData.Walls.Contains(newFood) &&
-                !gameData.Snake.Body.Contains(newFood))
-            {
-                gameData.Food = newFood;
-                break;
-            }
-        }
     }
 
     public void ChangeDirection(Direction direction)
