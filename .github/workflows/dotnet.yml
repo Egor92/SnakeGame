@@ -37,8 +37,8 @@ jobs:
         dotnet test --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
       continue-on-error: false
       
-     - name: Save Artifact
-       uses: actions/upload-artifact@v3
-       with:
-         name: test_results
-         path: ./TestResults/*.trx
+    - name: Save Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: test_results
+        path: ./TestResults/*.trx
