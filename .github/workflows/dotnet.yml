@@ -32,13 +32,6 @@ jobs:
       run: dotnet build --configuration Release --no-restore
 
     - name: Run tests
-      run: |
-        echo "Running tests..."
-        dotnet test --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=.testResults/test_results.trx"
-      continue-on-error: false
+      run: dotnet test --no-restore --verbosity normal
       
-    - name: Save Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: test_results
-        path: .testResults/*.trx
+ 
