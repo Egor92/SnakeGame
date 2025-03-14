@@ -270,4 +270,24 @@ public class GameLogicTests
         var pointsDifference = finiteNumberOfPoints - initialNumberOfPoints;
         Assert.That(pointsDifference, Is.EqualTo(100));
     }
+
+    [Test]
+    public void GenerateFood_PixelFildFree_FoodOccupiesFreeField()
+    {
+        // Arrange  
+        _gameData = GameDataBuilder.Create()
+                                   .SetPlayingFieldSize(width: 6, height: 3)
+                                   .CreateWallAroundPlayingField(width: 6, height: 3)
+                                   .Build();
+
+        _gameData.Snake = SnakeBuilder.Create(2, 1, Direction.Right)
+                                      .Grow(1)
+                                      .Build();
+
+        // Act
+        var foodPixel = FoodGenerator.GenerateFood(_gameData);
+
+        // Assert
+        Assert.That(foodPixel, Is.EqualTo(new Pixel(3, 1)).Or.EqualTo(new Pixel(4, 1)));
+    }
 }

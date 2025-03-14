@@ -29,4 +29,5 @@ public class PixelTests
         // Assert
         Assert.That(contains, Is.True);
     }
+   
 }
