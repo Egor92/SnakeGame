@@ -8,16 +8,10 @@ public static class FoodGenerator
 
         while (true)
         {
-            int x = random.Next(1, gameData.BoardWidth - 1);
-            int y = random.Next(1, gameData.BoardHeight - 1);
-
-            Pixel newFood = new Pixel(x, y);
-
-            if (!gameData.Walls.Contains(newFood) &&
-                !gameData.Snake.Body.Contains(newFood))
-            {
-                return newFood;
-            }
+            FreeFields freeFields = new FreeFields(gameData);
+            Pixel[] fields = freeFields.GetFreeField();
+            Pixel newFood = fields[random.Next(fields.Length)];
+            return newFood;
         }
     }
 }
