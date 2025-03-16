@@ -285,7 +285,7 @@ public class GameLogicTests
                                       .Build();
 
         // Act
-        var foodPixel = FoodGenerator.GenerateFood(_gameData);
+        var foodPixel = _gameLogic.GeneratePixelFood(_gameData);
 
         // Assert
         Assert.That(foodPixel, Is.EqualTo(new Pixel(3, 1)).Or.EqualTo(new Pixel(4, 1)));

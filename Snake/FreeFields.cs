@@ -1,10 +1,10 @@
 namespace Snake;
 
-public class FreeFields
+public class GameFieldHelper
 {
     private readonly GameData _gameData;
 
-    public FreeFields(GameData gameData)
+    public GameFieldHelper(GameData gameData)
     {
         _gameData = gameData;
     }
@@ -12,9 +12,9 @@ public class FreeFields
     public Pixel[] GetFreeField()
     {
         List<Pixel> fields = new List<Pixel>();
-        for (int x = 1; x < _gameData.BoardWidth - 1; x++)
+        for (int x = 0; x < _gameData.BoardWidth; x++)
         {
-            for (int y = 1; y < _gameData.BoardHeight - 1; y++)
+            for (int y = 0; y < _gameData.BoardHeight; y++)
             {
                 Pixel pixel = new Pixel(x, y);
                 if (!_gameData.Walls.Contains(pixel) &&
