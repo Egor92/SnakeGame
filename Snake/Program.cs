@@ -9,9 +9,9 @@ public class Program
         Console.CursorVisible = false;
         Console.OutputEncoding = System.Text.Encoding.Unicode;
         var gameData = GameDataBuilder.Create()
-                                      .SetPlayingFieldSize(width: 32, height: 3)
-                                      .CreateWallAroundPlayingField(width: 32, height: 3)
-                                      .AddSnake(x: 16, y: 1, Direction.Right, 15)
+                                      .SetPlayingFieldSize(width: 45, height: 15)
+                                      .CreateWallAroundPlayingField(width: 45, height: 15)
+                                      .AddSnake(x: 5, y: 5, Direction.Right, 3)
                                       .AddFood()
                                       .SetPointCount(0)
                                       .SetStepCount(0)

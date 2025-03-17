@@ -58,7 +58,7 @@ public class GameLogic(GameData gameData)
         return gameData.Snake.Head == gameData.Food;
     }
 
-    public Pixel GeneratePixelFood(GameData gameData)
+    private Pixel GeneratePixelFood(GameData gameData)
     {
         Random random = new Random();
 
@@ -70,6 +70,7 @@ public class GameLogic(GameData gameData)
             return newPixelFood;
         }
     }
+
     private void GrowSnake(out Pixel newHead)
     {
         var element = gameData.Snake.Body.Last();
