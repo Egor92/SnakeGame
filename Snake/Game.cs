@@ -6,8 +6,6 @@ public class Game(GameData gameData, GameLogic gameLogic)
 
     public void Start()
     {
-      //  Console.SetWindowSize(gameData.BoardWidth + 6, gameData.BoardHeight + 6);
-
         while (!gameData.IsGameOver)
         {
             _gameRenderer.RenderGame(gameData);
