@@ -84,12 +84,10 @@ public class GameDataBuilder
 
     public GameDataBuilder AddFood()
     {
-        Random random = new Random();
-
         while (true)
         {
-            int x = random.Next(1, _width - 1);
-            int y = random.Next(1, _height - 1);
+            int x = RandomAdapter.Next(1, _width - 1);
+            int y = RandomAdapter.Next(1, _height - 1);
 
             Pixel food = new Pixel(x, y);
 

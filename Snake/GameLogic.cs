@@ -32,7 +32,7 @@ public class GameLogic(GameData gameData)
 
         if (gameData.Food != null && CheckFoodCollision())
         {
-            gameData.Food = GetFoodPixel(gameData);
+            gameData.Food = GetFreePixel(gameData);
             GrowSnake(out newHead);
             gameData.Snake.Head = newHead;
             gameData.PointCount += GameSettings.PointsForFood;
@@ -58,15 +58,13 @@ public class GameLogic(GameData gameData)
         return gameData.Snake.Head == gameData.Food;
     }
 
-    private Pixel GetFoodPixel(GameData gameData)
+    private Pixel GetFreePixel(GameData gameData)
     {
-        Random random = new Random();
-
         while (true)
         {
-            GameFieldHelper gameFieldHelper = new GameFieldHelper(gameData);
-            Pixel[] fields = gameFieldHelper.GetFreeField();
-            Pixel newPixelFood = fields[random.Next(fields.Length)];
+            GameFieldHelper gameFieldHelper = new GameFieldHelper();
+            Pixel[] fields = gameFieldHelper.GetFreePixels(gameData);
+            Pixel newPixelFood = fields[RandomAdapter.Next(fields.Length)];
             return newPixelFood;
         }
     }
