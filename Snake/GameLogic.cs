@@ -58,7 +58,7 @@ public class GameLogic(GameData gameData)
         return gameData.Snake.Head == gameData.Food;
     }
 
-    private Pixel GetFreePixel(GameData gameData)
+    private Pixel GetFreePixel()
     {
         while (true)
         {
