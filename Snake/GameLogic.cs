@@ -32,7 +32,7 @@ public class GameLogic(GameData gameData)
 
         if (gameData.Food != null && CheckFoodCollision())
         {
-            gameData.Food = GetFreePixel(gameData);
+            gameData.Food = GetFreePixel();
             GrowSnake(out newHead);
             gameData.Snake.Head = newHead;
             gameData.PointCount += GameSettings.PointsForFood;

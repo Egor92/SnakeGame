@@ -1,8 +1,8 @@
 namespace Snake;
 
-public abstract class RandomAdapter
+public static class RandomAdapter
 {
-    private static readonly Random _random;
+    private static readonly Random _random = new Random();
 
     public static int Next(int min, int max)
     {
