@@ -2,6 +2,8 @@
 
 public class GameLogic(GameData gameData)
 {
+    GameFieldHelper _gameFieldHelper = new GameFieldHelper();
+
     public void DoStep()
     {
         var snakeBody = gameData.Snake.Body;
@@ -62,10 +64,9 @@ public class GameLogic(GameData gameData)
     {
         while (true)
         {
-            GameFieldHelper gameFieldHelper = new GameFieldHelper();
-            Pixel[] fields = gameFieldHelper.GetFreePixels(gameData);
-            Pixel newPixelFood = fields[RandomAdapter.Next(fields.Length)];
-            return newPixelFood;
+            Pixel[] fields = _gameFieldHelper.GetFreePixels(gameData);
+            Pixel newPixel = fields[RandomAdapter.Next(fields.Length)];
+            return newPixel;
         }
     }
 

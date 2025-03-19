@@ -32,7 +32,7 @@ public class GameFieldHelperTests
     }
 
     [Test]
-    public void GetFreePixels_GameDataDoesNotContainsFreePixels_ReturnsEmptyArray()
+    public void GetFreePixels_GameDataDoesNotContainFreePixels_ReturnsEmptyArray()
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 1, Direction.Right)
