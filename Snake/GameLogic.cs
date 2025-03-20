@@ -2,6 +2,8 @@
 
 public class GameLogic(GameData gameData)
 {
+    private GameFieldHelper _gameFieldHelper = new GameFieldHelper();
+
     public void DoStep()
     {
         var snakeBody = gameData.Snake.Body;
@@ -32,7 +34,7 @@ public class GameLogic(GameData gameData)
 
         if (gameData.Food != null && CheckFoodCollision())
         {
-            GenerateFood();
+            gameData.Food = GetFreePixel();
             GrowSnake(out newHead);
             gameData.Snake.Head = newHead;
             gameData.PointCount += GameSettings.PointsForFood;
@@ -58,6 +60,16 @@ public class GameLogic(GameData gameData)
         return gameData.Snake.Head == gameData.Food;
     }
 
+    private Pixel GetFreePixel()
+    {
+        while (true)
+        {
+            Pixel[] fields = _gameFieldHelper.GetFreePixels(gameData);
+            Pixel freePixel = fields[RandomAdapter.Next(fields.Length)];
+            return freePixel;
+        }
+    }
+
     private void GrowSnake(out Pixel newHead)
     {
         var element = gameData.Snake.Body.Last();
@@ -73,26 +85,6 @@ public class GameLogic(GameData gameData)
 
         gameData.Snake.Body.Enqueue(newPixel);
         newHead = newPixel;
-    }
-
-    private void GenerateFood()
-    {
-        Random random = new Random();
-
-        while (true)
-        {
-            int x = random.Next(1, gameData.BoardWidth - 1);
-            int y = random.Next(1, gameData.BoardHeight - 1);
-
-            Pixel newFood = new Pixel(x, y);
-
-            if (!gameData.Walls.Contains(newFood) &&
-                !gameData.Snake.Body.Contains(newFood))
-            {
-                gameData.Food = newFood;
-                break;
-            }
-        }
     }
 
     public void ChangeDirection(Direction direction)
