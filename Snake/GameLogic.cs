@@ -2,7 +2,7 @@
 
 public class GameLogic(GameData gameData)
 {
-    GameFieldHelper _gameFieldHelper = new GameFieldHelper();
+    private GameFieldHelper _gameFieldHelper = new GameFieldHelper();
 
     public void DoStep()
     {
@@ -65,8 +65,8 @@ public class GameLogic(GameData gameData)
         while (true)
         {
             Pixel[] fields = _gameFieldHelper.GetFreePixels(gameData);
-            Pixel newPixel = fields[RandomAdapter.Next(fields.Length)];
-            return newPixel;
+            Pixel freePixel = fields[RandomAdapter.Next(fields.Length)];
+            return freePixel;
         }
     }
 
