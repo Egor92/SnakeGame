@@ -19,7 +19,7 @@ public class Game(GameData gameData, GameLogic gameLogic)
                     ConsoleKey.DownArrow => Direction.Down,
                     ConsoleKey.LeftArrow => Direction.Left,
                     ConsoleKey.RightArrow => Direction.Right,
-                    _ => throw new ArgumentOutOfRangeException(nameof(key), key, $"Unexpected key: {key}")
+                    _ => gameData.Snake.Direction
                 };
                 gameLogic.ChangeDirection(newDirection);
             }
@@ -31,7 +31,7 @@ public class Game(GameData gameData, GameLogic gameLogic)
                 break;
             }
 
-            Thread.Sleep(500);
+            Thread.Sleep(100);
         }
 
         _gameRenderer.RenderGame(gameData);
