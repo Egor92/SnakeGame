@@ -1,17 +1,34 @@
 ﻿namespace Snake;
 
-public class GameLogic(GameData gameData)
+public class GameLogic
 {
-    private GameFieldHelper _gameFieldHelper = new GameFieldHelper();
+    private readonly GameFieldHelper _gameFieldHelper = new();
+    private readonly GameData _gameData;
+
+    private Direction _currentDirection;
+    private Direction _previousDirection;
+    private Direction _nextDirection;
+
+    public GameLogic(GameData gameData)
+    {
+        _gameData = gameData;
+        _currentDirection = gameData.Snake.Direction;
+        _previousDirection = _currentDirection;
+        _nextDirection = _currentDirection;
+    }
 
     public void DoStep()
     {
-        var snakeBody = gameData.Snake.Body;
-        var head = gameData.Snake.Head;
+        _previousDirection = _currentDirection;
+        _currentDirection = _nextDirection;
+        _gameData.Snake.Direction = _currentDirection;
+
+        var snakeBody = _gameData.Snake.Body;
+        var head = _gameData.Snake.Head;
         int newX = head.X;
         int newY = head.Y;
 
-        switch (gameData.Snake.Direction)
+        switch (_currentDirection)
         {
             case Direction.Up:
                 newY--;
@@ -30,41 +47,41 @@ public class GameLogic(GameData gameData)
         var newHead = new Pixel(newX, newY);
         snakeBody.Dequeue();
         snakeBody.Enqueue(newHead);
-        gameData.Snake.Head = newHead;
+        _gameData.Snake.Head = newHead;
 
-        if (gameData.Food != null && CheckFoodCollision())
+        if (_gameData.Food != null && CheckFoodCollision())
         {
-            gameData.Food = GetFreePixel();
+            _gameData.Food = GetFreePixel();
             GrowSnake(out newHead);
-            gameData.Snake.Head = newHead;
-            gameData.PointCount += GameSettings.PointsForFood;
+            _gameData.Snake.Head = newHead;
+            _gameData.PointCount += GameSettings.PointsForFood;
         }
 
-        gameData.StepCount += 1;
-        gameData.IsGameOver = CheckCollisions();
+        _gameData.StepCount += 1;
+        _gameData.IsGameOver = CheckCollisions();
     }
 
     private bool CheckCollisions()
     {
-        var snakeBody = gameData.Snake.Body.ToArray();
+        var snakeBody = _gameData.Snake.Body.ToArray();
         var head = snakeBody.Last();
 
         bool isSnakeBumpedIntoItself = snakeBody[0..^1].Contains(head);
-        bool isSnakeBumpedIntoWalls = gameData.Walls.Contains(head);
+        bool isSnakeBumpedIntoWalls = _gameData.Walls.Contains(head);
 
         return isSnakeBumpedIntoItself || isSnakeBumpedIntoWalls;
     }
 
     private bool CheckFoodCollision()
     {
-        return gameData.Snake.Head == gameData.Food;
+        return _gameData.Snake.Head == _gameData.Food;
     }
 
     private Pixel GetFreePixel()
     {
         while (true)
         {
-            Pixel[] fields = _gameFieldHelper.GetFreePixels(gameData);
+            Pixel[] fields = _gameFieldHelper.GetFreePixels(_gameData);
             Pixel freePixel = fields[RandomAdapter.Next(fields.Length)];
             return freePixel;
         }
@@ -72,9 +89,9 @@ public class GameLogic(GameData gameData)
 
     private void GrowSnake(out Pixel newHead)
     {
-        var element = gameData.Snake.Body.Last();
-        var direction = gameData.Snake.Direction;
-        var newPixel = gameData.Snake.Direction switch
+        var element = _gameData.Snake.Body.Last();
+        var direction = _currentDirection;
+        var newPixel = direction switch
         {
             Direction.Up => new Pixel(element.X, element.Y - 1),
             Direction.Down => new Pixel(element.X, element.Y + 1),
@@ -83,15 +100,15 @@ public class GameLogic(GameData gameData)
             _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, $"Unexpected direction: {direction}")
         };
 
-        gameData.Snake.Body.Enqueue(newPixel);
+        _gameData.Snake.Body.Enqueue(newPixel);
         newHead = newPixel;
     }
 
     public void ChangeDirection(Direction direction)
     {
-        if (gameData.Snake.Direction != direction.GetOpposite())
+        if (direction != _currentDirection.GetOpposite() || direction != _previousDirection.GetOpposite())
         {
-            gameData.Snake.Direction = direction;
+            _nextDirection = direction;
         }
     }
 }
