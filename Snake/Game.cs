@@ -6,10 +6,10 @@ public class Game(GameData gameData, GameLogic gameLogic)
 
     public void Start()
     {
+        _gameRenderer.RenderGame(gameData);
+
         while (!gameData.IsGameOver)
         {
-            _gameRenderer.RenderGame(gameData);
-
             while (Console.KeyAvailable)
             {
                 ConsoleKey key = Console.ReadKey(true).Key;
@@ -26,6 +26,8 @@ public class Game(GameData gameData, GameLogic gameLogic)
 
             gameLogic.DoStep();
 
+            _gameRenderer.RenderGame(gameData);
+
             if (gameData.IsGameOver)
             {
                 break;
@@ -33,7 +35,5 @@ public class Game(GameData gameData, GameLogic gameLogic)
 
             Thread.Sleep(100);
         }
-
-        _gameRenderer.RenderGame(gameData);
     }
 }
