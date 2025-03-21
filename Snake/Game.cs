@@ -29,10 +29,7 @@ public class Game(GameData gameData, GameLogic gameLogic)
                 }
             }
 
-            if (currentDirection != gameData.Snake.Direction)
-            {
-                gameLogic.ChangeDirection(currentDirection);
-            }
+            gameLogic.ChangeDirection(currentDirection);
 
             gameLogic.DoStep();
 
