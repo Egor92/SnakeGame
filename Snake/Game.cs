@@ -7,6 +7,7 @@ public class Game(GameData gameData, GameLogic gameLogic)
     public void Start()
     {
         _gameRenderer.RenderGame(gameData);
+
         while (!gameData.IsGameOver)
         {
             Direction currentDirection = gameData.Snake.Direction;
@@ -14,25 +15,28 @@ public class Game(GameData gameData, GameLogic gameLogic)
             while (Console.KeyAvailable)
             {
                 ConsoleKey key = Console.ReadKey(true).Key;
+
                 Direction newDirection = key switch
                 {
                     ConsoleKey.UpArrow => Direction.Up,
                     ConsoleKey.DownArrow => Direction.Down,
                     ConsoleKey.LeftArrow => Direction.Left,
                     ConsoleKey.RightArrow => Direction.Right,
-                    _ => gameData.Snake.Direction
+                    _ => currentDirection
                 };
 
-                if (newDirection != gameData.Snake.Direction.GetOpposite())
+                if (newDirection != currentDirection.GetOpposite())
                 {
                     currentDirection = newDirection;
                 }
             }
 
-            gameLogic.ChangeDirection(currentDirection);
+            if (currentDirection != gameData.Snake.Direction)
+            {
+                gameLogic.ChangeDirection(currentDirection);
+            }
 
             gameLogic.DoStep();
-
             _gameRenderer.RenderGame(gameData);
 
             if (gameData.IsGameOver)
