@@ -206,7 +206,7 @@ public class GameLogicTests
     [TestCase(Direction.Down, new[] { Direction.Left, Direction.Down }, Direction.Down)]
     [TestCase(Direction.Down, new[] { Direction.Right, Direction.Left }, Direction.Left)]
     [TestCase(Direction.Down, new[] { Direction.Down, Direction.Left }, Direction.Left)]
-    [TestCase(Direction.Down, new[] { Direction.Right, Direction.Left }, Direction.Left)]
+    [TestCase(Direction.Down, new[] { Direction.Up, Direction.Left }, Direction.Left)]
     [TestCase(Direction.Down, new[] { Direction.Up, Direction.Right }, Direction.Right)]
     [TestCase(Direction.Down, new[] { Direction.Down, Direction.Right }, Direction.Right)]
     [TestCase(Direction.Down, new[] { Direction.Left, Direction.Right }, Direction.Right)]
