@@ -156,6 +156,46 @@ public class GameLogicTests
     }
 
     [Test]
+    public void ChangeDirection_СallTwiceAndLastDirectionIsOpposite_DoNotChangeDirection()
+    {
+        // Arrange
+        _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
+                                      .Grow(2)
+                                      .Build();
+
+        // Act
+        _gameLogic.ChangeDirection(Direction.Up);
+        _gameLogic.ChangeDirection(Direction.Left);
+
+        // Assert
+        Assert.That(_gameData.Snake.Direction, Is.EqualTo(Direction.Right));
+    }
+
+  
+    [TestCase(Direction.Right, new[] { Direction.Right, Direction.Down }, Direction.Down)]
+    [TestCase(Direction.Right, new[] { Direction.Up, Direction.Down }, Direction.Down)]
+    [TestCase(Direction.Right, new[] { Direction.Left, Direction.Down }, Direction.Down)]
+    public void ChangeDirection_СallTwiceAndLastDirectionIsNotOpposite_ApplyLastDirection(
+        Direction initialDirection,
+        Direction[] direction,
+        Direction expectedDirection)
+    {
+        // Arrange
+        _gameData.Snake = SnakeBuilder.Create(5, 5, initialDirection)
+                                      .Grow(2)
+                                      .Build();
+
+        // Act
+        for (int i = 0; i < direction.Length; i++)
+        {
+            _gameLogic.ChangeDirection(direction[i]);
+        }
+
+        // Assert
+        Assert.That(_gameData.Snake.Direction, Is.EqualTo(expectedDirection));
+    }
+
+    [Test]
     public void DoStep_WallIsAhead_GameOver()
     {
         // Arrange  
