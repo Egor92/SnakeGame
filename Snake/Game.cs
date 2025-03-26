@@ -11,11 +11,14 @@ public class Game(GameData gameData, GameLogic gameLogic)
         while (!gameData.IsGameOver)
         {
             Direction currentDirection = gameData.Snake.Direction;
-
+            ConsoleKey key = ConsoleKey.None;
             while (Console.KeyAvailable)
             {
-                ConsoleKey key = Console.ReadKey(true).Key;
+                key = Console.ReadKey(true).Key;
+            }
 
+            if (key != ConsoleKey.None)
+            {
                 Direction newDirection = key switch
                 {
                     ConsoleKey.UpArrow => Direction.Up,
@@ -29,11 +32,11 @@ public class Game(GameData gameData, GameLogic gameLogic)
                 {
                     currentDirection = newDirection;
                 }
-            }
 
-            if (currentDirection != gameData.Snake.Direction)
-            {
-                gameLogic.ChangeDirection(currentDirection);
+                if (currentDirection != gameData.Snake.Direction)
+                {
+                    gameLogic.ChangeDirection(currentDirection);
+                }
             }
 
             gameLogic.DoStep();

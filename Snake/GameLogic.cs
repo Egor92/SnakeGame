@@ -89,7 +89,7 @@ public class GameLogic(GameData gameData)
 
     public void ChangeDirection(Direction direction)
     {
-        if (direction != gameData.Snake.Direction.GetOpposite() && direction != gameData.Snake.PreviousDirection.GetOpposite())
+        if (direction != gameData.Snake.Direction.GetOpposite())
         {
             gameData.Snake.PreviousDirection = gameData.Snake.Direction;
             gameData.Snake.Direction = direction;
