@@ -106,7 +106,7 @@ public class GameLogicTests
         _gameLogic.ChangeDirection(newDirection);
 
         // Assert
-        Assert.That(_gameData.Snake.Direction, Is.EqualTo(expectedDirection));
+        Assert.That(_gameData.Snake.LastStepDirection, Is.EqualTo(expectedDirection));
     }
 
     [TestCase(Direction.Right, Direction.Up, Direction.Up)]
@@ -131,7 +131,7 @@ public class GameLogicTests
         _gameLogic.ChangeDirection(newDirection);
 
         // Assert
-        Assert.That(_gameData.Snake.Direction, Is.EqualTo(expectedDirection));
+        Assert.That(_gameData.Snake.RequestedDirection, Is.EqualTo(expectedDirection));
     }
 
     [TestCase(Direction.Right, Direction.Right, Direction.Right)]
@@ -152,7 +152,7 @@ public class GameLogicTests
         _gameLogic.ChangeDirection(newDirection);
 
         // Assert
-        Assert.That(_gameData.Snake.Direction, Is.EqualTo(expectedDirection));
+        Assert.That(_gameData.Snake.LastStepDirection, Is.EqualTo(expectedDirection));
     }
 
     [TestCase(Direction.Right, new[] { Direction.Up, Direction.Left }, Direction.Right)]
@@ -180,7 +180,8 @@ public class GameLogicTests
         }
 
         // Assert
-        Assert.That(_gameData.Snake.Direction, Is.EqualTo(expectedDirection));
+
+        Assert.That(_gameData.Snake.LastStepDirection, Is.EqualTo(expectedDirection));
     }
 
     [TestCase(Direction.Right, new[] { Direction.Right, Direction.Down }, Direction.Down)]
@@ -236,7 +237,7 @@ public class GameLogicTests
         }
 
         // Assert
-        Assert.That(_gameData.Snake.Direction, Is.EqualTo(expectedDirection));
+        Assert.That(_gameData.Snake.RequestedDirection, Is.EqualTo(expectedDirection));
     }
 
     [Test]

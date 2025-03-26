@@ -11,7 +11,7 @@ public class GameLogic(GameData gameData)
         int newX = head.X;
         int newY = head.Y;
 
-        switch (gameData.Snake.Direction)
+        switch (gameData.Snake.LastStepDirection)
         {
             case Direction.Up:
                 newY--;
@@ -73,8 +73,8 @@ public class GameLogic(GameData gameData)
     private void GrowSnake(out Pixel newHead)
     {
         var element = gameData.Snake.Body.Last();
-        var direction = gameData.Snake.Direction;
-        var newPixel = gameData.Snake.Direction switch
+        var direction = gameData.Snake.LastStepDirection;
+        var newPixel = gameData.Snake.LastStepDirection switch
         {
             Direction.Up => new Pixel(element.X, element.Y - 1),
             Direction.Down => new Pixel(element.X, element.Y + 1),
@@ -87,12 +87,11 @@ public class GameLogic(GameData gameData)
         newHead = newPixel;
     }
 
-    public void ChangeDirection(Direction direction)
+    public void ChangeDirection(Direction? direction)
     {
-        if (direction != gameData.Snake.Direction.GetOpposite())
+        if (direction != null && direction != gameData.Snake.LastStepDirection.GetOpposite())
         {
-            gameData.Snake.PreviousDirection = gameData.Snake.Direction;
-            gameData.Snake.Direction = direction;
+            gameData.Snake.RequestedDirection = direction;
         }
     }
 }
