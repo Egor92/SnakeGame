@@ -165,7 +165,7 @@ public class GameLogicTests
     [TestCase(Direction.Up, new[] { Direction.Right, Direction.Down }, Direction.Up)]
     public void ChangeDirection_СallTwiceAndLastDirectionIsOpposite_DoNotChangeDirection(
         Direction initialDirection,
-        Direction[] direction,
+        Direction[] directions,
         Direction expectedDirection)
     {
         // Arrange
@@ -174,9 +174,9 @@ public class GameLogicTests
                                       .Build();
 
         // Act
-        for (int i = 0; i < direction.Length; i++)
+        foreach (var direction in directions)
         {
-            _gameLogic.ChangeDirection(direction[i]);
+            _gameLogic.ChangeDirection(direction);
         }
 
         // Assert
@@ -221,7 +221,7 @@ public class GameLogicTests
     [TestCase(Direction.Up, new[] { Direction.Left, Direction.Right }, Direction.Right)]
     public void ChangeDirection_СallTwiceAndLastDirectionIsNotOpposite_ApplyLastDirection(
         Direction initialDirection,
-        Direction[] direction,
+        Direction[] directions,
         Direction expectedDirection)
     {
         // Arrange
@@ -230,9 +230,9 @@ public class GameLogicTests
                                       .Build();
 
         // Act
-        for (int i = 0; i < direction.Length; i++)
+        foreach (var direction in directions)
         {
-            _gameLogic.ChangeDirection(direction[i]);
+            _gameLogic.ChangeDirection(direction);
         }
 
         // Assert
