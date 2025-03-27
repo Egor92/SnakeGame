@@ -92,9 +92,9 @@ public class GameLogicTests
     [TestCase(Direction.Left, Direction.Right, Direction.Left)]
     [TestCase(Direction.Down, Direction.Up, Direction.Down)]
     [TestCase(Direction.Up, Direction.Down, Direction.Up)]
-    public void ChangeDirection_NewDirectionIsOpposite_DirectionIsNotChanged(
+    public void ChangeDirection_NewDirectionIsOpposite_NextStepDirectionEqualsLastStepDirection(
         Direction initialDirection,
-        Direction newDirection,
+        Direction requestedDirection,
         Direction expectedDirection)
     {
         // Arrange  
@@ -103,10 +103,11 @@ public class GameLogicTests
                                       .Build();
 
         // Act
-        _gameLogic.ChangeDirection(newDirection);
-
+        _gameLogic.ChangeDirection(requestedDirection);
+        _gameLogic.DoStep();
+        
         // Assert
-        Assert.That(_gameData.Snake.LastStepDirection, Is.EqualTo(expectedDirection));
+        Assert.That(_gameData.Snake.NextStepDirection, Is.EqualTo(expectedDirection));
     }
 
     [TestCase(Direction.Right, Direction.Up, Direction.Up)]
@@ -119,7 +120,7 @@ public class GameLogicTests
     [TestCase(Direction.Down, Direction.Right, Direction.Right)]
     public void ChangeDirection_NewDirectionIsDifferent_DirectionIsChanged(
         Direction initialDirection,
-        Direction newDirection,
+        Direction requestedDirection,
         Direction expectedDirection)
     {
         // Arrange  
@@ -128,7 +129,7 @@ public class GameLogicTests
                                       .Build();
 
         // Act
-        _gameLogic.ChangeDirection(newDirection);
+        _gameLogic.ChangeDirection(requestedDirection);
 
         // Assert
         Assert.That(_gameData.Snake.RequestedDirection, Is.EqualTo(expectedDirection));
@@ -140,7 +141,7 @@ public class GameLogicTests
     [TestCase(Direction.Down, Direction.Down, Direction.Down)]
     public void ChangeDirection_NewDirectionIsSame_DirectionIsNotChanged(
         Direction initialDirection,
-        Direction newDirection,
+        Direction requestedDirection,
         Direction expectedDirection)
     {
         // Arrange  
@@ -149,7 +150,7 @@ public class GameLogicTests
                                       .Build();
 
         // Act
-        _gameLogic.ChangeDirection(newDirection);
+        _gameLogic.ChangeDirection(requestedDirection);
 
         // Assert
         Assert.That(_gameData.Snake.LastStepDirection, Is.EqualTo(expectedDirection));
@@ -165,7 +166,7 @@ public class GameLogicTests
     [TestCase(Direction.Up, new[] { Direction.Right, Direction.Down }, Direction.Up)]
     public void ChangeDirection_СallTwiceAndLastDirectionIsOpposite_DoNotChangeDirection(
         Direction initialDirection,
-        Direction[] directions,
+        Direction[] requestedDirections,
         Direction expectedDirection)
     {
         // Arrange
@@ -174,7 +175,7 @@ public class GameLogicTests
                                       .Build();
 
         // Act
-        foreach (var direction in directions)
+        foreach (var direction in requestedDirections)
         {
             _gameLogic.ChangeDirection(direction);
         }
@@ -222,7 +223,7 @@ public class GameLogicTests
     [TestCase(Direction.Up, new[] { Direction.Left, Direction.Right }, Direction.Right)]
     public void ChangeDirection_СallTwiceAndLastDirectionIsNotOpposite_ApplyLastDirection(
         Direction initialDirection,
-        Direction[] directions,
+        Direction[] requestedDirections,
         Direction expectedDirection)
     {
         // Arrange
@@ -231,13 +232,13 @@ public class GameLogicTests
                                       .Build();
 
         // Act
-        foreach (var direction in directions)
+        foreach (var direction in requestedDirections)
         {
             _gameLogic.ChangeDirection(direction);
         }
 
         // Assert
-        Assert.That(_gameData.Snake.RequestedDirection, Is.EqualTo(expectedDirection));
+        Assert.That(_gameData.Snake.NextStepDirection, Is.EqualTo(expectedDirection));
     }
 
     [Test]
