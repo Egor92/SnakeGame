@@ -10,8 +10,10 @@ public class GameLogic(GameData gameData)
         var head = gameData.Snake.Head;
         int newX = head.X;
         int newY = head.Y;
+        
+        Direction nextDirection = gameData.Snake.GetNextDirection();
 
-        switch (gameData.Snake.LastStepDirection)
+        switch (nextDirection)
         {
             case Direction.Up:
                 newY--;
@@ -42,6 +44,7 @@ public class GameLogic(GameData gameData)
 
         gameData.StepCount += 1;
         gameData.IsGameOver = CheckCollisions();
+        gameData.Snake.LastStepDirection = nextDirection;
     }
 
     private bool CheckCollisions()

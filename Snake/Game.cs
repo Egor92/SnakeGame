@@ -31,12 +31,11 @@ public class Game(GameData gameData, GameLogic gameLogic)
 
                 if (requestedDirection != null && requestedDirection != lastStepDirection.GetOpposite())
                 {
-                    gameLogic.ChangeDirection(gameData.Snake.RequestedDirection);
+                    gameLogic.ChangeDirection(requestedDirection);
                 }
             }
 
             gameLogic.DoStep();
-            gameData.Snake.LastStepDirection = lastStepDirection;
             _gameRenderer.RenderGame(gameData);
 
             if (gameData.IsGameOver)
