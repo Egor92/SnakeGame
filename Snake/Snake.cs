@@ -18,14 +18,4 @@ public class Snake
         LastStepDirection = direction;
         Head = head;
     }
-    public Direction UpdateDirection()
-    {
-        if (RequestedDirection.HasValue && RequestedDirection != LastStepDirection.GetOpposite())
-        {
-            return RequestedDirection.Value;
-        }
-
-        return LastStepDirection;
-    }
-    
 }

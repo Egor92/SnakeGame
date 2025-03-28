@@ -2,7 +2,7 @@
 
 public class GameLogic(GameData gameData)
 {
-    private GameFieldHelper _gameFieldHelper = new GameFieldHelper();
+    private readonly GameFieldHelper _gameFieldHelper = new GameFieldHelper();
 
     public void DoStep()
     {
@@ -11,7 +11,7 @@ public class GameLogic(GameData gameData)
         int newX = head.X;
         int newY = head.Y;
 
-        Direction nextDirection = gameData.Snake.UpdateDirection();
+        Direction nextDirection = gameData.Snake.NextStepDirection;
 
         switch (nextDirection)
         {
@@ -91,11 +91,15 @@ public class GameLogic(GameData gameData)
         newHead = newPixel;
     }
 
-    public void ChangeDirection(Direction? direction)
+    public void ChangeDirection(Direction direction)
     {
         if (direction != gameData.Snake.LastStepDirection.GetOpposite())
         {
             gameData.Snake.RequestedDirection = direction;
+        }
+        else
+        {
+            gameData.Snake.RequestedDirection = null;
         }
     }
 }

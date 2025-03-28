@@ -10,7 +10,6 @@ public class Game(GameData gameData, GameLogic gameLogic)
 
         while (!gameData.IsGameOver)
         {
-            Direction lastStepDirection = gameData.Snake.LastStepDirection;
             ConsoleKey key = ConsoleKey.None;
             while (Console.KeyAvailable)
             {
@@ -28,7 +27,7 @@ public class Game(GameData gameData, GameLogic gameLogic)
 
             if (requestedDirection != null)
             {
-                gameLogic.ChangeDirection(requestedDirection);
+                gameLogic.ChangeDirection(requestedDirection.Value);
             }
 
             gameLogic.DoStep();
