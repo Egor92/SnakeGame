@@ -163,7 +163,7 @@ public class GameLogicTests
     [TestCase(Direction.Down, new[] { Direction.Right, Direction.Up })]
     [TestCase(Direction.Up, new[] { Direction.Left, Direction.Down })]
     [TestCase(Direction.Up, new[] { Direction.Right, Direction.Down })]
-    public void ChangeDirection_СallTwiceAndLastDirectionIsOpposite_DoNotChangeDirection(
+    public void ChangeDirection_CallTwiceAndLastDirectionIsOpposite_DoNotChangeDirection(
         Direction initialDirection,
         Direction[] requestedDirections)
     {
@@ -218,7 +218,7 @@ public class GameLogicTests
     [TestCase(Direction.Up, new[] { Direction.Up, Direction.Right }, Direction.Right)]
     [TestCase(Direction.Up, new[] { Direction.Down, Direction.Right }, Direction.Right)]
     [TestCase(Direction.Up, new[] { Direction.Left, Direction.Right }, Direction.Right)]
-    public void ChangeDirection_СallTwiceAndLastDirectionIsNotOpposite_ApplyLastDirection(
+    public void ChangeDirection_CallTwiceAndLastDirectionIsNotOpposite_ApplyLastDirection(
         Direction initialDirection,
         Direction[] requestedDirections,
         Direction expectedDirection)
