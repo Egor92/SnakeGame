@@ -92,9 +92,9 @@ public class GameLogicTests
     [TestCase(Direction.Left, Direction.Right, Direction.Left)]
     [TestCase(Direction.Down, Direction.Up, Direction.Down)]
     [TestCase(Direction.Up, Direction.Down, Direction.Up)]
-    public void ChangeDirection_NewDirectionIsOpposite_DirectionIsNotChanged(
+    public void ChangeDirection_RequestedDirectionIsOpposite_NextStepDirectionEqualsLastStepDirection(
         Direction initialDirection,
-        Direction newDirection,
+        Direction requestedDirection,
         Direction expectedDirection)
     {
         // Arrange  
@@ -103,10 +103,10 @@ public class GameLogicTests
                                       .Build();
 
         // Act
-        _gameLogic.ChangeDirection(newDirection);
+        _gameLogic.ChangeDirection(requestedDirection);
 
         // Assert
-        Assert.That(_gameData.Snake.Direction, Is.EqualTo(expectedDirection));
+        Assert.That(_gameData.Snake.NextStepDirection, Is.EqualTo(expectedDirection));
     }
 
     [TestCase(Direction.Right, Direction.Up, Direction.Up)]
@@ -117,9 +117,9 @@ public class GameLogicTests
     [TestCase(Direction.Up, Direction.Right, Direction.Right)]
     [TestCase(Direction.Down, Direction.Left, Direction.Left)]
     [TestCase(Direction.Down, Direction.Right, Direction.Right)]
-    public void ChangeDirection_NewDirectionIsDifferent_DirectionIsChanged(
+    public void ChangeDirection_RequestedDirectionIsDifferent_DirectionIsChanged(
         Direction initialDirection,
-        Direction newDirection,
+        Direction requestedDirection,
         Direction expectedDirection)
     {
         // Arrange  
@@ -128,19 +128,19 @@ public class GameLogicTests
                                       .Build();
 
         // Act
-        _gameLogic.ChangeDirection(newDirection);
+        _gameLogic.ChangeDirection(requestedDirection);
 
         // Assert
-        Assert.That(_gameData.Snake.Direction, Is.EqualTo(expectedDirection));
+        Assert.That(_gameData.Snake.NextStepDirection, Is.EqualTo(expectedDirection));
     }
 
     [TestCase(Direction.Right, Direction.Right, Direction.Right)]
     [TestCase(Direction.Left, Direction.Left, Direction.Left)]
     [TestCase(Direction.Up, Direction.Up, Direction.Up)]
     [TestCase(Direction.Down, Direction.Down, Direction.Down)]
-    public void ChangeDirection_NewDirectionIsSame_DirectionIsNotChanged(
+    public void ChangeDirection_RequestedDirectionIsSame_DirectionIsNotChanged(
         Direction initialDirection,
-        Direction newDirection,
+        Direction requestedDirection,
         Direction expectedDirection)
     {
         // Arrange  
@@ -149,10 +149,93 @@ public class GameLogicTests
                                       .Build();
 
         // Act
-        _gameLogic.ChangeDirection(newDirection);
+        _gameLogic.ChangeDirection(requestedDirection);
 
         // Assert
-        Assert.That(_gameData.Snake.Direction, Is.EqualTo(expectedDirection));
+        Assert.That(_gameData.Snake.LastStepDirection, Is.EqualTo(expectedDirection));
+    }
+
+    [TestCase(Direction.Right, new[] { Direction.Up, Direction.Left })]
+    [TestCase(Direction.Left, new[] { Direction.Up, Direction.Right })]
+    [TestCase(Direction.Right, new[] { Direction.Down, Direction.Left })]
+    [TestCase(Direction.Left, new[] { Direction.Down, Direction.Right })]
+    [TestCase(Direction.Down, new[] { Direction.Left, Direction.Up })]
+    [TestCase(Direction.Down, new[] { Direction.Right, Direction.Up })]
+    [TestCase(Direction.Up, new[] { Direction.Left, Direction.Down })]
+    [TestCase(Direction.Up, new[] { Direction.Right, Direction.Down })]
+    public void ChangeDirection_CallTwiceAndLastDirectionIsOpposite_DoNotChangeDirection(
+        Direction initialDirection,
+        Direction[] requestedDirections)
+    {
+        // Arrange
+        _gameData.Snake = SnakeBuilder.Create(5, 5, initialDirection)
+                                      .Grow(2)
+                                      .Build();
+
+        // Act
+        foreach (var direction in requestedDirections)
+        {
+            _gameLogic.ChangeDirection(direction);
+        }
+
+        // Assert
+        Assert.That(_gameData.Snake.NextStepDirection, Is.EqualTo(initialDirection));
+    }
+
+    [TestCase(Direction.Right, new[] { Direction.Right, Direction.Down }, Direction.Down)]
+    [TestCase(Direction.Right, new[] { Direction.Up, Direction.Down }, Direction.Down)]
+    [TestCase(Direction.Right, new[] { Direction.Left, Direction.Down }, Direction.Down)]
+    [TestCase(Direction.Right, new[] { Direction.Right, Direction.Up }, Direction.Up)]
+    [TestCase(Direction.Right, new[] { Direction.Down, Direction.Up }, Direction.Up)]
+    [TestCase(Direction.Right, new[] { Direction.Left, Direction.Up }, Direction.Up)]
+    [TestCase(Direction.Right, new[] { Direction.Up, Direction.Right }, Direction.Right)]
+    [TestCase(Direction.Right, new[] { Direction.Down, Direction.Right }, Direction.Right)]
+    [TestCase(Direction.Right, new[] { Direction.Left, Direction.Right }, Direction.Right)]
+    [TestCase(Direction.Left, new[] { Direction.Right, Direction.Down }, Direction.Down)]
+    [TestCase(Direction.Left, new[] { Direction.Up, Direction.Down }, Direction.Down)]
+    [TestCase(Direction.Left, new[] { Direction.Left, Direction.Down }, Direction.Down)]
+    [TestCase(Direction.Left, new[] { Direction.Right, Direction.Up }, Direction.Up)]
+    [TestCase(Direction.Left, new[] { Direction.Down, Direction.Up }, Direction.Up)]
+    [TestCase(Direction.Left, new[] { Direction.Left, Direction.Up }, Direction.Up)]
+    [TestCase(Direction.Left, new[] { Direction.Up, Direction.Left }, Direction.Left)]
+    [TestCase(Direction.Left, new[] { Direction.Down, Direction.Left }, Direction.Left)]
+    [TestCase(Direction.Left, new[] { Direction.Right, Direction.Left }, Direction.Left)]
+    [TestCase(Direction.Down, new[] { Direction.Right, Direction.Down }, Direction.Down)]
+    [TestCase(Direction.Down, new[] { Direction.Up, Direction.Down }, Direction.Down)]
+    [TestCase(Direction.Down, new[] { Direction.Left, Direction.Down }, Direction.Down)]
+    [TestCase(Direction.Down, new[] { Direction.Right, Direction.Left }, Direction.Left)]
+    [TestCase(Direction.Down, new[] { Direction.Down, Direction.Left }, Direction.Left)]
+    [TestCase(Direction.Down, new[] { Direction.Up, Direction.Left }, Direction.Left)]
+    [TestCase(Direction.Down, new[] { Direction.Up, Direction.Right }, Direction.Right)]
+    [TestCase(Direction.Down, new[] { Direction.Down, Direction.Right }, Direction.Right)]
+    [TestCase(Direction.Down, new[] { Direction.Left, Direction.Right }, Direction.Right)]
+    [TestCase(Direction.Up, new[] { Direction.Right, Direction.Left }, Direction.Left)]
+    [TestCase(Direction.Up, new[] { Direction.Up, Direction.Left }, Direction.Left)]
+    [TestCase(Direction.Up, new[] { Direction.Down, Direction.Left }, Direction.Left)]
+    [TestCase(Direction.Up, new[] { Direction.Right, Direction.Up }, Direction.Up)]
+    [TestCase(Direction.Up, new[] { Direction.Down, Direction.Up }, Direction.Up)]
+    [TestCase(Direction.Up, new[] { Direction.Left, Direction.Up }, Direction.Up)]
+    [TestCase(Direction.Up, new[] { Direction.Up, Direction.Right }, Direction.Right)]
+    [TestCase(Direction.Up, new[] { Direction.Down, Direction.Right }, Direction.Right)]
+    [TestCase(Direction.Up, new[] { Direction.Left, Direction.Right }, Direction.Right)]
+    public void ChangeDirection_CallTwiceAndLastDirectionIsNotOpposite_ApplyLastDirection(
+        Direction initialDirection,
+        Direction[] requestedDirections,
+        Direction expectedDirection)
+    {
+        // Arrange
+        _gameData.Snake = SnakeBuilder.Create(5, 5, initialDirection)
+                                      .Grow(2)
+                                      .Build();
+
+        // Act
+        foreach (var direction in requestedDirections)
+        {
+            _gameLogic.ChangeDirection(direction);
+        }
+
+        // Assert
+        Assert.That(_gameData.Snake.NextStepDirection, Is.EqualTo(expectedDirection));
     }
 
     [Test]

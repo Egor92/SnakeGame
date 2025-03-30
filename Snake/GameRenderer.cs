@@ -40,7 +40,7 @@ public class GameRenderer
 
             if (i == bodyLength - 1)
             {
-                currentBuffer[pixel.X, pixel.Y] = snake.Direction switch
+                currentBuffer[pixel.X, pixel.Y] = snake.LastStepDirection switch
                 {
                     Direction.Up => GameRenderSymbols.Snake.HeadLooksUp,
                     Direction.Down => GameRenderSymbols.Snake.HeadLooksDown,

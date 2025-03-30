@@ -10,22 +10,27 @@ public class Game(GameData gameData, GameLogic gameLogic)
 
         while (!gameData.IsGameOver)
         {
+            ConsoleKey key = ConsoleKey.None;
             while (Console.KeyAvailable)
             {
-                ConsoleKey key = Console.ReadKey(true).Key;
-                Direction newDirection = key switch
-                {
-                    ConsoleKey.UpArrow => Direction.Up,
-                    ConsoleKey.DownArrow => Direction.Down,
-                    ConsoleKey.LeftArrow => Direction.Left,
-                    ConsoleKey.RightArrow => Direction.Right,
-                    _ => gameData.Snake.Direction
-                };
-                gameLogic.ChangeDirection(newDirection);
+                key = Console.ReadKey(true).Key;
+            }
+
+            Direction? requestedDirection = key switch
+            {
+                ConsoleKey.UpArrow => Direction.Up,
+                ConsoleKey.DownArrow => Direction.Down,
+                ConsoleKey.LeftArrow => Direction.Left,
+                ConsoleKey.RightArrow => Direction.Right,
+                _ => null
+            };
+
+            if (requestedDirection != null)
+            {
+                gameLogic.ChangeDirection(requestedDirection.Value);
             }
 
             gameLogic.DoStep();
-
             _gameRenderer.RenderGame(gameData);
 
             if (gameData.IsGameOver)

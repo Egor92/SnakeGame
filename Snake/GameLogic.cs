@@ -2,7 +2,7 @@
 
 public class GameLogic(GameData gameData)
 {
-    private GameFieldHelper _gameFieldHelper = new GameFieldHelper();
+    private readonly GameFieldHelper _gameFieldHelper = new GameFieldHelper();
 
     public void DoStep()
     {
@@ -11,7 +11,9 @@ public class GameLogic(GameData gameData)
         int newX = head.X;
         int newY = head.Y;
 
-        switch (gameData.Snake.Direction)
+        Direction nextDirection = gameData.Snake.NextStepDirection;
+
+        switch (nextDirection)
         {
             case Direction.Up:
                 newY--;
@@ -42,6 +44,8 @@ public class GameLogic(GameData gameData)
 
         gameData.StepCount += 1;
         gameData.IsGameOver = CheckCollisions();
+        gameData.Snake.LastStepDirection = nextDirection;
+        gameData.Snake.RequestedDirection = null;
     }
 
     private bool CheckCollisions()
@@ -73,8 +77,8 @@ public class GameLogic(GameData gameData)
     private void GrowSnake(out Pixel newHead)
     {
         var element = gameData.Snake.Body.Last();
-        var direction = gameData.Snake.Direction;
-        var newPixel = gameData.Snake.Direction switch
+        var direction = gameData.Snake.LastStepDirection;
+        var newPixel = gameData.Snake.LastStepDirection switch
         {
             Direction.Up => new Pixel(element.X, element.Y - 1),
             Direction.Down => new Pixel(element.X, element.Y + 1),
@@ -89,9 +93,13 @@ public class GameLogic(GameData gameData)
 
     public void ChangeDirection(Direction direction)
     {
-        if (gameData.Snake.Direction != direction.GetOpposite())
+        if (direction != gameData.Snake.LastStepDirection.GetOpposite())
         {
-            gameData.Snake.Direction = direction;
+            gameData.Snake.RequestedDirection = direction;
+        }
+        else
+        {
+            gameData.Snake.RequestedDirection = null;
         }
     }
 }
