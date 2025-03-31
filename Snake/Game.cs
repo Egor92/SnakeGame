@@ -1,6 +1,6 @@
 ﻿namespace Snake;
 
-public class Game(GameData gameData, GameLogic gameLogic)
+public class Game(GameData gameData, GameLogic gameLogic, int timeBetweenSteps)
 {
     private readonly GameRenderer _gameRenderer = new();
 
@@ -38,7 +38,7 @@ public class Game(GameData gameData, GameLogic gameLogic)
                 break;
             }
 
-            Thread.Sleep(100);
+            Thread.Sleep(timeBetweenSteps);
         }
     }
 }
