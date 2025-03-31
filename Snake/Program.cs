@@ -1,4 +1,5 @@
 ﻿using Snake;
+using Microsoft.Extensions.Configuration;
 
 namespace Snake_Game;
 
@@ -8,6 +9,11 @@ public class Program
     {
         Console.CursorVisible = false;
         Console.OutputEncoding = System.Text.Encoding.Unicode;
+        var config = new ConfigurationBuilder()
+                     .AddJsonFile("appsettings.json").Build();
+        
+        int timeBetweenSteps = int.Parse(config["GameSettings:TimeBetweenSteps"]);
+
         var gameData = GameDataBuilder.Create()
                                       .SetPlayingFieldSize(width: 45, height: 15)
                                       .CreateWallAroundPlayingField(width: 45, height: 15)
@@ -19,7 +25,7 @@ public class Program
         var gameLogic = new GameLogic(gameData);
 
         // Создать Game и запустить
-        var game = new Game(gameData, gameLogic);
+        var game = new Game(gameData, gameLogic, timeBetweenSteps);
         game.Start();
         Console.ReadLine();
     }
