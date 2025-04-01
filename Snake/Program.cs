@@ -11,8 +11,8 @@ public class Program
         Console.OutputEncoding = System.Text.Encoding.Unicode;
         var config = new ConfigurationBuilder()
                      .AddJsonFile("appsettings.json").Build();
-        
-        int timeBetweenSteps = int.Parse(config["GameSettings:TimeBetweenSteps"]);
+
+        int timeBetweenSteps = Convert.ToInt16(config["GameSettings:TimeBetweenSteps"]);
 
         var gameData = GameDataBuilder.Create()
                                       .SetPlayingFieldSize(width: 45, height: 15)
