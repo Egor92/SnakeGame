@@ -7,14 +7,16 @@ public class GameDataBuilder
     private List<Pixel> _walls = new();
     private Queue<Pixel> _body = new();
     private Direction _direction;
-    private Pixel _head = null!;
-    private Pixel _food = null!;
-    private Snake _snake = null!;
+    private Pixel? _food;
+    private Snake _snake;
     private int _pointCount;
     private int _stepCount;
 
     private GameDataBuilder()
     {
+        var body = new Queue<Pixel>();
+        body.Enqueue(new Pixel(0, 0));
+        _snake = new Snake(body, Direction.Right, new Pixel(0, 0));
     }
 
     public static GameDataBuilder Create()
@@ -58,7 +60,7 @@ public class GameDataBuilder
     public GameDataBuilder AddSnake(int x, int y, Direction direction, int snakeLength)
     {
         // создание змейки
-        _head = new Pixel(x, y);
+        var head = new Pixel(x, y);
         _body = new Queue<Pixel>();
 
         for (int i = snakeLength - 1; i >= 1; i--)
@@ -75,10 +77,10 @@ public class GameDataBuilder
             _body.Enqueue(bodyPixel);
         }
 
-        _body.Enqueue(_head);
+        _body.Enqueue(head);
 
         _direction = direction;
-        _snake = new Snake(_body, _direction, _head);
+        _snake = new Snake(_body, _direction, head);
         return this;
     }
 
