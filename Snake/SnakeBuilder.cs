@@ -4,11 +4,11 @@ namespace Snake;
 
 public class SnakeBuilder
 {
-    private List<Pixel> _body = new();
+    private readonly List<Pixel> _body = new();
     private Direction _headDirection;
-    private Pixel _head;
+    private Pixel _head = null!;
     private Direction _tailDirection;
-    private Pixel _tail;
+    private Pixel _tail = null!;
 
     private SnakeBuilder()
     {

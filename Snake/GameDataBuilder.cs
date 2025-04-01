@@ -5,12 +5,12 @@ public class GameDataBuilder
     private int _width;
     private int _height;
     private List<Pixel> _walls = new();
-    private Queue<Pixel> _body;
+    private Queue<Pixel> _body = new();
     private Direction _direction;
-    private Pixel _head;
-    private Pixel _food;
-    private Snake _snake;
-    private int _pointСount;
+    private Pixel _head = null!;
+    private Pixel _food = null!;
+    private Snake _snake = null!;
+    private int _pointCount;
     private int _stepCount;
 
     private GameDataBuilder()
@@ -109,7 +109,7 @@ public class GameDataBuilder
 
     public GameDataBuilder SetPointCount(int pointCount)
     {
-        _pointСount = pointCount;
+        _pointCount = pointCount;
         return this;
     }
 
@@ -123,7 +123,7 @@ public class GameDataBuilder
             Snake = _snake,
             Food = _food,
             IsGameOver = false,
-            PointCount = _pointСount,
+            PointCount = _pointCount,
             StepCount = _stepCount
         };
     }
