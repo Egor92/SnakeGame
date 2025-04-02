@@ -5,14 +5,18 @@ public class GameDataBuilder
     private int _width;
     private int _height;
     private List<Pixel> _walls = new();
-    private Queue<Pixel> _body;
+    private Queue<Pixel> _body = new();
     private Direction _direction;
-    private Pixel _head;
-    private Pixel _food;
+    private Pixel? _food;
     private Snake _snake;
+    private int _pointCount;
+    private int _stepCount;
 
     private GameDataBuilder()
     {
+        var body = new Queue<Pixel>();
+        body.Enqueue(new Pixel(0, 0));
+        _snake = new Snake(body, Direction.Right, new Pixel(0, 0));
     }
 
     public static GameDataBuilder Create()
@@ -25,8 +29,7 @@ public class GameDataBuilder
         // проверка длины и ширины на не отрицательность
         if (width < 0 || height < 0)
         {
-            throw new ArgumentException(
-                "Ширина и высота должны быть положительными.");
+            throw new ArgumentException("Ширина и высота должны быть положительными.");
         }
 
         _width = width;
@@ -54,31 +57,39 @@ public class GameDataBuilder
         return this;
     }
 
-    public GameDataBuilder AddSnake(int x, int y, Direction direction, int countBody)
+    public GameDataBuilder AddSnake(int x, int y, Direction direction, int snakeLength)
     {
         // создание змейки
-        _head = new Pixel(x, y);
+        var head = new Pixel(x, y);
         _body = new Queue<Pixel>();
-        for (int i = countBody; i >= 1; i--)
+
+        for (int i = snakeLength - 1; i >= 1; i--)
         {
-            _body.Enqueue(new Pixel(x - i, y));
+            Pixel bodyPixel = direction switch
+            {
+                Direction.Right => new Pixel(x - i, y),
+                Direction.Left => new Pixel(x + i, y),
+                Direction.Up => new Pixel(x, y + i),
+                Direction.Down => new Pixel(x, y - i),
+                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, $"Unexpected direction: {direction}")
+            };
+
+            _body.Enqueue(bodyPixel);
         }
 
-        _body.Enqueue(_head);
+        _body.Enqueue(head);
 
         _direction = direction;
-        _snake = new Snake(_body, _direction, _head);
+        _snake = new Snake(_body, _direction, head);
         return this;
     }
 
     public GameDataBuilder AddFood()
     {
-        Random random = new Random();
-
         while (true)
         {
-            int x = random.Next(1, _width - 1);
-            int y = random.Next(1, _height - 1);
+            int x = RandomAdapter.Next(1, _width - 1);
+            int y = RandomAdapter.Next(1, _height - 1);
 
             Pixel food = new Pixel(x, y);
 
@@ -92,6 +103,18 @@ public class GameDataBuilder
         return this;
     }
 
+    public GameDataBuilder SetStepCount(int stepCount)
+    {
+        _stepCount = stepCount;
+        return this;
+    }
+
+    public GameDataBuilder SetPointCount(int pointCount)
+    {
+        _pointCount = pointCount;
+        return this;
+    }
+
     public GameData Build()
     {
         return new GameData()
@@ -101,7 +124,9 @@ public class GameDataBuilder
             Walls = _walls,
             Snake = _snake,
             Food = _food,
-            IsGameOver = false
+            IsGameOver = false,
+            PointCount = _pointCount,
+            StepCount = _stepCount
         };
     }
 }
