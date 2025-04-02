@@ -26,12 +26,15 @@ jobs:
         dotnet-version: '9.0.x'
 
     - name: Restore dependencies
+      working-directory:  ./src/console-only
       run: dotnet restore
 
     - name: Build project
+      working-directory:  ./src/console-only
       run: dotnet build --configuration Release --no-restore
 
     - name: Run tests
+      working-directory:  ./src/console-only
       run: dotnet test --no-restore --verbosity normal
       
  
