@@ -12,7 +12,7 @@ public class Program
         var config = new ConfigurationBuilder()
                      .AddJsonFile("appsettings.json").Build();
 
-        int timeBetweenSteps = Convert.ToInt16(config["GameSettings:TimeBetweenSteps"]);
+        int timeBetweenSteps = Convert.ToInt32(config["GameSettings:TimeBetweenSteps"]);
 
         var gameData = GameDataBuilder.Create()
                                       .SetPlayingFieldSize(width: 45, height: 15)
