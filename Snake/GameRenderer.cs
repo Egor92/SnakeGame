@@ -11,7 +11,11 @@ public class GameRenderer
         ClearBuffer(currentBuffer, gameData.BoardWidth, gameData.BoardHeight);
         WriteWallsToBuffer(gameData.Walls, currentBuffer);
         WriteSnakeToBuffer(gameData.Snake, currentBuffer);
-        WriteFoodToBuffer(gameData.Food, currentBuffer);
+        if (gameData.Food != null)
+        {
+            WriteFoodToBuffer(gameData.Food, currentBuffer);
+        }
+
         DrawElements(gameData, currentBuffer);
         _previousBuffer = currentBuffer;
         if (gameData.IsGameOver)
