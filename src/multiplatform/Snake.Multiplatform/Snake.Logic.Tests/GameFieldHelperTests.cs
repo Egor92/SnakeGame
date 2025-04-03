@@ -1,4 +1,4 @@
-namespace Snake.Tests;
+namespace Snake.Logic.Tests;
 
 [TestFixture]
 public class GameFieldHelperTests

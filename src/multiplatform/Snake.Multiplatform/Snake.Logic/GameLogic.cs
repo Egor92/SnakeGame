@@ -1,4 +1,4 @@
-﻿namespace Snake;
+﻿namespace Snake.Logic;
 
 public class GameLogic(GameData gameData)
 {

@@ -1,4 +1,4 @@
-namespace Snake.Tests;
+namespace Snake.Logic.Tests;
 
 public class SnakeBuilderTest
 {

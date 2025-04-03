@@ -1,6 +1,4 @@
-using System.Collections;
-
-namespace Snake;
+namespace Snake.Logic;
 
 public class SnakeBuilder
 {
