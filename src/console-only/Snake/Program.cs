@@ -1,7 +1,4 @@
-﻿using Snake;
-using Microsoft.Extensions.Configuration;
-
-namespace Snake_Game;
+﻿namespace Snake.ConsoleApp;
 
 public class Program
 {
