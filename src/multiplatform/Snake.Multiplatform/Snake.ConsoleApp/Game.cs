@@ -1,7 +1,6 @@
-﻿using Snake.ConsoleApp;
-using Snake.Logic;
+﻿using Snake.Logic;
 
-namespace Snake;
+namespace Snake.ConsoleApp;
 
 public class Game(GameData gameData, GameLogic gameLogic, int timeBetweenSteps)
 {
