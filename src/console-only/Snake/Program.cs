@@ -1,4 +1,6 @@
-﻿namespace Snake.ConsoleApp;
+﻿using Microsoft.Extensions.Configuration;
+
+namespace Snake.ConsoleApp;
 
 public class Program
 {

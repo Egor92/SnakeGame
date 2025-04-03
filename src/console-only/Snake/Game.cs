@@ -1,4 +1,6 @@
-﻿namespace Snake;
+﻿using Snake.ConsoleApp;
+
+namespace Snake;
 
 public class Game(GameData gameData, GameLogic gameLogic, int timeBetweenSteps)
 {
