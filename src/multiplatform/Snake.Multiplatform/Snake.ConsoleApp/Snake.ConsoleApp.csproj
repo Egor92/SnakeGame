@@ -16,6 +16,7 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
+	
     <ItemGroup>
       <ProjectReference Include="..\Snake.Logic\Snake.Logic.csproj" />
     </ItemGroup>
