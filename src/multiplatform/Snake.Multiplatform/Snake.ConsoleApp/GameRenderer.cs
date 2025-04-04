@@ -1,4 +1,6 @@
-﻿namespace Snake.ConsoleApp;
+﻿using Snake.Logic;
+
+namespace Snake.ConsoleApp;
 
 public class GameRenderer
 {
@@ -32,7 +34,7 @@ public class GameRenderer
         }
     }
 
-    private static void WriteSnakeToBuffer(Snake snake, char[,] currentBuffer)
+    private static void WriteSnakeToBuffer(Logic.Snake snake, char[,] currentBuffer)
     {
         int i = 0;
         var bodyLength = snake.Body.Count;
