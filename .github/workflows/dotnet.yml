@@ -4,9 +4,6 @@
 name: .NET
 
 on:
-  push:
-    branches:
-      - '**' # Запускаем для всех веток
   pull_request:
     branches:
       - '**' # Запускаем для pull request'ов в любую ветку
