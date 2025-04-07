@@ -9,11 +9,11 @@ public class GameFieldHelper
         {
             for (int y = 0; y < gameData.BoardHeight; y++)
             {
-                Cell pixel = new Cell(x, y);
-                if (!gameData.Walls.Contains(pixel) &&
-                    !gameData.Snake.Body.Contains(pixel))
+                Cell cell = new Cell(x, y);
+                if (!gameData.Walls.Contains(cell) &&
+                    !gameData.Snake.Body.Contains(cell))
                 {
-                    fields.Add(pixel);
+                    fields.Add(cell);
                 }
             }
         }
