@@ -2,18 +2,18 @@ namespace Snake.Logic;
 
 public class GameFieldHelper
 {
-    public Pixel[] GetFreePixels(GameData gameData)
+    public Cell[] GetFreeCells(GameData gameData)
     {
-        List<Pixel> fields = new List<Pixel>();
+        List<Cell> fields = new List<Cell>();
         for (int x = 0; x < gameData.BoardWidth; x++)
         {
             for (int y = 0; y < gameData.BoardHeight; y++)
             {
-                Pixel pixel = new Pixel(x, y);
-                if (!gameData.Walls.Contains(pixel) &&
-                    !gameData.Snake.Body.Contains(pixel))
+                Cell cell = new Cell(x, y);
+                if (!gameData.Walls.Contains(cell) &&
+                    !gameData.Snake.Body.Contains(cell))
                 {
-                    fields.Add(pixel);
+                    fields.Add(cell);
                 }
             }
         }

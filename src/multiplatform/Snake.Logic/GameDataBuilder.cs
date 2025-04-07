@@ -4,19 +4,19 @@ public class GameDataBuilder
 {
     private int _width;
     private int _height;
-    private List<Pixel> _walls = new();
-    private Queue<Pixel> _body = new();
+    private List<Cell> _walls = new();
+    private Queue<Cell> _body = new();
     private Direction _direction;
-    private Pixel? _food;
+    private Cell? _food;
     private Snake _snake;
     private int _pointCount;
     private int _stepCount;
 
     private GameDataBuilder()
     {
-        var body = new Queue<Pixel>();
-        body.Enqueue(new Pixel(0, 0));
-        _snake = new Snake(body, Direction.Right, new Pixel(0, 0));
+        var body = new Queue<Cell>();
+        body.Enqueue(new Cell(0, 0));
+        _snake = new Snake(body, Direction.Right, new Cell(0, 0));
     }
 
     public static GameDataBuilder Create()
@@ -40,18 +40,18 @@ public class GameDataBuilder
     public GameDataBuilder CreateWallAroundPlayingField(int width, int height)
     {
         // Логика для создания стены по краю игрового поля
-        _walls = new List<Pixel>();
+        _walls = new List<Cell>();
 
         for (int i = 0; i < width; i++)
         {
-            _walls.Add(new Pixel(i, 0));
-            _walls.Add(new Pixel(i, height - 1));
+            _walls.Add(new Cell(i, 0));
+            _walls.Add(new Cell(i, height - 1));
         }
 
         for (int i = 0; i < height; i++)
         {
-            _walls.Add(new Pixel(0, i));
-            _walls.Add(new Pixel(width - 1, i));
+            _walls.Add(new Cell(0, i));
+            _walls.Add(new Cell(width - 1, i));
         }
 
         return this;
@@ -60,21 +60,21 @@ public class GameDataBuilder
     public GameDataBuilder AddSnake(int x, int y, Direction direction, int snakeLength)
     {
         // создание змейки
-        var head = new Pixel(x, y);
-        _body = new Queue<Pixel>();
+        var head = new Cell(x, y);
+        _body = new Queue<Cell>();
 
         for (int i = snakeLength - 1; i >= 1; i--)
         {
-            Pixel bodyPixel = direction switch
+            Cell bodyCell = direction switch
             {
-                Direction.Right => new Pixel(x - i, y),
-                Direction.Left => new Pixel(x + i, y),
-                Direction.Up => new Pixel(x, y + i),
-                Direction.Down => new Pixel(x, y - i),
+                Direction.Right => new Cell(x - i, y),
+                Direction.Left => new Cell(x + i, y),
+                Direction.Up => new Cell(x, y + i),
+                Direction.Down => new Cell(x, y - i),
                 _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, $"Unexpected direction: {direction}")
             };
 
-            _body.Enqueue(bodyPixel);
+            _body.Enqueue(bodyCell);
         }
 
         _body.Enqueue(head);
@@ -91,7 +91,7 @@ public class GameDataBuilder
             int x = RandomAdapter.Next(1, _width - 1);
             int y = RandomAdapter.Next(1, _height - 1);
 
-            Pixel food = new Pixel(x, y);
+            Cell food = new Cell(x, y);
 
             if (!_walls.Contains(food) && (!_snake.Body.Contains(food)))
             {

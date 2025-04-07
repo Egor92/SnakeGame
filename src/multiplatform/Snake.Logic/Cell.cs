@@ -1,12 +1,12 @@
 ﻿namespace Snake.Logic;
 
-public class Pixel
+public class Cell
 {
     public int X { get; set; }
 
     public int Y { get; set; }
 
-    protected bool Equals(Pixel other)
+    protected bool Equals(Cell other)
     {
         return X == other.X && Y == other.Y;
     }
@@ -16,7 +16,7 @@ public class Pixel
         if (obj is null) return false;
         if (ReferenceEquals(this, obj)) return true;
         if (obj.GetType() != GetType()) return false;
-        return Equals((Pixel)obj);
+        return Equals((Cell)obj);
     }
 
     public override int GetHashCode()
@@ -24,17 +24,17 @@ public class Pixel
         return HashCode.Combine(X, Y);
     }
 
-    public static bool operator ==(Pixel? left, Pixel? right)
+    public static bool operator ==(Cell? left, Cell? right)
     {
         return Equals(left, right);
     }
 
-    public static bool operator !=(Pixel? left, Pixel? right)
+    public static bool operator !=(Cell? left, Cell? right)
     {
         return !Equals(left, right);
     }
 
-    public Pixel(int x, int y)
+    public Cell(int x, int y)
     {
         X = x;
         Y = y;

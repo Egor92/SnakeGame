@@ -26,7 +26,7 @@ public class GameRenderer
         }
     }
 
-    private static void WriteWallsToBuffer(List<Pixel> walls, char[,] currentBuffer)
+    private static void WriteWallsToBuffer(List<Cell> walls, char[,] currentBuffer)
     {
         foreach (var wall in walls)
         {
@@ -39,14 +39,14 @@ public class GameRenderer
         int i = 0;
         var bodyLength = snake.Body.Count;
         var body = snake.Body.ToArray();
-        foreach (var pixel in body)
+        foreach (var cell in body)
         {
-            var nextPixel = i < bodyLength - 1 ? body[i + 1] : null;
-            var prevPixel = i > 0 ? body[i - 1] : null;
+            var nextCell = i < bodyLength - 1 ? body[i + 1] : null;
+            var prevCell = i > 0 ? body[i - 1] : null;
 
             if (i == bodyLength - 1)
             {
-                currentBuffer[pixel.X, pixel.Y] = snake.LastStepDirection switch
+                currentBuffer[cell.X, cell.Y] = snake.LastStepDirection switch
                 {
                     Direction.Up => GameRenderSymbols.Snake.HeadLooksUp,
                     Direction.Down => GameRenderSymbols.Snake.HeadLooksDown,
@@ -55,15 +55,15 @@ public class GameRenderer
                     _ => throw new InvalidOperationException("Invalid snake direction")
                 };
             }
-            else if (nextPixel != null && prevPixel != null)
+            else if (nextCell != null && prevCell != null)
             {
-                currentBuffer[pixel.X, pixel.Y] = GetSnakeBodySymbol(pixel, nextPixel, prevPixel);
+                currentBuffer[cell.X, cell.Y] = GetSnakeBodySymbol(cell, nextCell, prevCell);
             }
             else if (i == 0)
             {
-                if (nextPixel != null)
+                if (nextCell != null)
                 {
-                    currentBuffer[pixel.X, pixel.Y] = GetSnakeTailSymbol(pixel, nextPixel);
+                    currentBuffer[cell.X, cell.Y] = GetSnakeTailSymbol(cell, nextCell);
                 }
             }
 
@@ -71,34 +71,34 @@ public class GameRenderer
         }
     }
 
-    private static char GetSnakeBodySymbol(Pixel pixel, Pixel nextPixel, Pixel prevPixel)
+    private static char GetSnakeBodySymbol(Cell cell, Cell nextCell, Cell prevCell)
     {
-        if ((prevPixel.X < pixel.X && nextPixel.Y > pixel.Y) || (nextPixel.X < pixel.X && prevPixel.Y > pixel.Y))
+        if ((prevCell.X < cell.X && nextCell.Y > cell.Y) || (nextCell.X < cell.X && prevCell.Y > cell.Y))
         {
             return GameRenderSymbols.Snake.TurnDownOrLeft;
         }
 
-        if ((prevPixel.X > pixel.X && nextPixel.Y > pixel.Y) || (prevPixel.Y > pixel.Y && nextPixel.X > pixel.X))
+        if ((prevCell.X > cell.X && nextCell.Y > cell.Y) || (prevCell.Y > cell.Y && nextCell.X > cell.X))
         {
             return GameRenderSymbols.Snake.TurnDownOrRight;
         }
 
-        if ((prevPixel.X < pixel.X && nextPixel.Y < pixel.Y) || (prevPixel.Y < pixel.Y && nextPixel.X < pixel.X))
+        if ((prevCell.X < cell.X && nextCell.Y < cell.Y) || (prevCell.Y < cell.Y && nextCell.X < cell.X))
         {
             return GameRenderSymbols.Snake.TurnUpOrLeft;
         }
 
-        if ((prevPixel.X > pixel.X && nextPixel.Y < pixel.Y) || (nextPixel.X > pixel.X && prevPixel.Y < pixel.Y))
+        if ((prevCell.X > cell.X && nextCell.Y < cell.Y) || (nextCell.X > cell.X && prevCell.Y < cell.Y))
         {
             return GameRenderSymbols.Snake.TurnUpOrRight;
         }
 
-        if (prevPixel.X == nextPixel.X)
+        if (prevCell.X == nextCell.X)
         {
             return GameRenderSymbols.Snake.VerticalBody;
         }
 
-        if (prevPixel.Y == nextPixel.Y)
+        if (prevCell.Y == nextCell.Y)
         {
             return GameRenderSymbols.Snake.HorizontalBody;
         }
@@ -106,24 +106,24 @@ public class GameRenderer
         throw new InvalidOperationException("Invalid snake body segment");
     }
 
-    private static char GetSnakeTailSymbol(Pixel pixel, Pixel nextPixel)
+    private static char GetSnakeTailSymbol(Cell cell, Cell nextCell)
     {
-        if (nextPixel.Y > pixel.Y)
+        if (nextCell.Y > cell.Y)
         {
             return GameRenderSymbols.Snake.TailLooksUp;
         }
 
-        if (nextPixel.Y < pixel.Y)
+        if (nextCell.Y < cell.Y)
         {
             return GameRenderSymbols.Snake.TailLooksDown;
         }
 
-        if (nextPixel.X > pixel.X)
+        if (nextCell.X > cell.X)
         {
             return GameRenderSymbols.Snake.TailLooksLeft;
         }
 
-        if (nextPixel.X < pixel.X)
+        if (nextCell.X < cell.X)
         {
             return GameRenderSymbols.Snake.TailLooksRight;
         }
@@ -131,7 +131,7 @@ public class GameRenderer
         throw new InvalidOperationException("Invalid snake tail segment");
     }
 
-    private static void WriteFoodToBuffer(Pixel food, char[,] currentBuffer)
+    private static void WriteFoodToBuffer(Cell food, char[,] currentBuffer)
     {
         currentBuffer[food.X, food.Y] = GameRenderSymbols.Food;
     }

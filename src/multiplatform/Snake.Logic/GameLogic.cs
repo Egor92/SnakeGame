@@ -29,14 +29,14 @@ public class GameLogic(GameData gameData)
                 break;
         }
 
-        var newHead = new Pixel(newX, newY);
+        var newHead = new Cell(newX, newY);
         snakeBody.Dequeue();
         snakeBody.Enqueue(newHead);
         gameData.Snake.Head = newHead;
 
         if (gameData.Food != null && CheckFoodCollision())
         {
-            gameData.Food = GetFreePixel();
+            gameData.Food = GetFreeCell();
             GrowSnake(out newHead);
             gameData.Snake.Head = newHead;
             gameData.PointCount += GameSettings.PointsForFood;
@@ -64,31 +64,31 @@ public class GameLogic(GameData gameData)
         return gameData.Snake.Head == gameData.Food;
     }
 
-    private Pixel GetFreePixel()
+    private Cell GetFreeCell()
     {
         while (true)
         {
-            Pixel[] fields = _gameFieldHelper.GetFreePixels(gameData);
-            Pixel freePixel = fields[RandomAdapter.Next(fields.Length)];
-            return freePixel;
+            Cell[] fields = _gameFieldHelper.GetFreeCells(gameData);
+            Cell freeCell = fields[RandomAdapter.Next(fields.Length)];
+            return freeCell;
         }
     }
 
-    private void GrowSnake(out Pixel newHead)
+    private void GrowSnake(out Cell newHead)
     {
         var element = gameData.Snake.Body.Last();
         var direction = gameData.Snake.LastStepDirection;
-        var newPixel = gameData.Snake.LastStepDirection switch
+        var newCell = gameData.Snake.LastStepDirection switch
         {
-            Direction.Up => new Pixel(element.X, element.Y - 1),
-            Direction.Down => new Pixel(element.X, element.Y + 1),
-            Direction.Left => new Pixel(element.X - 1, element.Y),
-            Direction.Right => new Pixel(element.X + 1, element.Y),
+            Direction.Up => new Cell(element.X, element.Y - 1),
+            Direction.Down => new Cell(element.X, element.Y + 1),
+            Direction.Left => new Cell(element.X - 1, element.Y),
+            Direction.Right => new Cell(element.X + 1, element.Y),
             _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, $"Unexpected direction: {direction}")
         };
 
-        gameData.Snake.Body.Enqueue(newPixel);
-        newHead = newPixel;
+        gameData.Snake.Body.Enqueue(newCell);
+        newHead = newCell;
     }
 
     public void ChangeDirection(Direction direction)

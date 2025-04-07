@@ -23,17 +23,17 @@ public class SnakeBuilderTest
         int x = headX;
         int y = headY;
         int index = 0;
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(headX, headY)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(--x, y)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(--x, y)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(x, ++y)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(x, ++y)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(++x, y)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(++x, y)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(x, ++y)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(x, ++y)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(--x, y)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(--x, y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(headX, headY)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(--x, y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(--x, y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(x, ++y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(x, ++y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(++x, y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(++x, y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(x, ++y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(x, ++y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(--x, y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(--x, y)));
     }
 
     [Test]
@@ -54,11 +54,11 @@ public class SnakeBuilderTest
         int x = headX;
         int y = headY;
         int index = 0;
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(headX, headY)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(--x, y)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(--x, y)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(--x, y)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(--x, y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(headX, headY)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(--x, y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(--x, y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(--x, y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(--x, y)));
     }
 
     [Test]
@@ -81,13 +81,13 @@ public class SnakeBuilderTest
         int x = headX;
         int y = headY;
         int index = 0;
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(headX, headY)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(--x, y)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(--x, y)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(x, ++y)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(x, ++y)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(++x, y)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(++x, y)));
-        Assert.That(snakeBody[index++], Is.EqualTo(new Pixel(++x, y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(headX, headY)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(--x, y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(--x, y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(x, ++y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(x, ++y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(++x, y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(++x, y)));
+        Assert.That(snakeBody[index++], Is.EqualTo(new Cell(++x, y)));
     }
 }
