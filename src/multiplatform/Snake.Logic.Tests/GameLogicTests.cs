@@ -28,9 +28,9 @@ public class GameLogicTests
 
         // Assert
         var snakeBody = _gameData.Snake.Body.ToArray();
-        Assert.That(snakeBody[0], Is.EqualTo(new Pixel(4, 5)));
-        Assert.That(snakeBody[1], Is.EqualTo(new Pixel(5, 5)));
-        Assert.That(snakeBody[2], Is.EqualTo(new Pixel(6, 5)));
+        Assert.That(snakeBody[0], Is.EqualTo(new Cell(4, 5)));
+        Assert.That(snakeBody[1], Is.EqualTo(new Cell(5, 5)));
+        Assert.That(snakeBody[2], Is.EqualTo(new Cell(6, 5)));
     }
 
     [Test]
@@ -46,9 +46,9 @@ public class GameLogicTests
 
         // Assert
         var snakeBody = _gameData.Snake.Body.ToArray();
-        Assert.That(snakeBody[0], Is.EqualTo(new Pixel(6, 5)));
-        Assert.That(snakeBody[1], Is.EqualTo(new Pixel(5, 5)));
-        Assert.That(snakeBody[2], Is.EqualTo(new Pixel(4, 5)));
+        Assert.That(snakeBody[0], Is.EqualTo(new Cell(6, 5)));
+        Assert.That(snakeBody[1], Is.EqualTo(new Cell(5, 5)));
+        Assert.That(snakeBody[2], Is.EqualTo(new Cell(4, 5)));
     }
 
     [Test]
@@ -64,9 +64,9 @@ public class GameLogicTests
 
         // Assert
         var snakeBody = _gameData.Snake.Body.ToArray();
-        Assert.That(snakeBody[0], Is.EqualTo(new Pixel(5, 6)));
-        Assert.That(snakeBody[1], Is.EqualTo(new Pixel(5, 5)));
-        Assert.That(snakeBody[2], Is.EqualTo(new Pixel(5, 4)));
+        Assert.That(snakeBody[0], Is.EqualTo(new Cell(5, 6)));
+        Assert.That(snakeBody[1], Is.EqualTo(new Cell(5, 5)));
+        Assert.That(snakeBody[2], Is.EqualTo(new Cell(5, 4)));
     }
 
     [Test]
@@ -83,9 +83,9 @@ public class GameLogicTests
         // Assert
         var snakeBody = _gameData.Snake.Body.ToArray();
 
-        Assert.That(snakeBody[0], Is.EqualTo(new Pixel(5, 4)));
-        Assert.That(snakeBody[1], Is.EqualTo(new Pixel(5, 5)));
-        Assert.That(snakeBody[2], Is.EqualTo(new Pixel(5, 6)));
+        Assert.That(snakeBody[0], Is.EqualTo(new Cell(5, 4)));
+        Assert.That(snakeBody[1], Is.EqualTo(new Cell(5, 5)));
+        Assert.That(snakeBody[2], Is.EqualTo(new Cell(5, 6)));
     }
 
     [TestCase(Direction.Right, Direction.Left, Direction.Right)]
@@ -245,9 +245,9 @@ public class GameLogicTests
         _gameData.Snake = SnakeBuilder.Create(1, 2, Direction.Left)
                                       .Grow(2)
                                       .Build();
-        _gameData.Walls = new List<Pixel>()
+        _gameData.Walls = new List<Cell>()
         {
-            new Pixel(0, 2)
+            new Cell(0, 2)
         };
 
         // Act
@@ -258,7 +258,7 @@ public class GameLogicTests
     }
 
     [Test]
-    public void DoStep_FoodIsAhead_SnakeGrowsOnePixel()
+    public void DoStep_FoodIsAhead_SnakeGrowsOneCell()
     {
         // Arrange  
         var initialSnakeLength = 3;
@@ -266,7 +266,7 @@ public class GameLogicTests
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
                                       .Grow(initialSnakeLength - 1)
                                       .Build();
-        _gameData.Food = new Pixel(6, 5);
+        _gameData.Food = new Cell(6, 5);
 
         // Act
         _gameLogic.DoStep();
@@ -301,7 +301,7 @@ public class GameLogicTests
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
                                       .Grow(2)
                                       .Build();
-        _gameData.Food = new Pixel(6, 5);
+        _gameData.Food = new Cell(6, 5);
 
         // Act
         _gameLogic.DoStep();
@@ -342,7 +342,7 @@ public class GameLogicTests
         _gameData.Snake = SnakeBuilder.Create(5, 5, Direction.Right)
                                       .Grow(2)
                                       .Build();
-        _gameData.Food = new Pixel(6, 5);
+        _gameData.Food = new Cell(6, 5);
         var initialNumberOfPoints = 0;
 
         // Act

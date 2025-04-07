@@ -2,7 +2,7 @@
 
 public class Snake
 {
-    public Queue<Pixel> Body { get; set; }
+    public Queue<Cell> Body { get; set; }
 
     public Direction LastStepDirection { get; set; }
 
@@ -10,9 +10,9 @@ public class Snake
 
     public Direction NextStepDirection => RequestedDirection ?? LastStepDirection;
 
-    public Pixel Head { get; set; }
+    public Cell Head { get; set; }
 
-    public Snake(Queue<Pixel> body, Direction direction, Pixel head)
+    public Snake(Queue<Cell> body, Direction direction, Cell head)
     {
         Body = body;
         LastStepDirection = direction;

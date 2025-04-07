@@ -2,11 +2,11 @@ namespace Snake.Logic;
 
 public class SnakeBuilder
 {
-    private readonly List<Pixel> _body = new();
+    private readonly List<Cell> _body = new();
     private Direction _headDirection;
-    private Pixel _head = null!;
+    private Cell _head = null!;
     private Direction _tailDirection;
-    private Pixel _tail = null!;
+    private Cell _tail = null!;
 
     private SnakeBuilder()
     {
@@ -16,8 +16,8 @@ public class SnakeBuilder
     {
         return new SnakeBuilder()
         {
-            _head = new Pixel(x, y),
-            _tail = new Pixel(x, y),
+            _head = new Cell(x, y),
+            _tail = new Cell(x, y),
             _headDirection = snakeDirection,
             _tailDirection = snakeDirection.GetOpposite(),
         };
@@ -33,16 +33,16 @@ public class SnakeBuilder
     {
         for (int i = 1; i <= length; i++)
         {
-            Pixel bodyPixel = direction switch
+            Cell bodyCell = direction switch
             {
-                Direction.Up => new Pixel(_tail.X, _tail.Y - 1),
-                Direction.Down => new Pixel(_tail.X, _tail.Y + 1),
-                Direction.Left => new Pixel(_tail.X - 1, _tail.Y),
-                Direction.Right => new Pixel(_tail.X + 1, _tail.Y),
+                Direction.Up => new Cell(_tail.X, _tail.Y - 1),
+                Direction.Down => new Cell(_tail.X, _tail.Y + 1),
+                Direction.Left => new Cell(_tail.X - 1, _tail.Y),
+                Direction.Right => new Cell(_tail.X + 1, _tail.Y),
                 _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, $"Unexpected direction: {direction}")
             };
-            _body.Add(bodyPixel);
-            _tail = bodyPixel;
+            _body.Add(bodyCell);
+            _tail = bodyCell;
         }
 
         _tailDirection = direction;
@@ -51,8 +51,8 @@ public class SnakeBuilder
 
     public Snake Build()
     {
-        var reversedBody = ((IEnumerable<Pixel>)_body).Reverse();
-        Queue<Pixel> snakeBody = new Queue<Pixel>(reversedBody);
+        var reversedBody = ((IEnumerable<Cell>)_body).Reverse();
+        Queue<Cell> snakeBody = new Queue<Cell>(reversedBody);
         snakeBody.Enqueue(_head);
         return new Snake(snakeBody, _headDirection, _head);
     }

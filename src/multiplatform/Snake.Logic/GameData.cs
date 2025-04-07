@@ -6,9 +6,9 @@ public class GameData
 
     public int BoardHeight { get; set; }
 
-    public Pixel? Food { get; set; }
+    public Cell? Food { get; set; }
 
-    public required List<Pixel> Walls { get; set; }
+    public required List<Cell> Walls { get; set; }
 
     public required Snake Snake { get; set; }
 

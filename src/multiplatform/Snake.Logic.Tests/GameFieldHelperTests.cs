@@ -17,7 +17,7 @@ public class GameFieldHelperTests
     }
 
     [Test]
-    public void GetFreePixels_GameDataContainsFreePixels_ReturnsFreePixels()
+    public void GetFreeCells_GameDataContainsFreeCells_ReturnsFreeCells()
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(2, 1, Direction.Right)
@@ -25,14 +25,14 @@ public class GameFieldHelperTests
                                       .Build();
 
         // Act
-        var freePixels = _gameFieldHelper.GetFreePixels(_gameData);
+        var freeCells = _gameFieldHelper.GetFreeCells(_gameData);
 
         // Assert
-        Assert.That(freePixels, Is.EquivalentTo(new[] { new Pixel(3, 1), new Pixel(4, 1) }));
+        Assert.That(freeCells, Is.EquivalentTo(new[] { new Cell(3, 1), new Cell(4, 1) }));
     }
 
     [Test]
-    public void GetFreePixels_GameDataDoesNotContainFreePixels_ReturnsEmptyArray()
+    public void GetFreeCells_GameDataDoesNotContainFreeCells_ReturnsEmptyArray()
     {
         // Arrange  
         _gameData.Snake = SnakeBuilder.Create(5, 1, Direction.Right)
@@ -40,9 +40,9 @@ public class GameFieldHelperTests
                                       .Build();
 
         // Act
-        var freePixels = _gameFieldHelper.GetFreePixels(_gameData);
+        var freeCells = _gameFieldHelper.GetFreeCells(_gameData);
 
         // Assert
-        Assert.That(freePixels, Is.Empty);
+        Assert.That(freeCells, Is.Empty);
     }
 }
