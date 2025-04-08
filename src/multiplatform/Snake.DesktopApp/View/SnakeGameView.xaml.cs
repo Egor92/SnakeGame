@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Snake.DesktopApp;
+namespace Snake.DesktopApp.View;
 
 public partial class SnakeGameView : UserControl
 {

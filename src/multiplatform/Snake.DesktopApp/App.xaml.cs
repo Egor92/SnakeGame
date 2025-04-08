@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Windows;
+using Snake.DesktopApp.View;
 using Snake.DesktopApp.Views;
 
 namespace Snake.DesktopApp;
