@@ -2,9 +2,9 @@
 
 namespace Snake.DesktopApp.View;
 
-public partial class SnakeGameView : UserControl
+public partial class CellView : UserControl
 {
-    public SnakeGameView()
+    public CellView()
     {
         InitializeComponent();
     }
