@@ -2,17 +2,44 @@
 
 namespace Snake.ConsoleApp;
 
-public abstract class Bufferer
+public class Bufferer
 {
-    public void WriteWallsToBuffer(List<Cell> walls, char[,] currentBuffer)
+    public CellObject[,] GetGameValue(GameData gameData)
+    {
+        int width = gameData.BoardWidth;
+        int height = gameData.BoardHeight;
+
+        CellObject[,] cellObjects = new CellObject[width, height];
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                cellObjects[x, y] = CellObject.Empty;
+            }
+        }
+
+        WriteWallsToBuffer(gameData.Walls, cellObjects);
+
+        WriteSnakeToBuffer(gameData.Snake, cellObjects);
+
+        if (gameData.Food != null)
+        {
+            WriteFoodToBuffer(gameData.Food, cellObjects);
+        }
+
+        return cellObjects;
+    }
+
+    private void WriteWallsToBuffer(List<Cell> walls, CellObject[,] cellObjects)
     {
         foreach (var wall in walls)
         {
-            currentBuffer[wall.X, wall.Y] = GameRenderSymbols.Wall;
+            cellObjects[wall.X, wall.Y] = CellObject.Wall;
         }
     }
 
-    public void WriteSnakeToBuffer(Logic.Snake snake, char[,] currentBuffer)
+    private void WriteSnakeToBuffer(Logic.Snake snake, CellObject[,] cellObjects)
     {
         int i = 0;
         var bodyLength = snake.Body.Count;
@@ -24,24 +51,24 @@ public abstract class Bufferer
 
             if (i == bodyLength - 1)
             {
-                currentBuffer[cell.X, cell.Y] = snake.LastStepDirection switch
+                cellObjects[cell.X, cell.Y] = snake.LastStepDirection switch
                 {
-                    Direction.Up => GameRenderSymbols.Snake.HeadLooksUp,
-                    Direction.Down => GameRenderSymbols.Snake.HeadLooksDown,
-                    Direction.Left => GameRenderSymbols.Snake.HeadLooksLeft,
-                    Direction.Right => GameRenderSymbols.Snake.HeadLooksRight,
+                    Direction.Up => CellObject.SnakeHeadLooksUp,
+                    Direction.Down => CellObject.SnakeHeadLooksDown,
+                    Direction.Left => CellObject.SnakeHeadLooksLeft,
+                    Direction.Right => CellObject.SnakeHeadLooksRight,
                     _ => throw new InvalidOperationException("Invalid snake direction")
                 };
             }
             else if (nextCell != null && prevCell != null)
             {
-                currentBuffer[cell.X, cell.Y] = GetSnakeBodySymbol(cell, nextCell, prevCell);
+                cellObjects[cell.X, cell.Y] = GetSnakeBodySymbol(cell, nextCell, prevCell);
             }
             else if (i == 0)
             {
                 if (nextCell != null)
                 {
-                    currentBuffer[cell.X, cell.Y] = GetSnakeTailSymbol(cell, nextCell);
+                    cellObjects[cell.X, cell.Y] = GetSnakeTailSymbol(cell, nextCell);
                 }
             }
 
@@ -49,79 +76,68 @@ public abstract class Bufferer
         }
     }
 
-    private static char GetSnakeBodySymbol(Cell cell, Cell nextCell, Cell prevCell)
+    private static CellObject GetSnakeBodySymbol(Cell cell, Cell nextCell, Cell prevCell)
     {
         if ((prevCell.X < cell.X && nextCell.Y > cell.Y) || (nextCell.X < cell.X && prevCell.Y > cell.Y))
         {
-            return GameRenderSymbols.Snake.TurnDownOrLeft;
+            return CellObject.SnakeTurnDownOrLeft;
         }
 
         if ((prevCell.X > cell.X && nextCell.Y > cell.Y) || (prevCell.Y > cell.Y && nextCell.X > cell.X))
         {
-            return GameRenderSymbols.Snake.TurnDownOrRight;
+            return CellObject.SnakeTurnDownOrRight;
         }
 
         if ((prevCell.X < cell.X && nextCell.Y < cell.Y) || (prevCell.Y < cell.Y && nextCell.X < cell.X))
         {
-            return GameRenderSymbols.Snake.TurnUpOrLeft;
+            return CellObject.SnakeTurnUpOrLeft;
         }
 
         if ((prevCell.X > cell.X && nextCell.Y < cell.Y) || (nextCell.X > cell.X && prevCell.Y < cell.Y))
         {
-            return GameRenderSymbols.Snake.TurnUpOrRight;
+            return CellObject.SnakeTurnUpOrRight;
         }
 
         if (prevCell.X == nextCell.X)
         {
-            return GameRenderSymbols.Snake.VerticalBody;
+            return CellObject.SnakeBodyVertical;
         }
 
         if (prevCell.Y == nextCell.Y)
         {
-            return GameRenderSymbols.Snake.HorizontalBody;
+            return CellObject.SnakeBodyHorizontal;
         }
 
         throw new InvalidOperationException("Invalid snake body segment");
     }
 
-    private static char GetSnakeTailSymbol(Cell cell, Cell nextCell)
+    private static CellObject GetSnakeTailSymbol(Cell cell, Cell nextCell)
     {
         if (nextCell.Y > cell.Y)
         {
-            return GameRenderSymbols.Snake.TailLooksUp;
+            return CellObject.SnakeTailLooksUp;
         }
 
         if (nextCell.Y < cell.Y)
         {
-            return GameRenderSymbols.Snake.TailLooksDown;
+            return CellObject.SnakeTailLooksDown;
         }
 
         if (nextCell.X > cell.X)
         {
-            return GameRenderSymbols.Snake.TailLooksLeft;
+            return CellObject.SnakeTailLooksLeft;
         }
 
         if (nextCell.X < cell.X)
         {
-            return GameRenderSymbols.Snake.TailLooksRight;
+            return CellObject.SnakeTailLooksRight;
         }
 
         throw new InvalidOperationException("Invalid snake tail segment");
     }
 
-    public void WriteFoodToBuffer(Cell food, char[,] currentBuffer)
+    private void WriteFoodToBuffer(Cell food, CellObject[,] cellObjects)
     {
-        currentBuffer[food.X, food.Y] = GameRenderSymbols.Food;
-    }
-
-    public void ClearBuffer(char[,] buffer, int width, int height)
-    {
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                buffer[i, j] = ' ';
-            }
-        }
+        cellObjects[food.X, food.Y] = CellObject.Food;
     }
 }

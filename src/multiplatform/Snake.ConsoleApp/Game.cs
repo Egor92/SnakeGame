@@ -8,7 +8,7 @@ public class Game(GameData gameData, GameLogic gameLogic, int timeBetweenSteps)
 
     public void Start()
     {
-        _gameRenderer.RenderGame(gameData);
+        //   _gameRenderer.RenderGame(gameData);
 
         while (!gameData.IsGameOver)
         {
@@ -33,8 +33,10 @@ public class Game(GameData gameData, GameLogic gameLogic, int timeBetweenSteps)
             }
 
             gameLogic.DoStep();
-            _gameRenderer.RenderGame(gameData);
+            Bufferer bufferer = new Bufferer();
+            CellObject[,] cellObjects = bufferer.GetGameValue(gameData);
 
+            _gameRenderer.RenderGame(cellObjects);
             if (gameData.IsGameOver)
             {
                 break;

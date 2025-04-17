@@ -5,52 +5,82 @@ namespace Snake.ConsoleApp;
 public class GameRenderer
 {
     private char[,]? _previousBuffer;
-    private Bufferer bufferer;
+    private GameData _gameData;
 
-    public void RenderGame(GameData gameData)
+    public void RenderGame(CellObject[,] cellObjects)
     {
-        _previousBuffer = new char[gameData.BoardWidth, gameData.BoardHeight];
-        char[,] currentBuffer = new char[gameData.BoardWidth, gameData.BoardHeight];
-        bufferer.ClearBuffer(currentBuffer, gameData.BoardWidth, gameData.BoardHeight);
-        bufferer.WriteWallsToBuffer(gameData.Walls, currentBuffer);
-        bufferer.WriteSnakeToBuffer(gameData.Snake, currentBuffer);
-        if (gameData.Food != null)
+        int width = cellObjects.GetLength(0);
+        int height = cellObjects.GetLength(1);
+
+        char[,] currentBuffer = new char[width, height];
+
+        for (int x = 0; x < width; x++)
         {
-            bufferer.WriteFoodToBuffer(gameData.Food, currentBuffer);
+            for (int y = 0; y < height; y++)
+            {
+                currentBuffer[x, y] = GetSymbol(cellObjects[x, y]);
+            }
         }
 
-        DrawElements(gameData, currentBuffer);
+        DrawElements(currentBuffer, width, height);
+
         _previousBuffer = currentBuffer;
-        if (gameData.IsGameOver)
-        {
-            DrawGameOver(gameData);
-        }
     }
 
-    private void DrawElements(GameData gameData, char[,] currentBuffer)
+    private char GetSymbol(CellObject cellObject)
     {
-        for (int i = 0; i < gameData.BoardWidth; i++)
+        return cellObject switch
         {
-            for (int j = 0; j < gameData.BoardHeight; j++)
+            CellObject.Empty => ' ',
+            CellObject.Wall => GameRenderSymbols.Wall,
+            CellObject.Food => GameRenderSymbols.Food,
+            CellObject.SnakeHeadLooksUp => GameRenderSymbols.Snake.HeadLooksUp,
+            CellObject.SnakeHeadLooksDown => GameRenderSymbols.Snake.HeadLooksDown,
+            CellObject.SnakeHeadLooksLeft => GameRenderSymbols.Snake.HeadLooksLeft,
+            CellObject.SnakeHeadLooksRight => GameRenderSymbols.Snake.HeadLooksRight,
+            CellObject.SnakeBodyHorizontal => GameRenderSymbols.Snake.HorizontalBody,
+            CellObject.SnakeBodyVertical => GameRenderSymbols.Snake.VerticalBody,
+            CellObject.SnakeTurnDownOrLeft => GameRenderSymbols.Snake.TurnDownOrLeft,
+            CellObject.SnakeTurnDownOrRight => GameRenderSymbols.Snake.TurnDownOrRight,
+            CellObject.SnakeTurnUpOrLeft => GameRenderSymbols.Snake.TurnUpOrLeft,
+            CellObject.SnakeTurnUpOrRight => GameRenderSymbols.Snake.TurnUpOrRight,
+            CellObject.SnakeTailLooksUp => GameRenderSymbols.Snake.TailLooksUp,
+            CellObject.SnakeTailLooksDown => GameRenderSymbols.Snake.TailLooksDown,
+            CellObject.SnakeTailLooksLeft => GameRenderSymbols.Snake.TailLooksLeft,
+            CellObject.SnakeTailLooksRight => GameRenderSymbols.Snake.TailLooksRight,
+            _ => throw new InvalidOperationException("Unknown CellObject")
+        };
+    }
+
+    private void DrawElements(char[,] currentBuffer, int width, int height)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
             {
-                if (_previousBuffer == null || currentBuffer[i, j] != _previousBuffer[i, j])
+                if (_previousBuffer == null || currentBuffer[x, y] != _previousBuffer[x, y])
                 {
-                    Console.SetCursorPosition(i, j);
-                    Console.Write(currentBuffer[i, j]);
+                    Console.SetCursorPosition(x, y);
+                    Console.Write(currentBuffer[x, y]);
                 }
             }
         }
 
-        Console.SetCursorPosition(0, gameData.BoardHeight + 1);
+        Console.SetCursorPosition(0, _gameData.BoardHeight + 1);
         Console.WriteLine("Игра 'Змейка");
-        Console.WriteLine($"Количество ходов: {gameData.StepCount}");
-        Console.WriteLine($"Количество очков: {gameData.PointCount}");
+        Console.WriteLine($"Количество ходов: {_gameData.StepCount}");
+        Console.WriteLine($"Количество очков: {_gameData.PointCount}");
+
+        if (_gameData.IsGameOver)
+        {
+            DrawGameOver(width, height);
+        }
     }
 
-    private static void DrawGameOver(GameData gameData)
+    private static void DrawGameOver(int width, int height)
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.SetCursorPosition(gameData.BoardWidth / 2 - 4, gameData.BoardHeight);
+        Console.SetCursorPosition(width / 2 - 4, height);
         Console.WriteLine("Game Over!");
     }
 }
