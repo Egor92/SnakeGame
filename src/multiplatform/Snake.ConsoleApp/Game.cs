@@ -8,6 +8,7 @@ public class Game(GameData gameData, GameLogic gameLogic, int timeBetweenSteps)
 
     public void Start()
     {
+        GameSceneCreator gameSceneCreator = new GameSceneCreator();
         while (!gameData.IsGameOver)
         {
             ConsoleKey key = ConsoleKey.None;
@@ -31,7 +32,6 @@ public class Game(GameData gameData, GameLogic gameLogic, int timeBetweenSteps)
             }
 
             gameLogic.DoStep();
-            GameSceneCreator gameSceneCreator = new GameSceneCreator();
             CellObject[,] cellObjects = gameSceneCreator.GetSceneCellObjects(gameData);
 
             _gameRenderer.RenderGame(cellObjects);
