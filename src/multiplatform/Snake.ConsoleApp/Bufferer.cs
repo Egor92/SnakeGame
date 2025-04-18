@@ -80,22 +80,22 @@ public class Bufferer
     {
         if ((prevCell.X < cell.X && nextCell.Y > cell.Y) || (nextCell.X < cell.X && prevCell.Y > cell.Y))
         {
-            return CellObject.SnakeTurnDownOrLeft;
+            return CellObject.SnakeBodyDownOrLeft;
         }
 
         if ((prevCell.X > cell.X && nextCell.Y > cell.Y) || (prevCell.Y > cell.Y && nextCell.X > cell.X))
         {
-            return CellObject.SnakeTurnDownOrRight;
+            return CellObject.SnakeBodyDownOrRight;
         }
 
         if ((prevCell.X < cell.X && nextCell.Y < cell.Y) || (prevCell.Y < cell.Y && nextCell.X < cell.X))
         {
-            return CellObject.SnakeTurnUpOrLeft;
+            return CellObject.SnakeBodyUpOrLeft;
         }
 
         if ((prevCell.X > cell.X && nextCell.Y < cell.Y) || (nextCell.X > cell.X && prevCell.Y < cell.Y))
         {
-            return CellObject.SnakeTurnUpOrRight;
+            return CellObject.SnakeBodyUpOrRight;
         }
 
         if (prevCell.X == nextCell.X)

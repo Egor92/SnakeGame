@@ -15,8 +15,8 @@ public enum CellObject
     SnakeTailLooksRight,
     SnakeBodyHorizontal,
     SnakeBodyVertical,
-    SnakeTurnDownOrLeft,
-    SnakeTurnDownOrRight,
-    SnakeTurnUpOrLeft,
-    SnakeTurnUpOrRight
+    SnakeBodyDownOrLeft,
+    SnakeBodyDownOrRight,
+    SnakeBodyUpOrLeft,
+    SnakeBodyUpOrRight
 }
