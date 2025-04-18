@@ -4,12 +4,10 @@ namespace Snake.ConsoleApp;
 
 public class Game(GameData gameData, GameLogic gameLogic, int timeBetweenSteps)
 {
-    private readonly GameRenderer _gameRenderer = new();
+    private readonly GameRenderer _gameRenderer = new(gameData);
 
     public void Start()
     {
-        //   _gameRenderer.RenderGame(gameData);
-
         while (!gameData.IsGameOver)
         {
             ConsoleKey key = ConsoleKey.None;
@@ -33,8 +31,8 @@ public class Game(GameData gameData, GameLogic gameLogic, int timeBetweenSteps)
             }
 
             gameLogic.DoStep();
-            Bufferer bufferer = new Bufferer();
-            CellObject[,] cellObjects = bufferer.GetGameValue(gameData);
+            GameSceneCreator gameSceneCreator = new GameSceneCreator();
+            CellObject[,] cellObjects = gameSceneCreator.GetSceneCellObjects(gameData);
 
             _gameRenderer.RenderGame(cellObjects);
             if (gameData.IsGameOver)

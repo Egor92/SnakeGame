@@ -2,10 +2,9 @@
 
 namespace Snake.ConsoleApp;
 
-public class GameRenderer
+public class GameRenderer(GameData gameData)
 {
     private char[,]? _previousBuffer;
-    private GameData _gameData;
 
     public void RenderGame(CellObject[,] cellObjects)
     {
@@ -66,12 +65,12 @@ public class GameRenderer
             }
         }
 
-        Console.SetCursorPosition(0, _gameData.BoardHeight + 1);
+        Console.SetCursorPosition(0, gameData.BoardHeight + 1);
         Console.WriteLine("Игра 'Змейка");
-        Console.WriteLine($"Количество ходов: {_gameData.StepCount}");
-        Console.WriteLine($"Количество очков: {_gameData.PointCount}");
+        Console.WriteLine($"Количество ходов: {gameData.StepCount}");
+        Console.WriteLine($"Количество очков: {gameData.PointCount}");
 
-        if (_gameData.IsGameOver)
+        if (gameData.IsGameOver)
         {
             DrawGameOver(width, height);
         }

@@ -2,9 +2,9 @@
 
 namespace Snake.ConsoleApp;
 
-public class Bufferer
+public class GameSceneCreator
 {
-    public CellObject[,] GetGameValue(GameData gameData)
+    public CellObject[,] GetSceneCellObjects(GameData gameData)
     {
         int width = gameData.BoardWidth;
         int height = gameData.BoardHeight;
