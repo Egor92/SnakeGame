@@ -19,6 +19,8 @@ public partial class App : Application
                                            .AddFood()
                                            .Build();
         var mainWindow = new MainWindow();
+        // Создать Game и запустить
+        var mainWindow = new MainWindow();
         var snakeGameView = new SnakeGameView();
         var snakeGameViewModel = new SnakeGameViewModel(gameData);
 

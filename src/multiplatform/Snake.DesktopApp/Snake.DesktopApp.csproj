@@ -9,8 +9,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Snake.ConsoleApp\Snake.ConsoleApp.csproj" />
       <ProjectReference Include="..\Snake.Logic\Snake.Logic.csproj" />
     </ItemGroup>
+
 
 </Project>

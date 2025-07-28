@@ -1,52 +1,32 @@
-﻿using Snake.ConsoleApp;
-using Snake.DesktopApp.Views;
-using Snake.Logic;
+﻿using Snake.Logic;
 
 namespace Snake.DesktopApp.ViewModels;
 
 public class SnakeGameViewModel
 {
-    private CellViewModel[][] CellVMs { get; }
+    public CellViewModel[][] CellVMs { get; }
 
-    private readonly GameData _gameData;
-    private readonly GameLogic _gameLogic;
-
-    public SnakeGameViewModel(GameData gameData)
+    public SnakeGameViewModel()
     {
-        _gameData = gameData;
-        if (_gameData.BoardHeight < 0 || _gameData.BoardWidth < 0)
-        {
+
+    private readonly GameLogic _gameLogic;
+}
+
+public SnakeGameViewModel(GameData gameData)
+        int rows = 10;
+        int columns = 10;
+        CellVMs = new CellViewModel[rows][];
             throw new InvalidOperationException("Ширина и высота должны быть положительными.");
         }
 
-        CellVMs = new CellViewModel[_gameData.BoardHeight][];
-        for (int i = 0; i < _gameData.BoardHeight; i++)
-        {
-            CellVMs[i] = new CellViewModel[_gameData.BoardWidth];
-            for (int j = 0; j < _gameData.BoardWidth; j++)
-            {
-                CellVMs[i][j] = new CellViewModel{Symbol = ' '};
+        for (int i = 0; i < rows; i++)
+    //     _gameData = gameData;
+            CellVMs[i] = new CellViewModel[columns];
+            for (int j = 0; j < columns; j++)
+    //         throw new InvalidOperationException("Ширина и высота должны быть положительными.");
+                char element = '*';
+                CellVMs[i][j] = new CellViewModel { Symbol = element };
             }
-        }
-
-        UpdateGame();
-    }
-
-    private void UpdateGame()
-    {
-        ClearBuffer();
-        WriteWallsToBuffer();
-        WriteSnakeToBuffer();
-        WriteFoodToBuffer();
-    }
-
-    private void ClearBuffer()
-    {
-        foreach (var row in CellVMs)
-        {
-            foreach (var cell in row)
-            {
-                cell.Symbol = ' ';
             }
         }
     }
@@ -79,7 +59,7 @@ public class SnakeGameViewModel
                     Direction.Right => GameRenderSymbols.Snake.HeadLooksRight,
                     _ => throw new InvalidOperationException("Invalid snake direction")
                 };
-            }
+        }
             else if (nextCell != null && prevCell != null)
             {
                 CellVMs[cell.Y][cell.X].Symbol = GetSnakeBodySymbol(cell, nextCell, prevCell);
@@ -162,5 +142,4 @@ public class SnakeGameViewModel
         }
 
         throw new InvalidOperationException("Invalid snake tail segment");
-    }
 }
