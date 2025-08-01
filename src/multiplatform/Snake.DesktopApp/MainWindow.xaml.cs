@@ -19,5 +19,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        Width = 434;  
+        Height = 480;  
     }
 }

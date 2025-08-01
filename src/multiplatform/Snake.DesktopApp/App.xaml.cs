@@ -12,20 +12,18 @@ public partial class App : Application
 {
     protected override void OnStartup(StartupEventArgs e)
     {
+        var window = new MainWindow();
         GameData gameData = GameDataBuilder.Create()
-                                           .SetPlayingFieldSize(15, 45)
-                                           .CreateWallAroundPlayingField(15, 45)
-                                           .AddSnake(5, 5, Direction.Right, 3)
+                                           .SetPlayingFieldSize(35, 35)
+                                           .CreateWallAroundPlayingField(35, 35)
+                                           .AddSnake(9, 9, Direction.Right, 5)
                                            .AddFood()
                                            .Build();
-        var mainWindow = new MainWindow();
-        // Создать Game и запустить
-        var mainWindow = new MainWindow();
         var snakeGameView = new SnakeGameView();
         var snakeGameViewModel = new SnakeGameViewModel(gameData);
 
         snakeGameView.DataContext = snakeGameViewModel;
-        mainWindow.Content = snakeGameView;
-        mainWindow.Show();
+        window.Content = snakeGameView;
+        window.Show();
     }
 }

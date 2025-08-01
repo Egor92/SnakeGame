@@ -1,4 +1,5 @@
 ﻿using Snake.Logic;
+using Snake.DesktopApp.ViewModels;
 
 namespace Snake.DesktopApp.ViewModels;
 
@@ -6,140 +7,134 @@ public class SnakeGameViewModel
 {
     public CellViewModel[][] CellVMs { get; }
 
-    public SnakeGameViewModel()
+    public SnakeGameViewModel(GameData gameData)
     {
-
-    private readonly GameLogic _gameLogic;
-}
-
-public SnakeGameViewModel(GameData gameData)
-        int rows = 10;
-        int columns = 10;
-        CellVMs = new CellViewModel[rows][];
-            throw new InvalidOperationException("Ширина и высота должны быть положительными.");
-        }
-
-        for (int i = 0; i < rows; i++)
-    //     _gameData = gameData;
-            CellVMs[i] = new CellViewModel[columns];
-            for (int j = 0; j < columns; j++)
-    //         throw new InvalidOperationException("Ширина и высота должны быть положительными.");
-                char element = '*';
-                CellVMs[i][j] = new CellViewModel { Symbol = element };
-            }
-            }
-        }
-    }
-
-    private void WriteWallsToBuffer()
-    {
-        foreach (var wall in _gameData.Walls)
+        int width = gameData.BoardWidth;
+        int height = gameData.BoardHeight;
+        
+        CellVMs = new CellViewModel[height][];
+        for (int y = 0; y < height; y++)
         {
-            CellVMs[wall.Y][wall.X].Symbol = GameRenderSymbols.Wall;
+            CellVMs[y] = new CellViewModel[width];
+            for (int x = 0; x < width; x++)
+            {
+                CellVMs[y][x] = new CellViewModel { Symbol = ' ' };
+            }
+        }
+        
+        WriteWallsToBuffer(gameData.Walls);
+        WriteSnakeToBuffer(gameData.Snake);
+        if (gameData.Food != null)
+        {
+            WriteFoodToBuffer(gameData.Food);
         }
     }
 
-    private void WriteSnakeToBuffer()
+    private void WriteWallsToBuffer(List<Cell> walls)
+    {
+        foreach (var wall in walls)
+        {
+            CellVMs[wall.Y][wall.X].Symbol = SnakeGameSymbolsViewModel.Wall;
+        }
+    }
+
+    private void WriteSnakeToBuffer(Logic.Snake snake)
     {
         int i = 0;
-        var bodyLength = _gameData.Snake.Body.Count;
-        var body = _gameData.Snake.Body.ToArray();
+        var body = snake.Body.ToArray();
+        var bodyLength = body.Length;
+
         foreach (var cell in body)
         {
             var nextCell = i < bodyLength - 1 ? body[i + 1] : null;
             var prevCell = i > 0 ? body[i - 1] : null;
 
-            if (i == bodyLength - 1)
+            if (i == bodyLength - 1) // Голова
             {
-                CellVMs[cell.Y][cell.X].Symbol = _gameData.Snake.LastStepDirection switch
+                CellVMs[cell.Y][cell.X].Symbol = snake.LastStepDirection switch
                 {
-                    Direction.Up => GameRenderSymbols.Snake.HeadLooksUp,
-                    Direction.Down => GameRenderSymbols.Snake.HeadLooksDown,
-                    Direction.Left => GameRenderSymbols.Snake.HeadLooksLeft,
-                    Direction.Right => GameRenderSymbols.Snake.HeadLooksRight,
+                    Direction.Up => SnakeGameSymbolsViewModel.Snake.HeadLooksUp,
+                    Direction.Down => SnakeGameSymbolsViewModel.Snake.HeadLooksDown,
+                    Direction.Left => SnakeGameSymbolsViewModel.Snake.HeadLooksLeft,
+                    Direction.Right => SnakeGameSymbolsViewModel.Snake.HeadLooksRight,
                     _ => throw new InvalidOperationException("Invalid snake direction")
                 };
-        }
-            else if (nextCell != null && prevCell != null)
+            }
+            else if (nextCell != null && prevCell != null) // Тело
             {
                 CellVMs[cell.Y][cell.X].Symbol = GetSnakeBodySymbol(cell, nextCell, prevCell);
             }
-            else if (i == 0)
+            else if (i == 0 && nextCell != null) // Хвост
             {
-                if (nextCell != null)
-                {
-                    CellVMs[cell.Y][cell.X].Symbol = GetSnakeTailSymbol(cell, nextCell);
-                }
+                CellVMs[cell.Y][cell.X].Symbol = GetSnakeTailSymbol(cell, nextCell);
             }
 
             i++;
         }
     }
 
-    private void WriteFoodToBuffer()
-    {
-        if (_gameData.Food is not null)
-        {
-            CellVMs[_gameData.Food.Y][_gameData.Food.X].Symbol = GameRenderSymbols.Food;
-        }
-    }
-
-    private char GetSnakeBodySymbol(Cell cell, Cell nextCell, Cell prevCell)
+    private static char GetSnakeBodySymbol(Cell cell, Cell nextCell, Cell prevCell)
     {
         if ((prevCell.X < cell.X && nextCell.Y > cell.Y) || (nextCell.X < cell.X && prevCell.Y > cell.Y))
         {
-            return GameRenderSymbols.Snake.TurnDownOrLeft;
+            return SnakeGameSymbolsViewModel.Snake.TurnDownOrLeft;
         }
 
         if ((prevCell.X > cell.X && nextCell.Y > cell.Y) || (prevCell.Y > cell.Y && nextCell.X > cell.X))
         {
-            return GameRenderSymbols.Snake.TurnDownOrRight;
+            return SnakeGameSymbolsViewModel.Snake.TurnDownOrRight;
         }
 
         if ((prevCell.X < cell.X && nextCell.Y < cell.Y) || (prevCell.Y < cell.Y && nextCell.X < cell.X))
         {
-            return GameRenderSymbols.Snake.TurnUpOrLeft;
+            return SnakeGameSymbolsViewModel.Snake.TurnUpOrLeft;
         }
 
         if ((prevCell.X > cell.X && nextCell.Y < cell.Y) || (nextCell.X > cell.X && prevCell.Y < cell.Y))
         {
-            return GameRenderSymbols.Snake.TurnUpOrRight;
+            return SnakeGameSymbolsViewModel.Snake.TurnUpOrRight;
         }
 
         if (prevCell.X == nextCell.X)
         {
-            return GameRenderSymbols.Snake.VerticalBody;
+            return SnakeGameSymbolsViewModel.Snake.VerticalBody;
         }
 
         if (prevCell.Y == nextCell.Y)
         {
-            return GameRenderSymbols.Snake.HorizontalBody;
+            return SnakeGameSymbolsViewModel.Snake.HorizontalBody;
         }
 
         throw new InvalidOperationException("Invalid snake body segment");
     }
 
-    private char GetSnakeTailSymbol(Cell cell, Cell nextCell)
+    private static char GetSnakeTailSymbol(Cell cell, Cell nextCell)
     {
         if (nextCell.Y > cell.Y)
         {
-            return GameRenderSymbols.Snake.TailLooksUp;
+            return SnakeGameSymbolsViewModel.Snake.TailLooksUp;
         }
 
         if (nextCell.Y < cell.Y)
         {
-            return GameRenderSymbols.Snake.TailLooksDown;
+            return SnakeGameSymbolsViewModel.Snake.TailLooksDown;
         }
 
         if (nextCell.X > cell.X)
         {
-            return GameRenderSymbols.Snake.TailLooksLeft;
+            return SnakeGameSymbolsViewModel.Snake.TailLooksLeft;
         }
 
         if (nextCell.X < cell.X)
         {
-            return GameRenderSymbols.Snake.TailLooksRight;
+            return SnakeGameSymbolsViewModel.Snake.TailLooksRight;
         }
 
         throw new InvalidOperationException("Invalid snake tail segment");
+    }
+
+    private void WriteFoodToBuffer(Cell food)
+    {
+        CellVMs[food.Y][food.X].Symbol = SnakeGameSymbolsViewModel.Food;
+    }
 }

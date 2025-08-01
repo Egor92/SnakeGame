@@ -7,8 +7,13 @@
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="300">
-    <Border BorderBrush="Black"
-            BorderThickness="0">
-        <TextBlock Text="{Binding Symbol}" />
+    <Border Background="LightGreen">
+        <TextBlock Text="{Binding Symbol}"
+                   FontSize="12"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   TextAlignment="Center"
+                   FontFamily="Consolas"/>
     </Border>
 </UserControl>
