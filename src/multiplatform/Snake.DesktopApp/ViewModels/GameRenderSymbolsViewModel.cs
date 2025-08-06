@@ -1,6 +1,6 @@
 ﻿namespace Snake.DesktopApp.ViewModels;
 
-public class SnakeGameSymbolsViewModel
+public static class GameRenderSymbolsViewModel
 {
     public const char Food = 'ó';
     public const char Wall = '#';

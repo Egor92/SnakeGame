@@ -24,7 +24,8 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <view:CellView Width="12" Height="12" />
+                            <view:CellView Width="12"
+                                           Height="12" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
