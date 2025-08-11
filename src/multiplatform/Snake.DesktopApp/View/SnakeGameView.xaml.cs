@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using Snake.Logic;
 
 namespace Snake.DesktopApp.View;
 
