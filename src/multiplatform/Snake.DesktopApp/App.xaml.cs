@@ -5,13 +5,13 @@ using System.Windows;
 
 namespace Snake.DesktopApp;
 
+
 public partial class App : Application
+
 {
     protected override void OnStartup(StartupEventArgs e)
     {
         int timeBetweenSteps = 200;
-
-
 
         var gameData = GameDataBuilder.Create()
                                       .SetPlayingFieldSize(35, 35)

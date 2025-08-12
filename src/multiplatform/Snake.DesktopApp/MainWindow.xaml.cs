@@ -1,3 +1,4 @@
+
 ﻿using System.Windows.Input;
 using Snake.DesktopApp.ViewModels;
 using Snake.Logic;
