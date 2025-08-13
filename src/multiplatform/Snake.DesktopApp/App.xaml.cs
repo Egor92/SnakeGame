@@ -5,13 +5,13 @@ using System.Windows;
 
 namespace Snake.DesktopApp;
 
-public partial class App
+
+public partial class App : Application
+
 {
     protected override void OnStartup(StartupEventArgs e)
     {
         int timeBetweenSteps = 200;
-
-        var window = new MainWindow();
 
         var gameData = GameDataBuilder.Create()
                                       .SetPlayingFieldSize(35, 35)
@@ -23,7 +23,7 @@ public partial class App
         var gameLogic = new GameLogic(gameData);
         var snakeGameView = new SnakeGameView();
         var snakeGameViewModel = new GameViewModel(gameData, gameLogic, timeBetweenSteps);
-
+        var window = new MainWindow(snakeGameViewModel, gameLogic);
         snakeGameView.DataContext = snakeGameViewModel;
         window.Content = snakeGameView;
         window.Show();
