@@ -5,9 +5,7 @@ using System.Windows;
 
 namespace Snake.DesktopApp;
 
-
 public partial class App : Application
-
 {
     protected override void OnStartup(StartupEventArgs e)
     {

@@ -1,28 +1,30 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Media;
 
 namespace Snake.DesktopApp.ViewModels;
 
-public class CellViewModel : INotifyPropertyChanged
+public class CellViewModel(ImageSource image) : INotifyPropertyChanged
 {
-    private char _symbol;
-    public char Symbol
+    private ImageSource? _image = image;
+
+    public ImageSource? Image
     {
-        get => _symbol;
+        get => _image;
 
         set
         {
-            if (_symbol != value)
+            if (_image != value)
             {
-                _symbol = value;
-                OnPropertyChanged(Symbol);
+                _image = value;
+                OnPropertyChanged();
             }
         }
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    private void OnPropertyChanged(char symbol, [CallerMemberName] string? propertyName = null)
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }

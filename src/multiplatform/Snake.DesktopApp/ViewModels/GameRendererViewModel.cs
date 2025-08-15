@@ -1,4 +1,5 @@
-﻿using Snake.Logic;
+﻿using System.Windows.Media;
+using Snake.Logic;
 
 namespace Snake.DesktopApp.ViewModels;
 
@@ -6,7 +7,7 @@ public class GameRendererViewModel(GameSceneCreatorViewModel sceneCreatorViewMod
 {
     private CellObjectViewModel[,]? _previousBuffer;
 
-    public void DrawSymbols(GameData gameData, CellViewModel[][] cellVMs)
+    public void DrawImages(GameData gameData, CellViewModel[][] cellVMs)
     {
         var currentBuffer = sceneCreatorViewModel.GetSceneCellObjects(gameData);
 
@@ -19,8 +20,8 @@ public class GameRendererViewModel(GameSceneCreatorViewModel sceneCreatorViewMod
             {
                 if (_previousBuffer == null || currentBuffer[x, y] != _previousBuffer[x, y])
                 {
-                    char symbol = GetSymbol(currentBuffer[x, y]);
-                    cellVMs[y][x].Symbol = symbol;
+                    ImageSource? symbol = GetImage(currentBuffer[x, y]);
+                    cellVMs[y][x].Image = symbol;
                 }
             }
         }
@@ -28,28 +29,28 @@ public class GameRendererViewModel(GameSceneCreatorViewModel sceneCreatorViewMod
         _previousBuffer = currentBuffer;
     }
 
-    private char GetSymbol(CellObjectViewModel cellObject)
+    private ImageSource? GetImage(CellObjectViewModel cellObject)
     {
         return cellObject switch
         {
-            CellObjectViewModel.Empty => ' ',
-            CellObjectViewModel.Wall => GameRenderSymbolsViewModel.Wall,
-            CellObjectViewModel.Food => GameRenderSymbolsViewModel.Food,
-            CellObjectViewModel.SnakeHeadLooksUp => GameRenderSymbolsViewModel.Snake.HeadLooksUp,
-            CellObjectViewModel.SnakeHeadLooksDown => GameRenderSymbolsViewModel.Snake.HeadLooksDown,
-            CellObjectViewModel.SnakeHeadLooksLeft => GameRenderSymbolsViewModel.Snake.HeadLooksLeft,
-            CellObjectViewModel.SnakeHeadLooksRight => GameRenderSymbolsViewModel.Snake.HeadLooksRight,
-            CellObjectViewModel.SnakeTailLooksUp => GameRenderSymbolsViewModel.Snake.TailLooksUp,
-            CellObjectViewModel.SnakeTailLooksDown => GameRenderSymbolsViewModel.Snake.TailLooksDown,
-            CellObjectViewModel.SnakeTailLooksLeft => GameRenderSymbolsViewModel.Snake.TailLooksLeft,
-            CellObjectViewModel.SnakeTailLooksRight => GameRenderSymbolsViewModel.Snake.TailLooksRight,
-            CellObjectViewModel.SnakeBodyHorizontal => GameRenderSymbolsViewModel.Snake.HorizontalBody,
-            CellObjectViewModel.SnakeBodyVertical => GameRenderSymbolsViewModel.Snake.VerticalBody,
-            CellObjectViewModel.SnakeBodyDownOrLeft => GameRenderSymbolsViewModel.Snake.TurnDownOrLeft,
-            CellObjectViewModel.SnakeBodyDownOrRight => GameRenderSymbolsViewModel.Snake.TurnDownOrRight,
-            CellObjectViewModel.SnakeBodyUpOrLeft => GameRenderSymbolsViewModel.Snake.TurnUpOrLeft,
-            CellObjectViewModel.SnakeBodyUpOrRight => GameRenderSymbolsViewModel.Snake.TurnUpOrRight,
-            _ => ' '
+            CellObjectViewModel.Empty => null,
+            CellObjectViewModel.Wall => GameRenderImagesViewModel.Wall,
+            CellObjectViewModel.Food => GameRenderImagesViewModel.Food,
+            CellObjectViewModel.SnakeHeadLooksUp => GameRenderImagesViewModel.Snake.HeadLooksUp,
+            CellObjectViewModel.SnakeHeadLooksDown => GameRenderImagesViewModel.Snake.HeadLooksDown,
+            CellObjectViewModel.SnakeHeadLooksLeft => GameRenderImagesViewModel.Snake.HeadLooksLeft,
+            CellObjectViewModel.SnakeHeadLooksRight => GameRenderImagesViewModel.Snake.HeadLooksRight,
+            CellObjectViewModel.SnakeTailLooksUp => GameRenderImagesViewModel.Snake.TailLooksUp,
+            CellObjectViewModel.SnakeTailLooksDown => GameRenderImagesViewModel.Snake.TailLooksDown,
+            CellObjectViewModel.SnakeTailLooksLeft => GameRenderImagesViewModel.Snake.TailLooksLeft,
+            CellObjectViewModel.SnakeTailLooksRight => GameRenderImagesViewModel.Snake.TailLooksRight,
+            CellObjectViewModel.SnakeBodyHorizontal => GameRenderImagesViewModel.Snake.HorizontalBody,
+            CellObjectViewModel.SnakeBodyVertical => GameRenderImagesViewModel.Snake.VerticalBody,
+            CellObjectViewModel.SnakeBodyDownOrLeft => GameRenderImagesViewModel.Snake.TurnDownOrLeft,
+            CellObjectViewModel.SnakeBodyDownOrRight => GameRenderImagesViewModel.Snake.TurnDownOrRight,
+            CellObjectViewModel.SnakeBodyUpOrLeft => GameRenderImagesViewModel.Snake.TurnUpOrLeft,
+            CellObjectViewModel.SnakeBodyUpOrRight => GameRenderImagesViewModel.Snake.TurnUpOrRight,
+            _ => null
         };
     }
 }
