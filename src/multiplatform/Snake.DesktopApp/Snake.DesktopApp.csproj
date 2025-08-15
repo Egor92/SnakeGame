@@ -12,5 +12,57 @@
       <ProjectReference Include="..\Snake.Logic\Snake.Logic.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Image\Food.png" />
+      <None Remove="Image\Snake.png" />
+      <None Remove="Image\Wall.png" />
+      <None Remove="Image\Apple.png" />
+      <None Remove="Image\SnakeHeadRight.png" />
+      <None Remove="Image\head_right.png" />
+      <None Remove="Image\head_up.png" />
+      <None Remove="Image\head_left.png" />
+      <None Remove="Image\head_down.png" />
+      <None Remove="Image\SnakeBody.png" />
+      <None Remove="Image\tail_right.png" />
+      <None Remove="Image\tail_down.png" />
+      <None Remove="Image\tail_left.png" />
+      <None Remove="Image\tail_up.png" />
+      <None Remove="Image\body\body_horizontal.png" />
+      <Resource Include="Image\body\body_horizontal.png" />
+      <None Remove="Image\body\body_vertical.png" />
+      <Resource Include="Image\body\body_vertical.png" />
+      <None Remove="Image\head\head_down.png" />
+      <Resource Include="Image\head\head_down.png" />
+      <None Remove="Image\head\head_left.png" />
+      <Resource Include="Image\head\head_left.png" />
+      <None Remove="Image\head\head_right.png" />
+      <Resource Include="Image\head\head_right.png" />
+      <None Remove="Image\head\head_up.png" />
+      <Resource Include="Image\head\head_up.png" />
+      <None Remove="Image\other\apple.png" />
+      <Resource Include="Image\other\apple.png" />
+      <None Remove="Image\other\Wall.png" />
+      <Resource Include="Image\other\Wall.png" />
+      <None Remove="Image\tail\tail_down.png" />
+      <Resource Include="Image\tail\tail_down.png" />
+      <None Remove="Image\tail\tail_left.png" />
+      <Resource Include="Image\tail\tail_left.png" />
+      <None Remove="Image\tail\tail_right.png" />
+      <Resource Include="Image\tail\tail_right.png" />
+      <None Remove="Image\tail\tail_up.png" />
+      <Resource Include="Image\tail\tail_up.png" />
+      <None Remove="Image\turn\body_bottomleft.png" />
+      <Resource Include="Image\turn\body_bottomleft.png" />
+      <None Remove="Image\turn\body_bottomright.png" />
+      <Resource Include="Image\turn\body_bottomright.png" />
+      <None Remove="Image\turn\body_topleft.png" />
+      <Resource Include="Image\turn\body_topleft.png" />
+      <None Remove="Image\turn\body_topright.png" />
+      <Resource Include="Image\turn\body_topright.png" />
+      <None Remove="Image\Empty.png" />
+      <None Remove="Image\other\Empty.png" />
+      <Resource Include="Image\other\Empty.png" />
+    </ItemGroup>
+
 
 </Project>

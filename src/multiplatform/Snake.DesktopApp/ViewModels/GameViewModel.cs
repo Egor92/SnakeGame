@@ -30,11 +30,11 @@ public class GameViewModel
             CellVMs[y] = new CellViewModel[width];
             for (int x = 0; x < width; x++)
             {
-                CellVMs[y][x] = new CellViewModel { Symbol = ' ' };
+                CellVMs[y][x] = new CellViewModel(GameRenderImagesViewModel.Wall);
             }
         }
 
-        _renderer.DrawSymbols(_gameData, CellVMs);
+        _renderer.DrawImages(_gameData, CellVMs);
 
         _gameTimer = new DispatcherTimer
         {
@@ -54,6 +54,6 @@ public class GameViewModel
         }
 
         _gameLogic.DoStep();
-        _renderer.DrawSymbols(_gameData, CellVMs);
+        _renderer.DrawImages(_gameData, CellVMs);
     }
 }
