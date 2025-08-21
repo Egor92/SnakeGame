@@ -6,15 +6,15 @@
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="300">
-    <Border >
+    <Border>
         <Grid>
-        <Image Source="/Image/other/Empty.png" />
-        <Image Source="{Binding Image}"
-               Width="12"
-               Height="12"
-               Stretch="Uniform"
-               SnapsToDevicePixels="True"
-               UseLayoutRounding="True" />
+            <Image Source="/Image/other/Empty.png" />
+            <Image Source="{Binding Image}"
+                   Width="12"
+                   Height="12"
+                   Stretch="Uniform"
+                   SnapsToDevicePixels="True"
+                   UseLayoutRounding="True" />
         </Grid>
     </Border>
 </UserControl>
