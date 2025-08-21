@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Threading;
 using Snake.Logic;
+using System.Windows.Input;
 
 namespace Snake.DesktopApp.ViewModels;
 
@@ -12,6 +13,7 @@ public class GameViewModel
     private readonly DispatcherTimer _gameTimer;
 
     public CellViewModel[][] CellVMs { get; }
+    public ICommand StartCommand { get; }
 
     public GameViewModel(GameData gameData, GameLogic gameLogic, int timeBetweenSteps)
     {
@@ -35,16 +37,20 @@ public class GameViewModel
         }
 
         _renderer.DrawImages(_gameData, CellVMs);
-
         _gameTimer = new DispatcherTimer
         {
             Interval = TimeSpan.FromMilliseconds(timeBetweenSteps)
         };
-        _gameTimer.Tick += Start;
-        _gameTimer.Start();
+
+        _gameTimer.Tick += StartMove;
+        StartCommand = new Command(StartGame);
     }
 
-    private void Start(object? sender, EventArgs e)
+    private void StartGame()
+    {
+        _gameTimer.Start();
+    }
+    private void StartMove(object? sender, EventArgs e)
     {
         if (_gameData.IsGameOver)
         {

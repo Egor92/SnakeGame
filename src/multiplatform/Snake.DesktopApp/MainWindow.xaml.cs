@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
+using System.Windows.Input;
 using Snake.DesktopApp.ViewModels;
 using Snake.Logic;
 
@@ -15,7 +16,7 @@ public partial class MainWindow
         _gameLogic = gameLogic;
         InitializeComponent();
         Width = 434;
-        Height = 480;
+        Height = 528;
         PreviewKeyDown += OnPreviewKeyDown;
     }
 
