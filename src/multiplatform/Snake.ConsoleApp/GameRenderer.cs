@@ -30,7 +30,7 @@ public class GameRenderer(GameData gameData)
     {
         return cellObject switch
         {
-            CellObject.Empty => ' ',
+            CellObject.Empty => GameRenderSymbols.Empty,
             CellObject.Wall => GameRenderSymbols.Wall,
             CellObject.Food => GameRenderSymbols.Food,
             CellObject.SnakeHeadLooksUp => GameRenderSymbols.Snake.HeadLooksUp,

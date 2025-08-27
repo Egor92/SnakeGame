@@ -2,6 +2,7 @@
 using Snake.DesktopApp.ViewModels;
 using Snake.Logic;
 using System.Windows;
+using Microsoft.Extensions.Configuration;
 
 namespace Snake.DesktopApp;
 
@@ -9,7 +10,12 @@ public partial class App : Application
 {
     protected override void OnStartup(StartupEventArgs e)
     {
-        int timeBetweenSteps = 200;
+        var config = new ConfigurationBuilder()
+                     .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                     .Build();
+
+        int timeBetweenSteps = Convert.ToInt32(config["GameSettings:TimeBetweenSteps"]);
 
         var gameData = GameDataBuilder.Create()
                                       .SetPlayingFieldSize(35, 35)
