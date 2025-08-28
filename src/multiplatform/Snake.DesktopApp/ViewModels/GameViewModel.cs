@@ -2,6 +2,8 @@
 using System.Windows.Threading;
 using Snake.Logic;
 using System.Windows.Input;
+using Snake.DesktopApp.Infrastructure;
+using Snake.DesktopApp.Logic;
 
 namespace Snake.DesktopApp.ViewModels;
 
@@ -9,7 +11,7 @@ public class GameViewModel
 {
     private readonly GameData _gameData;
     private readonly GameLogic _gameLogic;
-    private readonly GameRendererViewModel _renderer;
+    private readonly GameRenderer _renderer;
     private readonly DispatcherTimer _gameTimer;
 
     public CellViewModel[][] CellVMs { get; }
@@ -20,8 +22,8 @@ public class GameViewModel
         _gameData = gameData;
         _gameLogic = gameLogic;
 
-        var sceneCreator = new GameSceneCreatorViewModel();
-        _renderer = new GameRendererViewModel(sceneCreator);
+        var sceneCreator = new GameSceneCreator();
+        _renderer = new GameRenderer(sceneCreator);
 
         int width = gameData.BoardWidth;
         int height = gameData.BoardHeight;
@@ -32,7 +34,7 @@ public class GameViewModel
             CellVMs[y] = new CellViewModel[width];
             for (int x = 0; x < width; x++)
             {
-                CellVMs[y][x] = new CellViewModel(GameRenderImagesViewModel.Wall);
+                CellVMs[y][x] = new CellViewModel(GameRenderImages.Wall);
             }
         }
 

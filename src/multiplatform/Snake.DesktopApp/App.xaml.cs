@@ -27,7 +27,7 @@ public partial class App : Application
         var gameLogic = new GameLogic(gameData);
         var snakeGameView = new SnakeGameView();
         var snakeGameViewModel = new GameViewModel(gameData, gameLogic, timeBetweenSteps);
-        var window = new MainWindow(snakeGameViewModel, gameLogic);
+        var window = new MainWindow(gameLogic);
         snakeGameView.DataContext = snakeGameViewModel;
         window.Content = snakeGameView;
         window.Show();

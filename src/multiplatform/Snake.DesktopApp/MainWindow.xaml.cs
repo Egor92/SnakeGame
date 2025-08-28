@@ -7,16 +7,12 @@ namespace Snake.DesktopApp;
 
 public partial class MainWindow
 {
-    private readonly GameViewModel _viewModel;
     private readonly GameLogic _gameLogic;
 
-    public MainWindow(GameViewModel viewModel, GameLogic gameLogic)
+    public MainWindow(GameLogic gameLogic)
     {
-        _viewModel = viewModel;
         _gameLogic = gameLogic;
         InitializeComponent();
-        Width = 434;
-        Height = 528;
         PreviewKeyDown += OnPreviewKeyDown;
     }
 
