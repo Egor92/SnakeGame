@@ -1,9 +1,10 @@
-namespace Snake;
+namespace Snake.ConsoleApp;
 
 public static class GameRenderSymbols
 {
     public const char Food = 'ó';
     public const char Wall = '#';
+    public const char Empty = ' ';
 
     public static class Snake
     {

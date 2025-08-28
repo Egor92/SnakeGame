@@ -4,9 +4,6 @@
 name: .NET
 
 on:
-  push:
-    branches:
-      - '**' # Запускаем для всех веток
   pull_request:
     branches:
       - '**' # Запускаем для pull request'ов в любую ветку
@@ -26,12 +23,15 @@ jobs:
         dotnet-version: '9.0.x'
 
     - name: Restore dependencies
+      working-directory:  ./src/multiplatform
       run: dotnet restore
 
     - name: Build project
+      working-directory:  ./src/multiplatform
       run: dotnet build --configuration Release --no-restore
 
     - name: Run tests
+      working-directory:  ./src/multiplatform
       run: dotnet test --no-restore --verbosity normal
       
  

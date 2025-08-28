@@ -1,4 +1,4 @@
-﻿namespace Snake;
+﻿namespace Snake.ConsoleApp;
 
 public class GameRenderer
 {
