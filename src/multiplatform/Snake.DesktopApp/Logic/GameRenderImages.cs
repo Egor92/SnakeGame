@@ -1,13 +1,12 @@
 ﻿using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Snake.DesktopApp.ViewModels;
+namespace Snake.DesktopApp.Logic;
 
-public static class GameRenderImagesViewModel
+public static class GameRenderImages
 {
     public static readonly ImageSource Food = new BitmapImage(new Uri("/Image/other/apple.png", UriKind.Relative));
     public static readonly ImageSource Wall = new BitmapImage(new Uri("/Image/other/Wall.png", UriKind.Relative));
-    public static readonly ImageSource Empty = new BitmapImage(new Uri("/Image/other/Empty.png", UriKind.Relative));
 
     public static class Snake
     {

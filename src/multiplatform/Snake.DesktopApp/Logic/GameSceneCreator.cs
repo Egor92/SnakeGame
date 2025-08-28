@@ -1,8 +1,9 @@
-﻿using Snake.Logic;
+﻿using Snake.DesktopApp.ViewModels;
+using Snake.Logic;
 
-namespace Snake.DesktopApp.ViewModels;
+namespace Snake.DesktopApp.Logic;
 
-public class GameSceneCreatorViewModel
+public class GameSceneCreator
 {
     public CellObjectViewModel[,] GetSceneCellObjects(GameData gameData)
     {
@@ -39,7 +40,7 @@ public class GameSceneCreatorViewModel
         }
     }
 
-    private void WriteSnakeToBuffer(Logic.Snake snake, CellObjectViewModel[,] cellObjects)
+    private void WriteSnakeToBuffer(Snake.Logic.Snake snake, CellObjectViewModel[,] cellObjects)
     {
         int i = 0;
         var bodyLength = snake.Body.Count;

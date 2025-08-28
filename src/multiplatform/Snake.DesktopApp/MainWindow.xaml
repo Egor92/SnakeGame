@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:Snake.DesktopApp"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="450"
-        Width="800">
+        Height="528"
+        Width="434">
     <Grid>
         
     </Grid>

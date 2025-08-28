@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Snake.DesktopApp.ViewModels;
+namespace Snake.DesktopApp.Infrastructure;
 
 public class Command(Action execute, Func<bool>? canExecute = null) : ICommand
 {
