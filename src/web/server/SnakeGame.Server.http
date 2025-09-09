@@ -1,0 +1,6 @@
+@SnakeGame.Server_HostAddress = http://localhost:5013
+
+GET {{SnakeGame.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
