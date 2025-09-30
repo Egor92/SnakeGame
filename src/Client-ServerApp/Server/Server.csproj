@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>client_serverApp</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Snake.ConsoleApp\appsettings.json" />
+      <_ContentIncludedByDefault Remove="Snake.ConsoleApp\bin\Debug\net9.0\appsettings.json" />
+      <_ContentIncludedByDefault Remove="Snake.ConsoleApp\bin\Debug\net9.0\Snake.ConsoleApp.deps.json" />
+      <_ContentIncludedByDefault Remove="Snake.ConsoleApp\bin\Debug\net9.0\Snake.ConsoleApp.runtimeconfig.json" />
+      <_ContentIncludedByDefault Remove="Snake.ConsoleApp\obj\Debug\net9.0\Snake.ConsoleApp.sourcelink.json" />
+      <_ContentIncludedByDefault Remove="Snake.ConsoleApp\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="Snake.ConsoleApp\obj\project.packagespec.json" />
+      <_ContentIncludedByDefault Remove="Snake.ConsoleApp\obj\Snake.ConsoleApp.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="Snake.Logic\bin\Debug\net9.0\Snake.Logic.deps.json" />
+      <_ContentIncludedByDefault Remove="Snake.Logic\obj\Debug\net9.0\Snake.Logic.sourcelink.json" />
+      <_ContentIncludedByDefault Remove="Snake.Logic\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="Snake.Logic\obj\project.packagespec.json" />
+      <_ContentIncludedByDefault Remove="Snake.Logic\obj\Snake.Logic.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="Snake.Logic.Tests\bin\Debug\net9.0\Snake.Logic.Tests.deps.json" />
+      <_ContentIncludedByDefault Remove="Snake.Logic.Tests\bin\Debug\net9.0\Snake.Logic.Tests.runtimeconfig.json" />
+      <_ContentIncludedByDefault Remove="Snake.Logic.Tests\obj\Debug\net9.0\Snake.Logic.Tests.sourcelink.json" />
+      <_ContentIncludedByDefault Remove="Snake.Logic.Tests\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="Snake.Logic.Tests\obj\project.packagespec.json" />
+      <_ContentIncludedByDefault Remove="Snake.Logic.Tests\obj\Snake.Logic.Tests.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="GameAPI\obj\GameAPI.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="GameAPI\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="GameAPI\obj\project.packagespec.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="Snake.Logic\bin\Debug\net9.0\Snake.Logic.deps.json" />
+      <None Include="Snake.Logic\obj\Debug\net9.0\Snake.Logic.sourcelink.json" />
+      <None Include="Snake.Logic\obj\project.assets.json" />
+      <None Include="Snake.Logic\obj\project.packagespec.json" />
+      <None Include="Snake.Logic\obj\Snake.Logic.csproj.nuget.dgspec.json" />
+    </ItemGroup>
+
+</Project>
