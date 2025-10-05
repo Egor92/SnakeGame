@@ -4,33 +4,33 @@ public class GameSceneCreator
 {
     private CellObject[,]? _cellObjects;
 
-    public CellObject[,]? GetSceneCellObjects(GameElements gameElement)
+    public CellObject[,]? GetSceneCellObjects(GameElementsDto gameElementDto)
     {
-        _cellObjects = new CellObject[gameElement.Height, gameElement.Width];
+        _cellObjects = new CellObject[gameElementDto.Height, gameElementDto.Width];
 
-        for (int y = 1; y < gameElement.Height - 1; y++)
+        for (int y = 1; y < gameElementDto.Height - 1; y++)
         {
-            for (int x = 1; x < gameElement.Width - 1; x++)
+            for (int x = 1; x < gameElementDto.Width - 1; x++)
             {
                 _cellObjects[y, x] = CellObject.Empty;
             }
         }
 
-        WriteWalls(gameElement);
+        WriteWalls(gameElementDto);
 
-        if (gameElement.Food != null)
+        if (gameElementDto.Food != null)
         {
-            WriteFood(gameElement);
+            WriteFood(gameElementDto);
         }
 
-        WriteSnake(gameElement);
+        WriteSnake(gameElementDto);
         return _cellObjects;
     }
 
-    private void WriteWalls(GameElements gameElement)
+    private void WriteWalls(GameElementsDto gameElementDto)
     {
-        int width = gameElement.Width;
-        int height = gameElement.Height;
+        int width = gameElementDto.Width;
+        int height = gameElementDto.Height;
 
         for (int x = 0; x < width; x++)
         {
@@ -51,18 +51,18 @@ public class GameSceneCreator
         }
     }
 
-    private void WriteFood(GameElements gameElement)
+    private void WriteFood(GameElementsDto gameElementDto)
     {
-        if (gameElement.Food is { X: >= 0 } && gameElement.Food.X < gameElement.Width && gameElement.Food.Y >= 0 &&
-            gameElement.Food.Y < gameElement.Height)
+        if (gameElementDto.Food is { X: >= 0 } && gameElementDto.Food.X < gameElementDto.Width && gameElementDto.Food.Y >= 0 &&
+            gameElementDto.Food.Y < gameElementDto.Height)
         {
-            if (_cellObjects != null) _cellObjects[gameElement.Food.Y, gameElement.Food.X] = CellObject.Food;
+            if (_cellObjects != null) _cellObjects[gameElementDto.Food.Y, gameElementDto.Food.X] = CellObject.Food;
         }
     }
 
-    private void WriteSnake(GameElements gameElement)
+    private void WriteSnake(GameElementsDto gameElementDto)
     {
-        var snake = gameElement.Snake;
+        var snake = gameElementDto.Snake;
         int bodyLength = snake.Length;
 
         for (int i = 0; i < bodyLength; i++)
@@ -71,7 +71,7 @@ public class GameSceneCreator
 
             if (i == bodyLength - 1)
             {
-                var headSymbol = gameElement.HeadDirection switch
+                var headSymbol = gameElementDto.HeadDirection switch
                 {
                     "Up" => CellObject.SnakeHeadLooksUp,
                     "Down" => CellObject.SnakeHeadLooksDown,
@@ -96,7 +96,7 @@ public class GameSceneCreator
     }
 
 
-    private static CellObject GetSnakeTailSymbol(Coord cell, Coord nextCell)
+    private static CellObject GetSnakeTailSymbol(CoordDto cell, CoordDto nextCell)
     {
         if (nextCell.Y > cell.Y)
         {
@@ -121,7 +121,7 @@ public class GameSceneCreator
         return CellObject.SnakeTailLooksRight;
     }
 
-    private static CellObject GetSnakeBodySymbol(Coord cell, Coord nextCell, Coord prevCell)
+    private static CellObject GetSnakeBodySymbol(CoordDto cell, CoordDto nextCell, CoordDto prevCell)
     {
         if (prevCell.Y == cell.Y && nextCell.Y == cell.Y)
         {
