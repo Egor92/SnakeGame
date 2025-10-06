@@ -103,6 +103,7 @@ public class GameClient(string? url)
                     if (gameElement.IsGameOver)
                     {
                         _gameIsRunning = false;
+                        Program.OnGameOver();
                     }
 
                     var scene = _gameSceneCreator.GetSceneCellObjects(gameElement);

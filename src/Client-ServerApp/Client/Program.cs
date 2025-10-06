@@ -1,6 +1,4 @@
-﻿using Client;
-using Server.Contracts;
-using System.Text;
+﻿using System.Text;
 using Microsoft.Extensions.Configuration;
 
 namespace Client;
