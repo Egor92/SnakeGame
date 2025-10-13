@@ -1,6 +1,6 @@
-﻿namespace client_serverApp;
+﻿namespace Client;
 
-public class Coord(int x, int y)
+public class CoordDto(int x, int y)
 {
     public int X { get; set; } = x;
     public int Y { get; set; } = y;

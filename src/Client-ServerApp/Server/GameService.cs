@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using System.Timers;
 using client_serverApp.Snake.Logic;
+using Client;
 using Timer = System.Timers.Timer;
 
 namespace client_serverApp;
@@ -33,19 +34,19 @@ public class GameService
             .Build();
 
         _gameLogic = new GameLogic(_gameData);
-        
+
         _gameTimer = new Timer(timeBetweenSteps);
         _gameTimer.Elapsed += GameStep;
         _gameTimer.AutoReset = true;
     }
 
-    public  void StartGame()
+    public void StartGame()
     {
         if (!_gameIsRunning)
         {
             _gameIsRunning = true;
             _gameTimer.Start();
-             _ = TransferringGameState();
+            _ = TransferringGameState();
         }
     }
 
@@ -81,7 +82,7 @@ public class GameService
 
         _clients.TryAdd(client, webSocket);
 
-        await SendGameStateToClient(webSocket);
+        await SendGameStateToClients(webSocket);
 
         while (_gameIsRunning && webSocket.State == WebSocketState.Open)
         {
@@ -105,21 +106,21 @@ public class GameService
         }
     }
 
-    private async Task SendGameStateToClient(WebSocket webSocket)
+    private async Task SendGameStateToClients(WebSocket webSocket)
     {
         var gameState = BuildGameState();
         var json = JsonSerializer.Serialize(gameState);
         await webSocket.SendAsync(Encoding.UTF8.GetBytes(json), WebSocketMessageType.Text, true, CancellationToken.None);
     }
 
-    private GameElements BuildGameState()
+    private GameElementsDto BuildGameState()
     {
-        return new GameElements
+        return new GameElementsDto
         {
             Width = _gameData.BoardWidth,
             Height = _gameData.BoardHeight,
-            Snake = _gameData.Snake.Body.Select(coord => new Coord(coord.X, coord.Y)).ToArray(),
-            Food = _gameData.Food != null ? new Coord(_gameData.Food.X, _gameData.Food.Y) : null,
+            Snake = _gameData.Snake.Body.Select(coord => new CoordDto(coord.X, coord.Y)).ToArray(),
+            Food = _gameData.Food != null ? new CoordDto(_gameData.Food.X, _gameData.Food.Y) : null,
             PointCount = _gameData.PointCount,
             StepCount = _gameData.StepCount,
             IsGameOver = _gameData.IsGameOver,

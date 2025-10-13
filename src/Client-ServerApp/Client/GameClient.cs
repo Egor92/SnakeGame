@@ -1,22 +1,26 @@
 ﻿using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
+using Server.Contracts;
 
 namespace Client;
 
-public class GameClient
+public class GameClient(string? url)
 {
     private readonly ClientWebSocket _webSocket = new();
     private bool _gameIsRunning = true;
+    private readonly GameRenderer _gameRenderer = new();
+    private readonly GameSceneCreator _gameSceneCreator = new();
 
     public async Task RunAsync()
     {
-        Console.CursorVisible = false;
-        Console.OutputEncoding = Encoding.UTF8;
         try
         {
             await StartGameAsync();
+            Program.OnGameStart();
+
             await ConnectAsync();
+            Program.OnConnected();
 
             var inputTask = Task.Run(ChangeDirectionAsync);
             var receiveTask = GameStateAsync();
@@ -27,24 +31,24 @@ public class GameClient
 
             await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Disconnected", CancellationToken.None);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            Console.WriteLine($"Ошибка: {ex.Message}");
+            Program.OnError();
         }
     }
 
+
     private async Task StartGameAsync()
     {
-        var httpClient = new HttpClient();
-        await httpClient.PostAsync("http://localhost:5033/start", null);
-        Console.WriteLine("Игра началась!");
+        using var httpClient = new HttpClient();
+        await httpClient.PostAsync($"{url}/start", null);
     }
 
     private async Task ConnectAsync()
     {
-        var uri = new Uri("ws://localhost:5033/websockets");
+        string newUrl = url.Replace("http://", "ws://");
+        var uri = new Uri($"{newUrl}/websockets");
         await _webSocket.ConnectAsync(uri, CancellationToken.None);
-        Console.WriteLine("Вы подключились к серверу!");
     }
 
     private async Task ChangeDirectionAsync()
@@ -52,34 +56,33 @@ public class GameClient
         while (_gameIsRunning)
         {
             var key = Console.ReadKey(true);
-            string? direction = key.Key switch
+            DirectionDto? direction = key.Key switch
             {
-                ConsoleKey.UpArrow => "Up",
-                ConsoleKey.DownArrow => "Down",
-                ConsoleKey.LeftArrow => "Left",
-                ConsoleKey.RightArrow => "Right",
+                ConsoleKey.UpArrow => DirectionDto.Up,
+                ConsoleKey.DownArrow => DirectionDto.Down,
+                ConsoleKey.LeftArrow => DirectionDto.Left,
+                ConsoleKey.RightArrow => DirectionDto.Right,
                 _ => null
             };
 
             if (direction != null)
             {
-                await SendNewDirectionAsync(direction);
+                await SendNewDirectionAsync(direction.Value);
             }
         }
     }
 
-    private async Task SendNewDirectionAsync(string? direction)
+    private async Task SendNewDirectionAsync(DirectionDto direction)
     {
-        var httpClient = new HttpClient();
-        var content = new StringContent($"\"{direction}\"", Encoding.UTF8, "application/json");
-        await httpClient.PostAsync("http://localhost:5033/turn", content);
+        using var httpClient = new HttpClient();
+        var json = JsonSerializer.Serialize(direction);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        await httpClient.PostAsync($"{url}/turn", content);
     }
 
     private async Task GameStateAsync()
     {
         var buffer = new byte[8192];
-        var gameRenderer = new GameRenderer();
-
         while (_gameIsRunning && _webSocket.State == WebSocketState.Open)
         {
             try
@@ -93,24 +96,24 @@ public class GameClient
                 }
 
                 var json = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                var gameElement = JsonSerializer.Deserialize<GameElements>(json);
-
-                if (gameElement is { IsGameOver: true })
-                {
-                    _gameIsRunning = false;
-                }
+                var gameElement = JsonSerializer.Deserialize<GameElementsDto>(json);
 
                 if (gameElement != null)
                 {
-                    GameSceneCreator gameSceneCreator = new();
-                    var scene = gameSceneCreator.GetSceneCellObjects(gameElement);
-                    gameRenderer.RenderGame(scene, gameElement.Width, gameElement.Height, gameElement.StepCount, gameElement.PointCount,
+                    if (gameElement.IsGameOver)
+                    {
+                        _gameIsRunning = false;
+                        Program.OnGameOver();
+                    }
+
+                    var scene = _gameSceneCreator.GetSceneCellObjects(gameElement);
+                    _gameRenderer.RenderGame(scene, gameElement.Width, gameElement.Height, gameElement.StepCount, gameElement.PointCount,
                         gameElement.IsGameOver);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Ошибка при получении данных: {ex.Message}");
+                Program.OnError();
                 break;
             }
         }
