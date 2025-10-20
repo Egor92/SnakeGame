@@ -26,19 +26,22 @@ app.Map("/websockets", async (HttpContext context, GameService gameService) =>
 });
 
 //запуск игры
-app.MapPost("/start", (GameService gameService) => gameService.StartGame());
+app.MapPost("/start/{clientId}", (string clientId, GameService gameService) =>
+{
+    gameService.StartGame(clientId);
+    return Results.Ok();
+});
 
 //поворот змейки
-app.MapPost("/turn", async (HttpContext context, GameService gameService) =>
+app.MapPost("/turn/{clientId}", async (string clientId, HttpContext context, GameService gameService) =>
 {
     using var reader = new StreamReader(context.Request.Body);
     string body = await reader.ReadToEndAsync();
-
     string directionStr = body.Trim('"');
 
     if (Enum.TryParse<Direction>(directionStr, true, out Direction direction))
     {
-        gameService.TurnSnake(direction);
+        gameService.TurnSnake(clientId, direction);
         return Results.Ok();
     }
 

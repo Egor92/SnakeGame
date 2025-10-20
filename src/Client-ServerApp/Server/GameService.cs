@@ -2,129 +2,54 @@
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
-using System.Timers;
 using client_serverApp.Snake.Logic;
-using Client;
-using Timer = System.Timers.Timer;
 
 namespace client_serverApp;
 
 public class GameService
 {
-    private readonly ConcurrentDictionary<string, WebSocket> _clients = new();
-    private readonly GameLogic _gameLogic;
-    private readonly GameData _gameData;
-    private readonly Timer _gameTimer;
-    private bool _gameIsRunning;
+    private readonly Dictionary<string, SnakeGame> _games = new();
+    private readonly int _timeBetweenSteps;
 
-    public GameService()
+    public GameService(IConfiguration configuration)
     {
         var config = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json").Build();
-
-        int timeBetweenSteps = Convert.ToInt32(config["GameSettings:TimeBetweenSteps"]);
-
-        _gameData = GameDataBuilder.Create()
-            .SetPlayingFieldSize(width: 45, height: 15)
-            .CreateWallAroundPlayingField(width: 45, height: 15)
-            .AddSnake(x: 5, y: 5, Direction.Right, 3)
-            .AddFood()
-            .SetPointCount(0)
-            .SetStepCount(0)
-            .Build();
-
-        _gameLogic = new GameLogic(_gameData);
-
-        _gameTimer = new Timer(timeBetweenSteps);
-        _gameTimer.Elapsed += GameStep;
-        _gameTimer.AutoReset = true;
-    }
-
-    public void StartGame()
-    {
-        if (!_gameIsRunning)
-        {
-            _gameIsRunning = true;
-            _gameTimer.Start();
-            _ = TransferringGameState();
-        }
-    }
-
-    private async void GameStep(object? sender, ElapsedEventArgs e)
-    {
-        try
-        {
-            if (!_gameIsRunning || _gameData.IsGameOver) return;
-
-            _gameLogic.DoStep();
-            await TransferringGameState();
-
-            if (_gameData.IsGameOver)
-            {
-                _gameTimer.Stop();
-                _gameIsRunning = false;
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Ошибка в шаге: {ex.Message}");
-        }
-    }
-
-    public void TurnSnake(Direction direction)
-    {
-        _gameLogic.ChangeDirection(direction);
+        _timeBetweenSteps = Convert.ToInt32(config["GameSettings:TimeBetweenSteps"]);
     }
 
     public async Task ConnectClient(WebSocket webSocket)
     {
-        var client = webSocket.GetHashCode().ToString();
+        var clientId = Guid.NewGuid().ToString();
+        var game = new SnakeGame(webSocket, _timeBetweenSteps);
+        _games.TryAdd(clientId, game);
 
-        _clients.TryAdd(client, webSocket);
+        var idMsg = JsonSerializer.Serialize(new { clientId });
+        await webSocket.SendAsync(
+            Encoding.UTF8.GetBytes(idMsg),
+            WebSocketMessageType.Text,
+            true,
+            CancellationToken.None);
 
-        await SendGameStateToClients(webSocket);
-
-        while (_gameIsRunning && webSocket.State == WebSocketState.Open)
+        while (webSocket.State == WebSocketState.Open)
         {
             await Task.Delay(50);
         }
-
-        _clients.TryRemove(client, out _);
     }
 
-    private async Task TransferringGameState()
+    public void StartGame(string clientId)
     {
-        var gameState = BuildGameState();
-        var json = JsonSerializer.Serialize(gameState);
-
-        foreach (var client in _clients.Values)
+        if (_games.TryGetValue(clientId, out var game))
         {
-            if (client.State == WebSocketState.Open)
-            {
-                await client.SendAsync(Encoding.UTF8.GetBytes(json), WebSocketMessageType.Text, true, CancellationToken.None);
-            }
+            game.Start();
         }
     }
 
-    private async Task SendGameStateToClients(WebSocket webSocket)
+    public void TurnSnake(string clientId, Direction direction)
     {
-        var gameState = BuildGameState();
-        var json = JsonSerializer.Serialize(gameState);
-        await webSocket.SendAsync(Encoding.UTF8.GetBytes(json), WebSocketMessageType.Text, true, CancellationToken.None);
-    }
-
-    private GameElementsDto BuildGameState()
-    {
-        return new GameElementsDto
+        if (_games.TryGetValue(clientId, out var game))
         {
-            Width = _gameData.BoardWidth,
-            Height = _gameData.BoardHeight,
-            Snake = _gameData.Snake.Body.Select(coord => new CoordDto(coord.X, coord.Y)).ToArray(),
-            Food = _gameData.Food != null ? new CoordDto(_gameData.Food.X, _gameData.Food.Y) : null,
-            PointCount = _gameData.PointCount,
-            StepCount = _gameData.StepCount,
-            IsGameOver = _gameData.IsGameOver,
-            HeadDirection = _gameData.Snake.LastStepDirection.ToString()
-        };
+            game.ChangeDirection(direction);
+        }
     }
 }
