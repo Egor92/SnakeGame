@@ -1,4 +1,5 @@
-﻿using System.Net.WebSockets;
+﻿using System.Globalization;
+using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
 using Server.Contracts;
@@ -7,7 +8,7 @@ namespace Client;
 
 public class GameClient(string? url)
 {
-    private readonly ClientWebSocket _webSocket = new();
+    private ClientWebSocket? _webSocket;
     private bool _gameIsRunning = true;
     private readonly GameRenderer _gameRenderer = new();
     private readonly GameSceneCreator _gameSceneCreator = new();
@@ -17,28 +18,46 @@ public class GameClient(string? url)
     {
         try
         {
-            await ConnectAsync();
-            Program.OnConnected();
+            while (true)
+            {
+                Console.Clear();
+                var answer = Program.NewGame();
+                if (answer == "Y")
+                {
+                    _webSocket = new ClientWebSocket();
+                    await ConnectAsync();
+                    Program.OnConnected();
 
-            _clientId = await GetClientIdFromServerAsync();
-            await StartGameAsync(_clientId);
-            Program.OnGameStart();
+                    _clientId = await GetClientIdFromServerAsync();
+                    await StartGameAsync(_clientId);
+                    Program.OnGameStart();
 
-            var inputTask = Task.Run(ChangeDirectionAsync);
-            var receiveTask = GameStateAsync();
+                    var inputTask = Task.Run(ChangeDirectionAsync);
+                    var receiveTask = GameStateAsync();
 
-            await receiveTask;
-            _gameIsRunning = false;
-            await inputTask;
+                    await receiveTask;
+                    _gameIsRunning = false;
+                    await inputTask;
+                }
+                else
+                {
+                    Program.GoodBye();
+                    if (_webSocket is { State: WebSocketState.Open })
+                    {
+                        await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "", CancellationToken.None);
+                    }
 
-            await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Disconnected", CancellationToken.None);
+                    return;
+                }
+            }
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            Program.OnError();
+            Program.OnError(exception);
         }
     }
-    
+
+
     private async Task StartGameAsync(string clientId)
     {
         using var httpClient = new HttpClient();
@@ -130,9 +149,9 @@ public class GameClient(string? url)
                         gameElement.IsGameOver);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Program.OnError();
+                Program.OnError(e);
                 break;
             }
         }
