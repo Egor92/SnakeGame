@@ -13,9 +13,9 @@ public class GameService
 
     public GameService(IConfiguration configuration)
     {
-        var config = new ConfigurationBuilder()
+        configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json").Build();
-        _timeBetweenSteps = Convert.ToInt32(config["GameSettings:TimeBetweenSteps"]);
+        _timeBetweenSteps = Convert.ToInt32(configuration["GameSettings:TimeBetweenSteps"]);
     }
 
     public async Task ConnectClient(WebSocket webSocket)
