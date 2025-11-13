@@ -1,18 +1,27 @@
-﻿using System.Globalization;
-using System.Net.WebSockets;
+﻿using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
 using Server.Contracts;
+using Microsoft.Extensions.Options;
 
 namespace Client;
 
-public class GameClient(string? url)
+public class GameClient
 {
+    private GameSettings _settings;
     private ClientWebSocket? _webSocket;
     private bool _gameIsRunning = true;
-    private readonly GameRenderer _gameRenderer = new();
+    private GameRenderer _gameRenderer;
     private readonly GameSceneCreator _gameSceneCreator = new();
     private string? _clientId;
+
+    public GameClient(IOptions<GameSettings> options)
+    {
+        _settings = options.Value;
+    }
+
+    private string BaseUrl => $"http://{_settings.Host}:{_settings.Port}";
+    private string WebSocketUrl => $"ws://{_settings.Host}:{_settings.Port}/websockets";
 
     public async Task RunAsync()
     {
@@ -22,31 +31,15 @@ public class GameClient(string? url)
             {
                 Console.Clear();
                 var answer = Program.NewGame();
-                if (answer == "Y")
+                if (answer == "1")
                 {
-                    _webSocket = new ClientWebSocket();
-                    await ConnectAsync();
-                    Program.OnConnected();
-
-                    _clientId = await GetClientIdFromServerAsync();
-                    await StartGameAsync(_clientId);
-                    Program.OnGameStart();
-
-                    var inputTask = Task.Run(ChangeDirectionAsync);
-                    var receiveTask = GameStateAsync();
-
-                    await receiveTask;
-                    _gameIsRunning = false;
-                    await inputTask;
+                    await StartNewGameAsync();
                 }
                 else
                 {
+                    Program.ShowStatistics();
                     Program.GoodBye();
-                    if (_webSocket is { State: WebSocketState.Open })
-                    {
-                        await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "", CancellationToken.None);
-                    }
-
+                    await CloseWebSocketAsync();
                     return;
                 }
             }
@@ -57,18 +50,37 @@ public class GameClient(string? url)
         }
     }
 
-
-    private async Task StartGameAsync(string clientId)
+    private async Task StartServerGameAsync(string clientId)
     {
         using var httpClient = new HttpClient();
-        await httpClient.PostAsync($"{url}/start/{clientId}", null);
+        await httpClient.PostAsync($"{BaseUrl}/start/{clientId}", null);
     }
 
     private async Task ConnectAsync()
     {
-        string newUrl = url.Replace("http://", "ws://");
-        var uri = new Uri($"{newUrl}/websockets");
+        var uri = new Uri(WebSocketUrl);
         await _webSocket.ConnectAsync(uri, CancellationToken.None);
+    }
+
+    private async Task StartNewGameAsync()
+    {
+        _gameIsRunning = true;
+        _gameRenderer = new GameRenderer();
+        _webSocket = new ClientWebSocket();
+
+        await ConnectAsync();
+        Program.OnConnected();
+
+        _clientId = await GetClientIdFromServerAsync();
+        await StartServerGameAsync(_clientId);
+        Program.OnGameStart();
+
+        var inputTask = Task.Run(ChangeDirectionAsync);
+        var receiveTask = GameStateAsync();
+
+        await receiveTask;
+        _gameIsRunning = false;
+        await inputTask;
     }
 
     private async Task<string> GetClientIdFromServerAsync()
@@ -115,7 +127,7 @@ public class GameClient(string? url)
         using var httpClient = new HttpClient();
         var json = JsonSerializer.Serialize(direction);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
-        await httpClient.PostAsync($"{url}/turn/{_clientId}", content);
+        await httpClient.PostAsync($"{BaseUrl}/turn/{_clientId}", content);
     }
 
     private async Task GameStateAsync()
@@ -142,6 +154,7 @@ public class GameClient(string? url)
                     {
                         _gameIsRunning = false;
                         Program.OnGameOver();
+                        Program.AddGameResult(gameElement.PointCount, gameElement.StepCount);
                     }
 
                     var scene = _gameSceneCreator.GetSceneCellObjects(gameElement);
@@ -154,6 +167,14 @@ public class GameClient(string? url)
                 Program.OnError(e);
                 break;
             }
+        }
+    }
+
+    private async Task CloseWebSocketAsync()
+    {
+        if (_webSocket is { State: WebSocketState.Open })
+        {
+            await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "", CancellationToken.None);
         }
     }
 }
